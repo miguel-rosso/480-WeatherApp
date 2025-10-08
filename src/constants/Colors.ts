@@ -8,9 +8,9 @@ export const Colors = {
     accent: "#F59E0B", // Amarillo sol
     icon: "#6B7280",
     border: "#E5E7EB",
-    tabBarBackground: "#FFFFFF",
-    tabBarActive: "#3B82F6",
-    tabBarInactive: "#9CA3AF",
+    tabBarBackground: "transparent", // Transparente para que se vea el gradiente
+    tabBarActive: "#FFFFFF", // Blanco para buen contraste
+    tabBarInactive: "rgba(255, 255, 255, 0.6)", // Blanco semi-transparente
   },
   dark: {
     text: "#F9FAFB",
@@ -21,8 +21,8 @@ export const Colors = {
     accent: "#FBBF24", // Amarillo sol claro
     icon: "#94A3B8",
     border: "#334155",
-    tabBarBackground: "#1E293B",
-    tabBarActive: "#60A5FA",
-    tabBarInactive: "#64748B",
+    tabBarBackground: "transparent", // Transparente para que se vea el gradiente
+    tabBarActive: "#FFFFFF", // Blanco para buen contraste
+    tabBarInactive: "rgba(255, 255, 255, 0.5)", // Blanco semi-transparente
   },
 };

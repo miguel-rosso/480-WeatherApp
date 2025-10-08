@@ -1,22 +1,21 @@
-import { HapticTab } from '@/src/components/haptic-tab';
-import { IconSymbol } from '@/src/components/ui/icon-symbol';
+import { HapticTab } from '@/src/components/ui/haptic-tab';
 import { useThemeColors } from '@/src/hooks/useThemeColor';
+import { Ionicons } from '@expo/vector-icons';
 import * as NavigationBar from "expo-navigation-bar";
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   const colors = useThemeColors();
-  const colorScheme = useColorScheme();
+
   
   useEffect(() => {
     if (Platform.OS === "android") {
       NavigationBar.setBackgroundColorAsync("transparent");
-      // Si está en modo oscuro, botones claros. Si está en modo claro, botones oscuros
-      NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
+      NavigationBar.setButtonStyleAsync("light");
     }
-  }, [colorScheme]);
+  }, []);
 
   return (
     <Tabs
@@ -26,29 +25,31 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.tabBarActive,
         tabBarInactiveTintColor: colors.tabBarInactive,
         tabBarStyle: {
-          backgroundColor: colors.tabBarBackground,
-          borderTopColor: colors.border,
+          backgroundColor: 'transparent',
+          borderTopColor: 'transparent',
+          position: 'absolute',
+          elevation: 0,
         },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'London',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="building.2.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="business" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="toronto"
         options={{
           title: 'Toronto',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="leaf.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="leaf" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="singapore"
         options={{
           title: 'Singapore',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="sparkles" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="sparkles" size={24} color={color} />,
         }}
       />
     </Tabs>

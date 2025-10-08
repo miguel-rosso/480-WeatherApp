@@ -20,16 +20,13 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
 
   return (
     <View className="flex-1">
-      {/* Fondo animado según clima */}
+      {/* Fondo estilo Google Weather: GIF arriba + Gradiente abajo */}
       <WeatherBackground condition={weather?.condition || 'Soleado'} />
 
-      {/* Header con selector de idioma */}
-      <Header city={city} />
-
-      {/* Contenido principal */}
       <ScrollView
-        className="flex-1 px-6"
+        className="flex-1"
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
         refreshControl={
           <RefreshControl 
             refreshing={isLoading} 
@@ -38,72 +35,83 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
           />
         }
       >
-        <View className="gap-4 pb-6">
-          {/* Clima Actual */}
-          {weather && (
-            <View className="p-8 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
-              <Text className="mb-2 text-6xl font-bold" style={{ color: '#fff' }}>
-                {weather.getFormattedTemp()}
-              </Text>
-              <Text className="mb-6 text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                {weather.condition}
-              </Text>
-              <View className="flex-row justify-around">
-                <View className="items-center">
-                  <Text className="mb-1 text-4xl">💧</Text>
-                  <Text className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                    {t('weather.humidity')}
-                  </Text>
-                  <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
-                    {weather.humidity}%
-                  </Text>
-                </View>
-                <View className="items-center">
-                  <Text className="mb-1 text-4xl">💨</Text>
-                  <Text className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                    {t('weather.wind')}
-                  </Text>
-                  <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
-                    {weather.windSpeed} km/h
-                  </Text>
-                </View>
+        {/* Header con selector de idioma */}
+        <Header city={city} />
+
+        {/* Clima Actual - Sobre el GIF animado */}
+        {weather && (
+          <View className="px-6 pt-8 pb-12">
+            <Text className="mb-2 font-bold text-7xl" style={{ color: '#fff' }}>
+              {weather.getFormattedTemp()}
+            </Text>
+            <Text className="mb-8 text-2xl" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>
+              {weather.condition}
+            </Text>
+            
+            {/* Detalles del clima */}
+            <View className="flex-row justify-start gap-8">
+              <View className="items-center">
+                <Text className="mb-1 text-3xl">💧</Text>
+                <Text className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                  {t('weather.humidity')}
+                </Text>
+                <Text className="text-base font-semibold" style={{ color: '#fff' }}>
+                  {weather.humidity}%
+                </Text>
+              </View>
+              <View className="items-center">
+                <Text className="mb-1 text-3xl">💨</Text>
+                <Text className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                  {t('weather.wind')}
+                </Text>
+                <Text className="text-base font-semibold" style={{ color: '#fff' }}>
+                  {weather.windSpeed} km/h
+                </Text>
               </View>
             </View>
-          )}
+          </View>
+        )}
 
-          {/* Pronóstico */}
-          {forecast.length > 0 && (
-            <View className="p-6 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}>
-              <Text className="mb-4 text-xl font-bold" style={{ color: '#fff' }}>
-                {t('weather.forecast')}
-              </Text>
+        {/* Pronóstico - Sobre el gradiente */}
+        {forecast.length > 0 && (
+          <View className="px-6 pt-6">
+            <Text className="mb-4 text-lg font-bold" style={{ color: '#fff' }}>
+              {t('weather.forecast')}
+            </Text>
+            
+            {/* Lista de días */}
+            <View className="gap-2">
               {forecast.map((day, index) => (
                 <View 
                   key={index} 
-                  className="flex-row items-center justify-between py-3"
-                  style={{ 
-                    borderTopWidth: index > 0 ? 1 : 0,
-                    borderTopColor: 'rgba(255, 255, 255, 0.2)'
-                  }}
+                  className="flex-row items-center justify-between px-4 py-4 rounded-2xl"
+                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
                 >
-                  <Text className="text-lg" style={{ color: '#fff', flex: 1 }}>
+                  <Text className="text-base font-medium" style={{ color: '#fff', flex: 1 }}>
                     {day.date}
                   </Text>
-                  <Text className="text-3xl" style={{ marginRight: 12 }}>
+                  <Text className="text-2xl" style={{ marginRight: 16 }}>
                     {day.icon}
                   </Text>
-                  <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
-                    {Math.round(day.maxTemp)}° / {Math.round(day.minTemp)}°
-                  </Text>
+                  <View className="flex-row items-center gap-2">
+                    <Text className="text-base font-semibold" style={{ color: '#fff' }}>
+                      {Math.round(day.maxTemp)}°
+                    </Text>
+                    <Text className="text-base" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                      {Math.round(day.minTemp)}°
+                    </Text>
+                  </View>
                 </View>
               ))}
             </View>
-          )}
+          </View>
+        )}
 
-          {isLoading && (
+        {isLoading && (
+          <View className="py-8">
             <ActivityIndicator size="large" color="#fff" />
-          )}
-        </View>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
