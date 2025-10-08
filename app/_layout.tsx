@@ -1,4 +1,5 @@
 import "@/global.css";
+import '@/src/locales/i18n'; // Inicializar i18n
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";

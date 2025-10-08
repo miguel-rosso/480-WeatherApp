@@ -1,9 +1,9 @@
 /**
- * Screen (Expo Router) - Solo maneja la navegación y conecta con la View
+ * Screen - London
  */
 
 import { WeatherView } from '@/src/views/weather/WeatherView';
 
-export default function HomeScreen() {
-  return <WeatherView city="Madrid" />;
+export default function LondonScreen() {
+  return <WeatherView city="London" />;
 }
