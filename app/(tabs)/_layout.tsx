@@ -1,25 +1,33 @@
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { HapticTab } from '@/src/components/haptic-tab';
+import { IconSymbol } from '@/src/components/ui/icon-symbol';
+import { useThemeColors } from '@/src/hooks/useThemeColor';
+import * as NavigationBar from "expo-navigation-bar";
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Platform, useColorScheme } from 'react-native';
 
 export default function TabLayout() {
-  const tabBarBg = useThemeColor({}, 'tabBarBackground');
-  const tabBarActive = useThemeColor({}, 'tabBarActive');
-  const tabBarInactive = useThemeColor({}, 'tabBarInactive');
-  const border = useThemeColor({}, 'border');
+  const colors = useThemeColors();
+  const colorScheme = useColorScheme();
+  
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      NavigationBar.setBackgroundColorAsync("transparent");
+      // Si está en modo oscuro, botones claros. Si está en modo claro, botones oscuros
+      NavigationBar.setButtonStyleAsync(colorScheme === "dark" ? "light" : "dark");
+    }
+  }, [colorScheme]);
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarActiveTintColor: tabBarActive,
-        tabBarInactiveTintColor: tabBarInactive,
+        tabBarActiveTintColor: colors.tabBarActive,
+        tabBarInactiveTintColor: colors.tabBarInactive,
         tabBarStyle: {
-          backgroundColor: tabBarBg,
-          borderTopColor: border,
+          backgroundColor: colors.tabBarBackground,
+          borderTopColor: colors.border,
         },
       }}>
       <Tabs.Screen
