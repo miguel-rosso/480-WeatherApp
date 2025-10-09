@@ -8,7 +8,7 @@ export const Colors = {
     accent: "#F59E0B", // Amarillo sol
     icon: "#6B7280",
     border: "#E5E7EB",
-    tabBarBackground: "transparent", // Transparente para que se vea el gradiente
+    tabBarBackground: "transparent", // Transparente para que se vea el fondo animado
     tabBarActive: "#FFFFFF", // Blanco para buen contraste
     tabBarInactive: "rgba(255, 255, 255, 0.6)", // Blanco semi-transparente
   },
@@ -21,7 +21,7 @@ export const Colors = {
     accent: "#FBBF24", // Amarillo sol claro
     icon: "#94A3B8",
     border: "#334155",
-    tabBarBackground: "transparent", // Transparente para que se vea el gradiente
+    tabBarBackground: "transparent", // Transparente para que se vea el fondo animado
     tabBarActive: "#FFFFFF", // Blanco para buen contraste
     tabBarInactive: "rgba(255, 255, 255, 0.5)", // Blanco semi-transparente
   },

@@ -5,6 +5,7 @@
 
 import { LanguageSelector } from '@/src/components/LanguageSelector';
 import { WeatherBackground } from '@/src/components/WeatherBackground';
+import { WeatherDetails } from '@/src/components/WeatherDetails';
 import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,14 +18,38 @@ interface WeatherViewProps {
 export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
   const { weather, forecast, isLoading, refresh } = useWeatherViewModel(city);
   const { t } = useTranslation();
+  const [currentTime, setCurrentTime] = React.useState(new Date());
+
+  // Actualizar la hora cada minuto
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 60 segundos
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <View className="flex-1">
-      {/* Fondo animado según clima */}
-      <WeatherBackground condition={weather?.condition || 'Soleado'} />
+      {/* Fondo dinámico según clima y hora local de la ciudad */}
+      <WeatherBackground 
+        weatherMain={weather?.weatherMain || 'Clear'}
+        weatherId={weather?.weatherId}
+        isDaytime={weather?.isDaytime() ?? true}
+        currentTime={currentTime}
+        sunsetTime={weather?.sunset}
+        timezone={weather?.timezone}
+      />
 
-      {/* Header solo con selector de idioma */}
-      <View className="flex-row items-center justify-end px-6 pb-4 pt-14">
+      {/* Header con hora local y selector de idioma */}
+      <View className="flex-row items-center justify-between px-6 pb-4 pt-14">
+        {/* Hora local de la ciudad */}
+        {weather && (
+          <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
+            🕐 {weather.getFormattedLocalTime(currentTime)}
+          </Text>
+        )}
+        {/* Selector de idioma */}
         <LanguageSelector />
       </View>
 
@@ -53,34 +78,24 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                 <Text className="mb-2 font-bold text-7xl" style={{ color: '#fff' }}>
                   {weather.getFormattedTemp()}
                 </Text>
-                <Text className="text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                  {weather.condition}
-                </Text>
-              </View>
-
-              {/* Card de Humedad y Viento */}
-              <View className="p-6 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
-                <View className="flex-row justify-around">
-                  <View className="items-center">
-                    <Text className="mb-1 text-4xl">💧</Text>
-                    <Text className="mb-1 text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                      {t('weather.humidity')}
-                    </Text>
-                    <Text className="text-xl font-semibold" style={{ color: '#fff' }}>
-                      {weather.humidity}%
-                    </Text>
-                  </View>
-                  <View className="items-center">
-                    <Text className="mb-1 text-4xl">💨</Text>
-                    <Text className="mb-1 text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                      {t('weather.wind')}
-                    </Text>
-                    <Text className="text-xl font-semibold" style={{ color: '#fff' }}>
-                      {weather.windSpeed} km/h
-                    </Text>
-                  </View>
+                <View className="flex-row items-center gap-2">
+                  <Text className="text-3xl">{weather.icon}</Text>
+                  <Text className="text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                    {weather.condition}
+                  </Text>
                 </View>
               </View>
+
+              {/* Card de Detalles del Clima - Componente expandible */}
+              <WeatherDetails
+                humidity={weather.humidity}
+                windSpeed={weather.windSpeed}
+                feelsLike={weather.feelsLike}
+                pressure={weather.pressure}
+                sunrise={weather.sunrise}
+                sunset={weather.sunset}
+                timezone={weather.timezone}
+              />
             </>
           )}
 

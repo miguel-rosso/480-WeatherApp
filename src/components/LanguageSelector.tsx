@@ -3,14 +3,12 @@
  * Muestra inglés y español, con el seleccionado resaltado
  */
 
-import { useThemeColors } from '@/src/hooks/useThemeColor';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 export const LanguageSelector: React.FC = () => {
   const { i18n } = useTranslation();
-  const colors = useThemeColors();
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -19,21 +17,21 @@ export const LanguageSelector: React.FC = () => {
   const isActive = (lang: string) => i18n.language === lang;
 
   return (
-    <View className="flex-row gap-3 items-center">
+    <View className="flex-row items-center gap-3">
       {/* Inglés */}
       <TouchableOpacity
         onPress={() => changeLanguage('en')}
         className="px-3 py-1.5 rounded-lg"
         style={{
-          backgroundColor: isActive('en') ? colors.primary : 'transparent',
+          backgroundColor: isActive('en') ? '#60A5FA' : 'transparent',
           borderWidth: 1,
-          borderColor: colors.border,
+          borderColor: '#334155',
         }}
       >
         <Text
-          className="font-semibold text-sm"
+          className="text-sm font-semibold"
           style={{
-            color: isActive('en') ? '#fff' : colors.text,
+            color: isActive('en') ? '#fff' : '#F9FAFB',
           }}
         >
           EN
@@ -45,15 +43,15 @@ export const LanguageSelector: React.FC = () => {
         onPress={() => changeLanguage('es')}
         className="px-3 py-1.5 rounded-lg"
         style={{
-          backgroundColor: isActive('es') ? colors.primary : 'transparent',
+          backgroundColor: isActive('es') ? '#60A5FA' : 'transparent',
           borderWidth: 1,
-          borderColor: colors.border,
+          borderColor: '#334155',
         }}
       >
         <Text
-          className="font-semibold text-sm"
+          className="text-sm font-semibold"
           style={{
-            color: isActive('es') ? '#fff' : colors.text,
+            color: isActive('es') ? '#fff' : '#F9FAFB',
           }}
         >
           ES

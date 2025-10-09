@@ -1,25 +1,231 @@
 /**
- * WeatherBackground - Fondo según el clima y hora del día
+ * WeatherBackground - Fondo dinámico según el clima y hora del día
+ * Muestra imágenes de fondo que cambian según la condición climática
  */
 
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { SkyAnimation } from './SkyAnimation';
+import React, { useMemo } from 'react';
+import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 
 interface WeatherBackgroundProps {
-  condition: string;
-  hour?: number; // Hora del día (0-23)
+  weatherMain: string; // Main de la API (Clear, Clouds, Rain, etc.)
+  weatherId?: number; // ID del weather (para distinguir overcast clouds = 804)
+  isDaytime?: boolean; // Si es de día (calculado desde sunrise/sunset)
+  currentTime?: Date; // Tiempo actual
+  sunsetTime?: Date; // Hora del sunset (Date object)
+  timezone?: number; // Timezone offset en segundos
 }
 
-export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({ 
-  condition, 
-  hour = new Date().getHours() 
-}) => {
+// Tipos de momento del día
+type TimeOfDay = 'day' | 'afternoon' | 'night';
+
+// Estructura de imágenes por condición climática
+interface WeatherImages {
+  day: ImageSourcePropType;
+  afternoon: ImageSourcePropType;
+  night: ImageSourcePropType;
+}
+
+// Imágenes organizadas por condición climática
+const WEATHER_IMAGES = {
+  clear: {
+    day: require('@/assets/images/weatherImages/clear/ClearDay.jpg'),
+    afternoon: require('@/assets/images/weatherImages/clear/ClearAfternoon.png'),
+    night: require('@/assets/images/weatherImages/clear/ClearNight.jpg'),
+  },
+  clouds: {
+    day: require('@/assets/images/weatherImages/clouds/FewCloudsDay.jpg'),
+    afternoon: require('@/assets/images/weatherImages/clouds/FewCloudsAfternoon.jpg'),
+    night: require('@/assets/images/weatherImages/clouds/FewCloudsNight.jpg'),
+  },
+  overcastClouds: {
+    day: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsDay.png'),
+    afternoon: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsAfternoon.jpg'),
+    night: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsNight.png'),
+  },
+  rain: {
+    day: require('@/assets/images/weatherImages/rain/RainDay.png'),
+    afternoon: require('@/assets/images/weatherImages/rain/RainDay.png'), 
+    night: require('@/assets/images/weatherImages/rain/RainNight.jpg'), 
+  },
+  snow: {
+    day: require('@/assets/images/weatherImages/snow/snowDay.jpg'),
+    afternoon: require('@/assets/images/weatherImages/snow/snowDay.jpg'), 
+    night: require('@/assets/images/weatherImages/snow/snowNight.png'), 
+  },
+  fog: {
+    day: require('@/assets/images/weatherImages/fog/Fog.png'),  
+    afternoon: require('@/assets/images/weatherImages/fog/Fog.png'), 
+    night: require('@/assets/images/weatherImages/fog/Fog.png'), 
+  },
+  default: {
+    day: require('@/assets/images/weatherImages/clear/ClearDay.jpg'),
+    afternoon: require('@/assets/images/weatherImages/clear/ClearAfternoon.png'),
+    night: require('@/assets/images/weatherImages/clear/ClearNight.jpg'),
+  },
+};
+
+/**
+ * Determina el momento del día según la hora actual y el sunset
+ * @param isDaytime - Si es de día según sunrise/sunset
+ * @param currentTime - Tiempo actual
+ * @param sunsetTime - Hora del sunset
+ * @param timezone - Timezone offset en segundos
+ * @returns 'day' | 'afternoon' | 'night'
+ */
+const getTimeOfDay = (
+  isDaytime: boolean,
+  currentTime?: Date,
+  sunsetTime?: Date,
+  timezone?: number
+): TimeOfDay => {
+  // Si no tenemos datos suficientes, usar isDaytime
+  if (!currentTime || !sunsetTime || timezone === undefined) {
+    return isDaytime ? 'day' : 'night';
+  }
+
+  // Calcular hora local actual
+  const nowUTC = currentTime.getTime();
+  const localNow = new Date(nowUTC + (timezone * 1000));
+  const localHour = localNow.getUTCHours();
+  const localMinutes = localNow.getUTCMinutes();
   
+  // Calcular hora local del sunset
+  const sunsetUTC = sunsetTime.getTime();
+  const localSunset = new Date(sunsetUTC + (timezone * 1000));
+  const sunsetHour = localSunset.getUTCHours();
+  const sunsetMinutes = localSunset.getUTCMinutes();
+  
+  // Calcular tiempo en minutos desde medianoche
+  const currentMinutes = localHour * 60 + localMinutes;
+  const sunsetMinutesTotal = sunsetHour * 60 + sunsetMinutes;
+  const afternoonStartMinutes = Math.max(sunsetMinutesTotal - 120, 15 * 60); // 2 horas antes, mínimo 15:00
+  
+  console.log('🕐 [getTimeOfDay] Time calculation:', {
+    localTime: `${localHour}:${localMinutes.toString().padStart(2, '0')}`,
+    sunsetTime: `${sunsetHour}:${sunsetMinutes.toString().padStart(2, '0')}`,
+    currentMinutes,
+    sunsetMinutesTotal,
+    afternoonStartMinutes,
+    isDaytime,
+  });
+  
+  // Si estamos en el rango de afternoon (2h antes del sunset hasta el sunset)
+  if (currentMinutes >= afternoonStartMinutes && currentMinutes < sunsetMinutesTotal) {
+    console.log('✅ Time of day: AFTERNOON');
+    return 'afternoon';
+  }
+  
+  // Si es de día y aún no es tarde
+  if (isDaytime && localHour >= 6) {
+    console.log('✅ Time of day: DAY');
+    return 'day';
+  }
+  
+  // Cualquier otro caso es noche
+  console.log('✅ Time of day: NIGHT');
+  return 'night';
+};
+
+/**
+ * Obtiene las imágenes correspondientes según el main y weatherId de la API
+ * @param weatherMain - Campo "main" de la API (Clear, Clouds, Rain, etc.)
+ * @param weatherId - ID numérico del weather (independiente del idioma)
+ * 
+ * Weather IDs relevantes:
+ * - 800: Clear sky
+ * - 801: Few clouds
+ * - 802: Scattered clouds
+ * - 803: Broken clouds
+ * - 804: Overcast clouds (nubes muy nubladas)
+ */
+const getWeatherImages = (weatherMain: string, weatherId?: number): WeatherImages => {
+  const main = weatherMain.toLowerCase();
+
+  console.log('🎨 [WeatherBackground] Selecting images:', {
+    main,
+    weatherId,
+  });
+
+  // Soleado / Despejado - Main: "Clear"
+  if (main === 'clear') {
+    console.log('✅ Category selected: CLEAR (Soleado/Despejado)');
+    return WEATHER_IMAGES.clear;
+  }
+
+  // Nublado - Main: "Clouds"
+  if (main === 'clouds') {
+    // ID 804 = Overcast clouds (muy nublado) - independiente del idioma
+    if (weatherId === 804) {
+      console.log('✅ Category selected: OVERCAST CLOUDS (ID 804 - Muy nublado)');
+      return WEATHER_IMAGES.overcastClouds;
+    }
+    // Otros tipos de nubes (801: few, 802: scattered, 803: broken)
+    console.log('✅ Category selected: CLOUDS (Nublado normal)');
+    return WEATHER_IMAGES.clouds;
+  }
+
+  // Lluvioso - Main: "Rain", "Drizzle", "Thunderstorm"
+  if (main === 'rain' || main === 'drizzle' || main === 'thunderstorm') {
+    console.log('✅ Category selected: RAIN (Lluvioso)');
+    return WEATHER_IMAGES.rain;
+  }
+
+  // Nevado - Main: "Snow"
+  if (main === 'snow') {
+    console.log('✅ Category selected: SNOW (Nevado)');
+    return WEATHER_IMAGES.snow;
+  }
+
+  // Niebla / Calima / Polvo / Humo - Main: "Mist", "Haze", "Fog", "Smoke", "Dust", "Sand", "Ash", "Squall", "Tornado"
+  if (
+    main === 'mist' || 
+    main === 'haze' || 
+    main === 'fog' || 
+    main === 'smoke' || 
+    main === 'dust' || 
+    main === 'sand' || 
+    main === 'ash' || 
+    main === 'squall' || 
+    main === 'tornado'
+  ) {
+    console.log('✅ Category selected: FOG (Niebla/Calima/Polvo/Humo)');
+    return WEATHER_IMAGES.fog;
+  }
+
+  // Default: usar imágenes de Clear
+  console.log('⚠️ Category selected: DEFAULT (using Clear images)');
+  return WEATHER_IMAGES.default;
+};
+
+export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
+  weatherMain,
+  weatherId,
+  isDaytime = true, // Por defecto asume que es de día
+  currentTime,
+  sunsetTime,
+  timezone,
+}) => {
+  // Determinar la imagen a mostrar según condición, día/noche, hora actual y sunset
+  const backgroundImage = useMemo(() => {
+    const timeOfDay = getTimeOfDay(isDaytime, currentTime, sunsetTime, timezone);
+    const images = getWeatherImages(weatherMain, weatherId);
+    return images[timeOfDay];
+  }, [weatherMain, weatherId, isDaytime, currentTime, sunsetTime, timezone]);
+
   return (
-    <View style={StyleSheet.absoluteFill}>      
-      {/* Animación sobre el gradiente */}
-      <SkyAnimation condition={condition} hour={hour} />
+    <View style={StyleSheet.absoluteFill}>
+      <Image
+        source={backgroundImage}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+  },
+});
