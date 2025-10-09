@@ -1,6 +1,5 @@
 /**
- * SkyAnimation - Animación del cielo según clima y hora del día
- * Usa GIFs animados para efectos atmosféricos
+ * SkyAnimation - cielo según clima y hora del día
  */
 
 import React, { useMemo } from 'react';
