@@ -71,6 +71,11 @@ const WEATHER_IMAGES = {
  * @param sunsetTime - Hora del sunset
  * @param timezone - Timezone offset en segundos
  * @returns 'day' | 'afternoon' | 'night'
+ * 
+ * Lógica:
+ * - afternoon: 30 minutos antes del sunset hasta 1 hora después del sunset
+ * - day: desde sunrise hasta 30 minutos antes del sunset
+ * - night: después de 1 hora del sunset hasta el próximo sunrise
  */
 const getTimeOfDay = (
   isDaytime: boolean,
@@ -98,31 +103,37 @@ const getTimeOfDay = (
   // Calcular tiempo en minutos desde medianoche
   const currentMinutes = localHour * 60 + localMinutes;
   const sunsetMinutesTotal = sunsetHour * 60 + sunsetMinutes;
-  const afternoonStartMinutes = Math.max(sunsetMinutesTotal - 120, 15 * 60); // 2 horas antes, mínimo 15:00
+  
+  // Afternoon: empieza 30 minutos antes del sunset
+  const afternoonStartMinutes = sunsetMinutesTotal - 30;
+  
+  // Night: empieza 1 hora después del sunset
+  const nightStartMinutes = sunsetMinutesTotal + 60;
   
   console.log('🕐 [getTimeOfDay] Time calculation:', {
     localTime: `${localHour}:${localMinutes.toString().padStart(2, '0')}`,
     sunsetTime: `${sunsetHour}:${sunsetMinutes.toString().padStart(2, '0')}`,
     currentMinutes,
     sunsetMinutesTotal,
-    afternoonStartMinutes,
+    afternoonStartMinutes: `${Math.floor(afternoonStartMinutes / 60)}:${(afternoonStartMinutes % 60).toString().padStart(2, '0')}`,
+    nightStartMinutes: `${Math.floor(nightStartMinutes / 60)}:${(nightStartMinutes % 60).toString().padStart(2, '0')}`,
     isDaytime,
   });
   
-  // Si estamos en el rango de afternoon (2h antes del sunset hasta el sunset)
-  if (currentMinutes >= afternoonStartMinutes && currentMinutes < sunsetMinutesTotal) {
-    console.log('✅ Time of day: AFTERNOON');
+  // Si estamos en el rango de afternoon (30 min antes del sunset hasta 1h después del sunset)
+  if (currentMinutes >= afternoonStartMinutes && currentMinutes < nightStartMinutes) {
+    console.log('✅ Time of day: AFTERNOON (30m antes hasta 1h después del sunset)');
     return 'afternoon';
   }
   
-  // Si es de día y aún no es tarde
-  if (isDaytime && localHour >= 6) {
-    console.log('✅ Time of day: DAY');
+  // Si es de día y aún no es tarde (antes de 30 min del sunset)
+  if (isDaytime && currentMinutes < afternoonStartMinutes) {
+    console.log('✅ Time of day: DAY (antes de 30m del sunset)');
     return 'day';
   }
   
-  // Cualquier otro caso es noche
-  console.log('✅ Time of day: NIGHT');
+  // Cualquier otro caso es noche (después de 1h del sunset o antes del sunrise)
+  console.log('✅ Time of day: NIGHT (después de 1h del sunset)');
   return 'night';
 };
 
