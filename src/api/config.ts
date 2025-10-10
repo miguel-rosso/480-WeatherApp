@@ -36,14 +36,13 @@ export function getWeatherEmoji(weatherId: number, isDay: boolean = true): strin
   } else if (weatherId === 800) {
     return isDay ? "☀️" : "🌙"; // Despejado
   } else if (weatherId === 801) {
-    // Pocas nubes: emoji de día, imagen PNG de noche
-    return isDay ? "🌤️" : "image:night-cloudy";
+    return isDay ? "🌤️" : "image:night-cloudy"; // Few clouds (pocas nubes 11-25%)
   } else if (weatherId === 802) {
-    // Nubes dispersas: emoji de día, imagen PNG de noche
-    return isDay ? "⛅" : "image:night-cloudy";
-  } else if (weatherId >= 803) {
-    // Muy nublado: emoji de día, imagen PNG de noche
-    return isDay ? "☁️" : "image:night-cloudy";
+    return isDay ? "🌤️" : "image:night-cloudy"; // Scattered clouds (nubes dispersas 25-50%) - usar same as few clouds
+  } else if (weatherId === 803) {
+    return isDay ? "⛅" : "image:night-cloudy"; // Broken clouds (nubes rotas 51-84%)
+  } else if (weatherId === 804) {
+    return isDay ? "☁️" : "☁️"; // Overcast clouds (muy nublado 85-100%)
   }
 
   return "☀️"; // Default
