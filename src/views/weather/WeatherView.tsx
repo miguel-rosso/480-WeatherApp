@@ -5,6 +5,7 @@
 
 import { LanguageSelector } from '@/src/components/LanguageSelector';
 import { WeatherDetails } from '@/src/components/WeatherDetails';
+import { WeatherIcon } from '@/src/components/WeatherIcon';
 import { useAppDispatch } from '@/src/store/hooks';
 import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
@@ -85,7 +86,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   {weather.getFormattedTemp()}
                 </Text>
                 <View className="flex-row items-center gap-2">
-                  <Text className="text-3xl">{weather.icon}</Text>
+                  <WeatherIcon icon={weather.icon} size={30} />
                   <Text className="text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                     {weather.condition}
                   </Text>
@@ -115,9 +116,9 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   <Text className="text-lg" style={{ color: '#fff', flex: 1 }}>
                     {day.date}
                   </Text>
-                  <Text className="text-3xl" style={{ marginRight: 12 }}>
-                    {day.icon}
-                  </Text>
+                  <View style={{ marginRight: 12 }}>
+                    <WeatherIcon icon={day.icon} size={30} />
+                  </View>
                   <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
                     {Math.round(day.maxTemp)}° / {Math.round(day.minTemp)}°
                   </Text>

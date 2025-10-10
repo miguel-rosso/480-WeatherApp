@@ -8,9 +8,10 @@ export const API_CONFIG = {
 } as const;
 
 /**
- * Mapea el código de condición de OpenWeatherMap a un emoji
+ * Mapea el código de condición de OpenWeatherMap a un emoji o path de imagen
  * @param weatherId ID de la condición del clima
  * @param isDay Si es de día o de noche
+ * @returns string - Emoji o path prefijado con "image:" para imágenes PNG
  */
 export function getWeatherEmoji(weatherId: number, isDay: boolean = true): string {
   // Rangos de IDs de OpenWeatherMap:
@@ -35,12 +36,15 @@ export function getWeatherEmoji(weatherId: number, isDay: boolean = true): strin
   } else if (weatherId === 800) {
     return isDay ? "☀️" : "🌙"; // Despejado
   } else if (weatherId === 801) {
-    return isDay ? "🌤️" : "☁️"; // Pocas nubes
+    // Pocas nubes: emoji de día, imagen PNG de noche
+    return isDay ? "🌤️" : "image:night-cloudy";
   } else if (weatherId === 802) {
-    return "⛅"; // Nubes dispersas
+    // Nubes dispersas: emoji de día, imagen PNG de noche
+    return isDay ? "⛅" : "image:night-cloudy";
   } else if (weatherId >= 803) {
-    return "☁️"; // Muy nublado
+    // Muy nublado: emoji de día, imagen PNG de noche
+    return isDay ? "☁️" : "image:night-cloudy";
   }
 
-  return "🌈"; // Default
+  return "☀️"; // Default
 }

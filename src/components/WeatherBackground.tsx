@@ -18,9 +18,8 @@ interface WeatherBackgroundProps {
 
 // Tipos de momento del día
 type TimeOfDay = 'day' | 'afternoon' | 'night';
-
 // Estructura de imágenes por condición climática
-interface WeatherImages {
+interface weatherBgImages {
   day: ImageSourcePropType;
   afternoon: ImageSourcePropType;
   night: ImageSourcePropType;
@@ -29,39 +28,39 @@ interface WeatherImages {
 // Imágenes organizadas por condición climática
 const WEATHER_IMAGES = {
   clear: {
-    day: require('@/assets/images/weatherImages/clear/ClearDay.jpg'),
-    afternoon: require('@/assets/images/weatherImages/clear/ClearAfternoon.png'),
-    night: require('@/assets/images/weatherImages/clear/ClearNight.jpg'),
+    day: require('@/assets/images/weatherBgImages/clear/ClearDay.jpg'),
+    afternoon: require('@/assets/images/weatherBgImages/clear/ClearAfternoon.png'),
+    night: require('@/assets/images/weatherBgImages/clear/ClearNight.jpg'),
   },
   clouds: {
-    day: require('@/assets/images/weatherImages/clouds/FewCloudsDay.jpg'),
-    afternoon: require('@/assets/images/weatherImages/clouds/FewCloudsAfternoon.jpg'),
-    night: require('@/assets/images/weatherImages/clouds/FewCloudsNight.jpg'),
+    day: require('@/assets/images/weatherBgImages/clouds/FewCloudsDay.jpg'),
+    afternoon: require('@/assets/images/weatherBgImages/clouds/FewCloudsAfternoon.jpg'),
+    night: require('@/assets/images/weatherBgImages/clouds/FewCloudsNight.jpg'),
   },
   overcastClouds: {
-    day: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsDay.png'),
-    afternoon: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsAfternoon.jpg'),
-    night: require('@/assets/images/weatherImages/overcastClouds/OvercastCloudsNight.png'),
+    day: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsDay.png'),
+    afternoon: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsAfternoon.jpg'),
+    night: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsNight.png'),
   },
   rain: {
-    day: require('@/assets/images/weatherImages/rain/RainDay.png'),
-    afternoon: require('@/assets/images/weatherImages/rain/RainDay.png'), 
-    night: require('@/assets/images/weatherImages/rain/RainNight.jpg'), 
+    day: require('@/assets/images/weatherBgImages/rain/RainDay.png'),
+    afternoon: require('@/assets/images/weatherBgImages/rain/RainDay.png'), 
+    night: require('@/assets/images/weatherBgImages/rain/RainNight.jpg'), 
   },
   snow: {
-    day: require('@/assets/images/weatherImages/snow/snowDay.jpg'),
-    afternoon: require('@/assets/images/weatherImages/snow/snowDay.jpg'), 
-    night: require('@/assets/images/weatherImages/snow/snowNight.png'), 
+    day: require('@/assets/images/weatherBgImages/snow/snowDay.jpg'),
+    afternoon: require('@/assets/images/weatherBgImages/snow/snowDay.jpg'), 
+    night: require('@/assets/images/weatherBgImages/snow/snowNight.png'), 
   },
   fog: {
-    day: require('@/assets/images/weatherImages/fog/Fog.png'),  
-    afternoon: require('@/assets/images/weatherImages/fog/Fog.png'), 
-    night: require('@/assets/images/weatherImages/fog/Fog.png'), 
+    day: require('@/assets/images/weatherBgImages/fog/Fog.png'),  
+    afternoon: require('@/assets/images/weatherBgImages/fog/Fog.png'), 
+    night: require('@/assets/images/weatherBgImages/fog/Fog.png'), 
   },
   default: {
-    day: require('@/assets/images/weatherImages/clear/ClearDay.jpg'),
-    afternoon: require('@/assets/images/weatherImages/clear/ClearAfternoon.png'),
-    night: require('@/assets/images/weatherImages/clear/ClearNight.jpg'),
+    day: require('@/assets/images/weatherBgImages/clear/ClearDay.jpg'),
+    afternoon: require('@/assets/images/weatherBgImages/clear/ClearAfternoon.png'),
+    night: require('@/assets/images/weatherBgImages/clear/ClearNight.jpg'),
   },
 };
 
@@ -150,7 +149,7 @@ const getTimeOfDay = (
  * - 803: Broken clouds
  * - 804: Overcast clouds (nubes muy nubladas)
  */
-const getWeatherImages = (weatherMain: string, weatherId?: number): WeatherImages => {
+const getweatherBgImages = (weatherMain: string, weatherId?: number): weatherBgImages => {
   const main = weatherMain.toLowerCase();
 
   console.log('🎨 [WeatherBackground] Selecting images:', {
@@ -219,7 +218,7 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
   // Determinar la imagen a mostrar según condición, día/noche, hora actual y sunset
   const backgroundImage = useMemo(() => {
     const timeOfDay = getTimeOfDay(isDaytime, currentTime, sunsetTime, timezone);
-    const images = getWeatherImages(weatherMain, weatherId);
+    const images = getweatherBgImages(weatherMain, weatherId);
     return images[timeOfDay];
   }, [weatherMain, weatherId, isDaytime, currentTime, sunsetTime, timezone]);
 
