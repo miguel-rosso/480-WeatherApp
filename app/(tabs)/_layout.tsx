@@ -1,3 +1,4 @@
+import { prefetchAllCities } from "@/src/api/services/WeatherPrefetchService";
 import { HapticTab } from "@/src/components/ui/haptic-tab";
 import { WeatherBackground } from "@/src/components/WeatherBackground";
 import { useThemeColors } from "@/src/hooks/useThemeColor";
@@ -8,13 +9,21 @@ import { Ionicons } from "@expo/vector-icons";
 import * as NavigationBar from "expo-navigation-bar";
 import { Tabs } from "expo-router";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Platform, View } from "react-native";
 import { Provider } from "react-redux";
 
 function TabLayoutContent() {
   const colors = useThemeColors();
+  const { i18n } = useTranslation();
   // 🎯 REDUX: Leer el estado del store usando el selector
   const backgroundState = useAppSelector(selectWeatherBackground);
+
+  // 🚀 Prefetch de todas las ciudades al iniciar la app
+  useEffect(() => {
+    const lang = i18n.language === 'es' ? 'es' : 'en';
+    prefetchAllCities(['London', 'Toronto', 'Singapore'], lang);
+  }, [i18n.language]);
 
   useEffect(() => {
     if (Platform.OS === "android") {

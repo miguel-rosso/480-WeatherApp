@@ -223,7 +223,7 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
   }, [weatherMain, weatherId, isDaytime, currentTime, sunsetTime, timezone]);
 
   return (
-    <View style={StyleSheet.absoluteFill}>
+    <View style={[StyleSheet.absoluteFill, styles.container]}>
       <Image 
         source={backgroundImage}
         style={styles.backgroundImage}
@@ -237,6 +237,9 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000', // Fondo negro para evitar el flash blanco
+  },
   backgroundImage: {
     width: '100%',
     height: '100%',

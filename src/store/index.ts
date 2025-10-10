@@ -7,6 +7,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import weatherBackgroundReducer from './slices/weatherBackgroundSlice';
+import weatherReducer from './slices/weatherSlice';
 
 // 🏪 CONFIGURAR STORE
 // configureStore es de Redux Toolkit y configura automáticamente:
@@ -18,6 +19,7 @@ export const store = configureStore({
     // Cada slice tiene su propio "espacio" en el estado
     // El estado será: { weatherBackground: { weatherMain, isDaytime, ... } }
     weatherBackground: weatherBackgroundReducer,
+    weather: weatherReducer,
     
     // Aquí puedes agregar más slices en el futuro:
     // user: userReducer,
@@ -28,9 +30,17 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignorar estas rutas de acción porque contienen Dates
-        ignoredActions: ['weatherBackground/updateBackground'],
+        ignoredActions: [
+          'weatherBackground/updateBackground',
+          'weather/setWeather',
+          'weather/setForecast',
+        ],
         // Ignorar estas rutas del estado
-        ignoredPaths: ['weatherBackground.currentTime', 'weatherBackground.sunsetTime'],
+        ignoredPaths: [
+          'weatherBackground.currentTime',
+          'weatherBackground.sunsetTime',
+          'weather.cities',
+        ],
       },
     }),
 });

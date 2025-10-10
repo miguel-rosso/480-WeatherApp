@@ -12,7 +12,7 @@ import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
 import { useFocusEffect } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
 
 interface WeatherViewProps {
   city: string;
@@ -125,10 +125,6 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                 </View>
               ))}
             </View>
-          )}
-
-          {isLoading && (
-            <ActivityIndicator size="large" color="#fff" />
           )}
         </View>
       </ScrollView>

@@ -9,17 +9,8 @@
  * Esto reemplaza el WeatherBackgroundContext
  */
 
+import { WeatherBackgroundState } from '@/src/types/store.types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-// 📦 ESTADO: Define la forma del estado para el fondo del clima
-interface WeatherBackgroundState {
-  weatherMain: string;
-  weatherId?: number;
-  isDaytime: boolean;
-  currentTime: Date;
-  sunsetTime?: Date;
-  timezone?: number;
-}
 
 // 🎬 ESTADO INICIAL: El valor por defecto cuando la app inicia
 const initialState: WeatherBackgroundState = {

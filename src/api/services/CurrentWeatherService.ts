@@ -2,47 +2,17 @@
  * CurrentWeatherService - Servicio para obtener el clima actual desde OpenWeatherMap API
  */
 
-import { API_CONFIG } from '@/src/api/config';
-
-export interface OpenWeatherResponse {
-  weather: Array<{
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-  }>;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-  };
-  wind: {
-    speed: number;
-    deg: number;
-  };
-  clouds: {
-    all: number;
-  };
-  dt: number;
-  timezone: number; // Desplazamiento en segundos desde UTC
-  sys: {
-    country: string;
-    sunrise: number;
-    sunset: number;
-  };
-  name: string;
-}
+import { API_CONFIG, getWeatherEmoji } from '@/src/api/config';
+import { OpenWeatherResponse } from '@/src/api/models/ApiResponses';
+import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
 
 export class CurrentWeatherService {
   /**
-   * Obtiene el clima actual de una ciudad
+   * Obtiene el clima actual de una ciudad y devuelve un modelo
    * @param city Nombre de la ciudad
    * @param lang Idioma ('es' o 'en')
    */
-  static async getCurrentWeather(city: string, lang: string = "es"): Promise<OpenWeatherResponse> {
+  static async getCurrentWeather(city: string, lang: string = "es"): Promise<CurrentWeatherModel> {
     const url = `${API_CONFIG.BASE_URL}/weather?q=${city}&units=metric&lang=${lang}&appid=${API_CONFIG.API_KEY}`;
 
     try {
@@ -74,7 +44,29 @@ export class CurrentWeatherService {
       );
       console.log("-----------------------------------");
 
-      return data;
+      // Transformar a modelo
+      const currentTime = Date.now() / 1000;
+      // Incluir afternoon period: hasta 1 hora después del sunset se considera "día"
+      const AFTERNOON_BUFFER = 3600; // 1 hora en segundos
+      const isDay = currentTime >= data.sys.sunrise && currentTime < (data.sys.sunset + AFTERNOON_BUFFER);
+
+      return new CurrentWeatherModel({
+        city: data.name,
+        temperature: Math.round(data.main.temp),
+        feelsLike: Math.round(data.main.feels_like),
+        condition: data.weather[0].description,
+        weatherMain: data.weather[0].main,
+        weatherId: data.weather[0].id,
+        weatherDescription: data.weather[0].description,
+        humidity: data.main.humidity,
+        windSpeed: Math.round(data.wind.speed * 3.6), // m/s a km/h
+        pressure: data.main.pressure,
+        icon: getWeatherEmoji(data.weather[0].id, isDay),
+        timestamp: new Date(data.dt * 1000),
+        sunrise: new Date(data.sys.sunrise * 1000),
+        sunset: new Date(data.sys.sunset * 1000),
+        timezone: data.timezone,
+      });
     } catch (error) {
       console.error("❌ [CurrentWeatherAPI] Error fetching current weather:", error);
       throw error;

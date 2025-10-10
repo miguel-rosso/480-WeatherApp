@@ -2,7 +2,7 @@
  * Redux Hooks - Tipados
  * 
  * Estos hooks son versiones tipadas de useDispatch y useSelector.
- * Úsalos en lugar de los hooks de react-redux directamente.
+ * Para usar en lugar de los hooks de react-redux directamente.
  * 
  * Beneficios:
  * - Autocompletado de TypeScript
