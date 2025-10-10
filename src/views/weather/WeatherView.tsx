@@ -4,9 +4,11 @@
  */
 
 import { LanguageSelector } from '@/src/components/LanguageSelector';
-import { WeatherBackground } from '@/src/components/WeatherBackground';
 import { WeatherDetails } from '@/src/components/WeatherDetails';
+import { useAppDispatch } from '@/src/store/hooks';
+import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
+import { useFocusEffect } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
@@ -17,10 +19,12 @@ interface WeatherViewProps {
 
 export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
   const { weather, forecast, isLoading, refresh } = useWeatherViewModel(city);
+  // 🎯 REDUX: Obtener el dispatch para enviar actions al store
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [currentTime, setCurrentTime] = React.useState(new Date());
 
-  // Actualizar la hora cada minuto
+  // Actualizar la hora cada minuto -- dato: Lo hago de esta manera para utilizar solo las API's de la prueba tecnica 
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -29,20 +33,29 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Actualizar el fondo cuando la pantalla gane el foco o cambie el clima
+  useFocusEffect(
+    React.useCallback(() => {
+      if (weather) {
+        // 🚀 REDUX: Dispatch de la action para actualizar el fondo
+        // Esto envía la action al store, el reducer la procesa y actualiza el estado
+        dispatch(updateBackground({
+          weatherMain: weather.weatherMain,
+          weatherId: weather.weatherId,
+          isDaytime: weather.isDaytime(),
+          currentTime: currentTime,
+          sunsetTime: weather.sunset,
+          timezone: weather.timezone,
+        }));
+      }
+    }, [weather, currentTime, dispatch])
+  );
+
   return (
-    <View className="flex-1">
-      {/* Fondo dinámico según clima y hora local de la ciudad */}
-      <WeatherBackground 
-        weatherMain={weather?.weatherMain || 'Clear'}
-        weatherId={weather?.weatherId}
-        isDaytime={weather?.isDaytime() ?? true}
-        currentTime={currentTime}
-        sunsetTime={weather?.sunset}
-        timezone={weather?.timezone}
-      />
+    <View className="flex-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
 
       {/* Header con hora local y selector de idioma */}
-      <View className="flex-row items-center justify-between px-6 pb-4 pt-14">
+      <View className="flex-row items-center justify-between px-6 pb-4 pt-14" style={{ backgroundColor: 'transparent' }}>
         {/* Hora local de la ciudad */}
         {weather && (
           <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
@@ -58,6 +71,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
         className="flex-1 px-6"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        style={{ backgroundColor: 'transparent' }}
         refreshControl={
           <RefreshControl 
             refreshing={isLoading} 
@@ -66,12 +80,12 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
           />
         }
       >
-        <View className="gap-6 pb-6">
+        <View className="gap-6 pb-6" style={{ backgroundColor: 'transparent' }}>
           {/* Clima Actual - Centrado */}
           {weather && (
             <>
               {/* Nombre de la ciudad y temperatura centrados */}
-              <View className="items-center mt-4 mb-2">
+              <View className="items-center mt-4 mb-2" style={{ backgroundColor: 'transparent' }}>
                 <Text className="mb-3 text-4xl font-bold" style={{ color: '#fff' }}>
                   {t(`cities.${city.toLowerCase()}`)}
                 </Text>

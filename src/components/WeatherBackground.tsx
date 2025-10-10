@@ -122,18 +122,18 @@ const getTimeOfDay = (
   
   // Si estamos en el rango de afternoon (30 min antes del sunset hasta 1h después del sunset)
   if (currentMinutes >= afternoonStartMinutes && currentMinutes < nightStartMinutes) {
-    console.log('✅ Time of day: AFTERNOON (30m antes hasta 1h después del sunset)');
+    console.log(' Time of day: AFTERNOON (30m antes hasta 1h después del sunset)');
     return 'afternoon';
   }
   
   // Si es de día y aún no es tarde (antes de 30 min del sunset)
   if (isDaytime && currentMinutes < afternoonStartMinutes) {
-    console.log('✅ Time of day: DAY (antes de 30m del sunset)');
+    console.log('Time of day: DAY (antes de 30m del sunset)');
     return 'day';
   }
   
   // Cualquier otro caso es noche (después de 1h del sunset o antes del sunrise)
-  console.log('✅ Time of day: NIGHT (después de 1h del sunset)');
+  console.log('Time of day: NIGHT (después de 1h del sunset)');
   return 'night';
 };
 
@@ -175,8 +175,8 @@ const getWeatherImages = (weatherMain: string, weatherId?: number): WeatherImage
     return WEATHER_IMAGES.clouds;
   }
 
-  // Lluvioso - Main: "Rain", "Drizzle", "Thunderstorm"
-  if (main === 'rain' || main === 'drizzle' || main === 'thunderstorm') {
+  // Lluvioso - Main: "Rain", "Drizzle", "Thunderstorm", "Tornado"
+  if (main === 'rain' || main === 'drizzle' || main === 'thunderstorm' || main === 'tornado') {
     console.log('✅ Category selected: RAIN (Lluvioso)');
     return WEATHER_IMAGES.rain;
   }
@@ -187,7 +187,7 @@ const getWeatherImages = (weatherMain: string, weatherId?: number): WeatherImage
     return WEATHER_IMAGES.snow;
   }
 
-  // Niebla / Calima / Polvo / Humo - Main: "Mist", "Haze", "Fog", "Smoke", "Dust", "Sand", "Ash", "Squall", "Tornado"
+  // Niebla / Calima / Polvo / Humo - Main: "Mist", "Haze", "Fog", "Smoke", "Dust", "Sand", "Ash", "Squall",
   if (
     main === 'mist' || 
     main === 'haze' || 
@@ -196,8 +196,7 @@ const getWeatherImages = (weatherMain: string, weatherId?: number): WeatherImage
     main === 'dust' || 
     main === 'sand' || 
     main === 'ash' || 
-    main === 'squall' || 
-    main === 'tornado'
+    main === 'squall'
   ) {
     console.log('✅ Category selected: FOG (Niebla/Calima/Polvo/Humo)');
     return WEATHER_IMAGES.fog;

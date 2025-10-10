@@ -4,8 +4,8 @@
  * Conectado con OpenWeatherMap API
  */
 
-import { WeatherForecast, WeatherModel } from '@/src/models/Weather';
-import { WeatherService } from '@/src/services/WeatherService';
+import { WeatherForecast, WeatherModel } from '@/src/api/models/Weather';
+import { WeatherService } from '@/src/api/services/WeatherService';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

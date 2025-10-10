@@ -18,6 +18,10 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
+# Guides
+REDUX_EXAMPLES.md
+REDUX_GUIDE.md
+
 # Metro
 .metro-health-check*
 
@@ -41,3 +45,4 @@ app-example
 # generated native folders
 /ios
 /android
+
