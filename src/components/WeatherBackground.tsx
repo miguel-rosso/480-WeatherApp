@@ -3,8 +3,9 @@
  * Muestra imágenes de fondo que cambian según la condición climática
  */
 
+import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
-import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 
 interface WeatherBackgroundProps {
   weatherMain: string; // Main de la API (Clear, Clouds, Rain, etc.)
@@ -224,10 +225,13 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Image
+      <Image 
         source={backgroundImage}
         style={styles.backgroundImage}
-        resizeMode="cover"
+        contentFit="cover"
+        transition={300}
+        priority={'high'}
+        cachePolicy={'memory-disk'}
       />
     </View>
   );

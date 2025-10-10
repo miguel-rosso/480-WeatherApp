@@ -18,7 +18,7 @@ interface WeatherViewProps {
 }
 
 export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
-  const { weather, forecast, isLoading, refresh } = useWeatherViewModel(city);
+  const { weather, forecast, isLoading, refresh, getBackgroundUpdateData } = useWeatherViewModel(city);
   // 🎯 REDUX: Obtener el dispatch para enviar actions al store
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -36,19 +36,11 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
   // Actualizar el fondo cuando la pantalla gane el foco o cambie el clima
   useFocusEffect(
     React.useCallback(() => {
-      if (weather) {
-        // 🚀 REDUX: Dispatch de la action para actualizar el fondo
-        // Esto envía la action al store, el reducer la procesa y actualiza el estado
-        dispatch(updateBackground({
-          weatherMain: weather.weatherMain,
-          weatherId: weather.weatherId,
-          isDaytime: weather.isDaytime(),
-          currentTime: currentTime,
-          sunsetTime: weather.sunset,
-          timezone: weather.timezone,
-        }));
+      const backgroundData = getBackgroundUpdateData(currentTime);
+      if (backgroundData) {
+        dispatch(updateBackground(backgroundData));
       }
-    }, [weather, currentTime, dispatch])
+    }, [currentTime, dispatch, getBackgroundUpdateData])
   );
 
   return (
@@ -101,15 +93,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
               </View>
 
               {/* Card de Detalles del Clima - Componente expandible */}
-              <WeatherDetails
-                humidity={weather.humidity}
-                windSpeed={weather.windSpeed}
-                feelsLike={weather.feelsLike}
-                pressure={weather.pressure}
-                sunrise={weather.sunrise}
-                sunset={weather.sunset}
-                timezone={weather.timezone}
-              />
+              <WeatherDetails weather={weather} />
             </>
           )}
 

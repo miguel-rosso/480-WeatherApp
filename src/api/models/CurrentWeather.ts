@@ -1,9 +1,8 @@
 /**
- * Model - Representa los datos del clima
- * En MVVM, el Model solo contiene datos y lógica de validación básica
+ * CurrentWeather Model - Representa los datos del clima actual
  */
 
-export interface Weather {
+export interface CurrentWeather {
   city: string;
   temperature: number;
   feelsLike: number; // Sensación térmica
@@ -21,15 +20,7 @@ export interface Weather {
   timezone: number; // Desplazamiento en segundos desde UTC
 }
 
-export interface WeatherForecast {
-  date: string;
-  maxTemp: number;
-  minTemp: number;
-  condition: string;
-  icon: string;
-}
-
-export class WeatherModel implements Weather {
+export class CurrentWeatherModel implements CurrentWeather {
   city: string;
   temperature: number;
   feelsLike: number;
@@ -46,7 +37,7 @@ export class WeatherModel implements Weather {
   sunset: Date;
   timezone: number;
 
-  constructor(data: Weather) {
+  constructor(data: CurrentWeather) {
     this.city = data.city;
     this.temperature = data.temperature;
     this.feelsLike = data.feelsLike;
@@ -100,6 +91,18 @@ export class WeatherModel implements Weather {
     const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
+
+  /**
+   * Formatea una fecha específica en hora local (HH:MM)
+   * Útil para sunrise/sunset
+   * @param date Fecha a formatear
+   */
+  formatDateToLocalTime(date: Date): string {
+    const localTime = new Date(date.getTime() + (this.timezone * 1000));
+    const hours = localTime.getUTCHours().toString().padStart(2, '0');
+    const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
   
   /**
    * Obtiene la hora del sunset en hora local (0-23)
@@ -131,7 +134,9 @@ export class WeatherModel implements Weather {
     return hour;
   }
 
-  // Lógica de validación del modelo
+  /**
+   * Lógica de validación del modelo
+   */
   isValid(): boolean {
     return (
       this.city.length > 0 &&
@@ -140,7 +145,9 @@ export class WeatherModel implements Weather {
     );
   }
 
-  // Formatear temperatura
+  /**
+   * Formatear temperatura
+   */
   getFormattedTemp(): string {
     return `${Math.round(this.temperature)}°C`;
   }

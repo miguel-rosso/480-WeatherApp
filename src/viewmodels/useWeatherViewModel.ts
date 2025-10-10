@@ -4,16 +4,32 @@
  * Conectado con OpenWeatherMap API
  */
 
-import { WeatherForecast, WeatherModel } from '@/src/api/models/Weather';
-import { WeatherService } from '@/src/api/services/WeatherService';
+import { getWeatherEmoji } from '@/src/api/config';
+import { CurrentWeatherModel } from '@/src/api/models/CurrentWeather';
+import { Forecast, ForecastModel } from '@/src/api/models/Forecast';
+import { CurrentWeatherService } from '@/src/api/services/CurrentWeatherService';
+import { ForecastService } from '@/src/api/services/ForecastService';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface WeatherViewModelState {
-  weather: WeatherModel | null;
-  forecast: WeatherForecast[];
+  weather: CurrentWeatherModel | null;
+  forecast: Forecast[];
   isLoading: boolean;
   error: string | null;
+}
+
+/**
+ * Datos preparados para actualizar el fondo (Redux)
+ * El ViewModel prepara los datos, la View solo los despacha
+ */
+export interface BackgroundUpdateData {
+  weatherMain: string;
+  weatherId: number;
+  isDaytime: boolean;
+  currentTime: Date;
+  sunsetTime: Date;
+  timezone: number;
 }
 
 /**
@@ -44,13 +60,13 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
       
       const lang = i18n.language === 'es' ? 'es' : 'en';
-      const data = await WeatherService.getCurrentWeather(initialCity, lang);
+      const data = await CurrentWeatherService.getCurrentWeather(initialCity, lang);
       
       // Determinar si es de día
       const currentTime = Date.now() / 1000;
       const isDay = currentTime >= data.sys.sunrise && currentTime < data.sys.sunset;
 
-      const weather = new WeatherModel({
+      const weather = new CurrentWeatherModel({
         city: data.name,
         temperature: Math.round(data.main.temp),
         feelsLike: Math.round(data.main.feels_like),
@@ -61,7 +77,7 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
         humidity: data.main.humidity,
         windSpeed: Math.round(data.wind.speed * 3.6), // m/s a km/h
         pressure: data.main.pressure,
-        icon: WeatherService.getWeatherEmoji(data.weather[0].id, isDay),
+        icon: getWeatherEmoji(data.weather[0].id, isDay),
         timestamp: new Date(data.dt * 1000),
         sunrise: new Date(data.sys.sunrise * 1000),
         sunset: new Date(data.sys.sunset * 1000),
@@ -85,7 +101,7 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
   const fetchForecast = async () => {
     try {
       const lang = i18n.language === 'es' ? 'es' : 'en';
-      const data = await WeatherService.getForecast(initialCity, lang);
+      const data = await ForecastService.getForecast(initialCity, lang);
       
       // Agrupar por día y calcular máximas y mínimas
       const dailyData: { [key: string]: {
@@ -113,15 +129,15 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
       });
       
       // Convertir a array y ordenar por fecha
-      const dailyForecasts: WeatherForecast[] = Object.values(dailyData)
+      const dailyForecasts: Forecast[] = Object.values(dailyData)
         .sort((a, b) => a.date.getTime() - b.date.getTime())
         .slice(0, 5) // Tomar solo 5 días
-        .map(day => ({
+        .map(day => new ForecastModel({
           date: getDayName(day.date, lang),
           maxTemp: Math.round(Math.max(...day.temps)),
           minTemp: Math.round(Math.min(...day.temps)),
           condition: day.weather.description,
-          icon: WeatherService.getWeatherEmoji(day.weather.id, true),
+          icon: getWeatherEmoji(day.weather.id, true),
         }));
       
       console.log('Forecast data:', dailyForecasts); // Debug
@@ -145,6 +161,23 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
     fetchForecast();
   }, [initialCity, i18n.language]);
 
+  /**
+   * Prepara los datos para actualizar el fondo (Redux)
+   * ✅ MVVM: El ViewModel prepara los datos, la View solo los despacha
+   */
+  const getBackgroundUpdateData = (currentTime: Date): BackgroundUpdateData | null => {
+    if (!state.weather) return null;
+    
+    return {
+      weatherMain: state.weather.weatherMain,
+      weatherId: state.weather.weatherId,
+      isDaytime: state.weather.isDaytime(),
+      currentTime: currentTime,
+      sunsetTime: state.weather.sunset,
+      timezone: state.weather.timezone,
+    };
+  };
+
   return {
     // Estado
     weather: state.weather,
@@ -154,5 +187,6 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
 
     // Acciones
     refresh,
+    getBackgroundUpdateData, // ✅ Nueva función para preparar datos de Redux
   };
 };

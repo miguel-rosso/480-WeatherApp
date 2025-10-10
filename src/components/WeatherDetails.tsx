@@ -3,6 +3,7 @@
  * Muestra información básica y avanzada con animación suave
  */
 
+import { CurrentWeatherModel } from '@/src/api/models/CurrentWeather';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LayoutAnimation, Platform, Text, TouchableOpacity, UIManager, View } from 'react-native';
@@ -13,38 +14,16 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 interface WeatherDetailsProps {
-  humidity: number;
-  windSpeed: number;
-  feelsLike: number;
-  pressure: number;
-  sunrise: Date;
-  sunset: Date;
-  timezone: number;
+  weather: CurrentWeatherModel; // ✅ MVVM: Recibe el Model completo
 }
 
-export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
-  humidity,
-  windSpeed,
-  feelsLike,
-  pressure,
-  sunrise,
-  sunset,
-  timezone,
-}) => {
+export const WeatherDetails: React.FC<WeatherDetailsProps> = ({ weather }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsExpanded(!isExpanded);
-  };
-
-  // Formatear hora local
-  const formatLocalTime = (date: Date) => {
-    const localTime = new Date(date.getTime() + (timezone * 1000));
-    const hours = localTime.getUTCHours().toString().padStart(2, '0');
-    const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
   };
 
   return (
@@ -61,7 +40,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
               {t('weather.sunrise')}
             </Text>
             <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-              {formatLocalTime(sunrise)}
+              {weather.formatDateToLocalTime(weather.sunrise)}
             </Text>
           </View>
 
@@ -74,7 +53,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
               {t('weather.sunset')}
             </Text>
             <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-              {formatLocalTime(sunset)}
+              {weather.formatDateToLocalTime(weather.sunset)}
             </Text>
           </View>
         </View>
@@ -113,7 +92,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
                 {t('weather.feelsLike')}
               </Text>
               <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-                {feelsLike}°
+                {weather.feelsLike}°
               </Text>
             </View>
 
@@ -126,7 +105,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
                 {t('weather.humidity')}
               </Text>
               <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-                {humidity}%
+                {weather.humidity}%
               </Text>
             </View>
           </View>
@@ -142,7 +121,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
                 {t('weather.wind')}
               </Text>
               <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-                {windSpeed}
+                {weather.windSpeed}
               </Text>
               <Text className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
                 km/h
@@ -158,7 +137,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
                 {t('weather.pressure')}
               </Text>
               <Text className="text-xl font-bold" style={{ color: '#fff' }}>
-                {pressure}
+                {weather.pressure}
               </Text>
               <Text className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
                 hPa
