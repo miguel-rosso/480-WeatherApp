@@ -1,5 +1,6 @@
 /**
- * CurrentWeather Model - Representa los datos del clima actual
+ * CurrentWeather Model - Representa los datos del clima actual 
+ * y pequeñas utilidades relacionadas
  */
 
 export interface CurrentWeather {

@@ -43,7 +43,7 @@ function TabLayoutContent() {
           tabBarInactiveTintColor: colors.tabBarInactive,
           tabBarStyle: {
             backgroundColor: "transparent",
-            borderTopColor: "transparent",
+            borderTopColor: "white",
             position: "fixed",
             elevation: 0,
           },

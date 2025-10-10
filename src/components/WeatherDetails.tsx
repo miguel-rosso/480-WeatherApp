@@ -3,7 +3,7 @@
  * Muestra información básica y avanzada con animación suave
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeather';
+import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LayoutAnimation, Platform, Text, TouchableOpacity, UIManager, View } from 'react-native';

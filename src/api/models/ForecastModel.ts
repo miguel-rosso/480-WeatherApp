@@ -1,5 +1,6 @@
 /**
  * Forecast Model - Representa los datos del pronóstico del clima
+ * y pequeñas utilidades relacionadas
  */
 
 export interface Forecast {

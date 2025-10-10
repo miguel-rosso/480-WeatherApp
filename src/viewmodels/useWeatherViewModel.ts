@@ -5,8 +5,8 @@
  */
 
 import { getWeatherEmoji } from '@/src/api/config';
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeather';
-import { Forecast, ForecastModel } from '@/src/api/models/Forecast';
+import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
+import { Forecast, ForecastModel } from '@/src/api/models/ForecastModel';
 import { CurrentWeatherService } from '@/src/api/services/CurrentWeatherService';
 import { ForecastService } from '@/src/api/services/ForecastService';
 import { useEffect, useState } from 'react';
