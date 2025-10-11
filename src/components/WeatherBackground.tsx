@@ -5,7 +5,7 @@
 
 import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
-import { ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { ImageSourcePropType, View } from 'react-native';
 
 interface WeatherBackgroundProps {
   weatherMain: string; // Main de la API (Clear, Clouds, Rain, etc.)
@@ -44,18 +44,18 @@ const WEATHER_IMAGES = {
   },
   rain: {
     day: require('@/assets/images/weatherBgImages/rain/RainDay.png'),
-    afternoon: require('@/assets/images/weatherBgImages/rain/RainDay.png'), 
-    night: require('@/assets/images/weatherBgImages/rain/RainNight.jpg'), 
+    afternoon: require('@/assets/images/weatherBgImages/rain/RainDay.png'),
+    night: require('@/assets/images/weatherBgImages/rain/RainNight.jpg'),
   },
   snow: {
     day: require('@/assets/images/weatherBgImages/snow/snowDay.jpg'),
-    afternoon: require('@/assets/images/weatherBgImages/snow/snowDay.jpg'), 
-    night: require('@/assets/images/weatherBgImages/snow/snowNight.png'), 
+    afternoon: require('@/assets/images/weatherBgImages/snow/snowDay.jpg'),
+    night: require('@/assets/images/weatherBgImages/snow/snowNight.png'),
   },
   fog: {
-    day: require('@/assets/images/weatherBgImages/fog/Fog.png'),  
-    afternoon: require('@/assets/images/weatherBgImages/fog/Fog.png'), 
-    night: require('@/assets/images/weatherBgImages/fog/Fog.png'), 
+    day: require('@/assets/images/weatherBgImages/fog/Fog.png'),
+    afternoon: require('@/assets/images/weatherBgImages/fog/Fog.png'),
+    night: require('@/assets/images/weatherBgImages/fog/Fog.png'),
   },
   default: {
     day: require('@/assets/images/weatherBgImages/clear/ClearDay.jpg'),
@@ -71,7 +71,7 @@ const WEATHER_IMAGES = {
  * @param sunsetTime - Hora del sunset
  * @param timezone - Timezone offset en segundos
  * @returns 'day' | 'afternoon' | 'night'
- * 
+ *
  * Lógica:
  * - afternoon: 30 minutos antes del sunset hasta 1 hora después del sunset
  * - day: desde sunrise hasta 30 minutos antes del sunset
@@ -90,26 +90,26 @@ const getTimeOfDay = (
 
   // Calcular hora local actual
   const nowUTC = currentTime.getTime();
-  const localNow = new Date(nowUTC + (timezone * 1000));
+  const localNow = new Date(nowUTC + timezone * 1000);
   const localHour = localNow.getUTCHours();
   const localMinutes = localNow.getUTCMinutes();
-  
+
   // Calcular hora local del sunset
   const sunsetUTC = sunsetTime.getTime();
-  const localSunset = new Date(sunsetUTC + (timezone * 1000));
+  const localSunset = new Date(sunsetUTC + timezone * 1000);
   const sunsetHour = localSunset.getUTCHours();
   const sunsetMinutes = localSunset.getUTCMinutes();
-  
+
   // Calcular tiempo en minutos desde medianoche
   const currentMinutes = localHour * 60 + localMinutes;
   const sunsetMinutesTotal = sunsetHour * 60 + sunsetMinutes;
-  
+
   // Afternoon: empieza 30 minutos antes del sunset
   const afternoonStartMinutes = sunsetMinutesTotal - 30;
-  
+
   // Night: empieza 1 hora después del sunset
   const nightStartMinutes = sunsetMinutesTotal + 60;
-  
+
   console.log('🕐 [getTimeOfDay] Time calculation:', {
     localTime: `${localHour}:${localMinutes.toString().padStart(2, '0')}`,
     sunsetTime: `${sunsetHour}:${sunsetMinutes.toString().padStart(2, '0')}`,
@@ -119,19 +119,19 @@ const getTimeOfDay = (
     nightStartMinutes: `${Math.floor(nightStartMinutes / 60)}:${(nightStartMinutes % 60).toString().padStart(2, '0')}`,
     isDaytime,
   });
-  
+
   // Si estamos en el rango de afternoon (30 min antes del sunset hasta 1h después del sunset)
   if (currentMinutes >= afternoonStartMinutes && currentMinutes < nightStartMinutes) {
     console.log(' Time of day: AFTERNOON (30m antes hasta 1h después del sunset)');
     return 'afternoon';
   }
-  
+
   // Si es de día y aún no es tarde (antes de 30 min del sunset)
   if (isDaytime && currentMinutes < afternoonStartMinutes) {
     console.log('Time of day: DAY (antes de 30m del sunset)');
     return 'day';
   }
-  
+
   // Cualquier otro caso es noche (después de 1h del sunset o antes del sunrise)
   console.log('Time of day: NIGHT (después de 1h del sunset)');
   return 'night';
@@ -141,7 +141,7 @@ const getTimeOfDay = (
  * Obtiene las imágenes correspondientes según el main y weatherId de la API
  * @param weatherMain - Campo "main" de la API (Clear, Clouds, Rain, etc.)
  * @param weatherId - ID numérico del weather (independiente del idioma)
- * 
+ *
  * Weather IDs relevantes:
  * - 800: Clear sky
  * - 801: Few clouds
@@ -187,17 +187,8 @@ const getweatherBgImages = (weatherMain: string, weatherId?: number): weatherBgI
     return WEATHER_IMAGES.snow;
   }
 
-  // Niebla / Calima / Polvo / Humo - Main: "Mist", "Haze", "Fog", "Smoke", "Dust", "Sand", "Ash", "Squall",
-  if (
-    main === 'mist' || 
-    main === 'haze' || 
-    main === 'fog' || 
-    main === 'smoke' || 
-    main === 'dust' || 
-    main === 'sand' || 
-    main === 'ash' || 
-    main === 'squall'
-  ) {
+  // Niebla / Calima / Polvo / Humo / Otros - Main: "Mist", "Haze", "Fog", "Smoke", "Dust", "Sand", "Ash", "Squall"
+  if (main === 'mist' || main === 'haze' || main === 'fog' || main === 'smoke' || main === 'dust' || main === 'sand' || main === 'ash' || main === 'squall') {
     console.log('✅ Category selected: FOG (Niebla/Calima/Polvo/Humo)');
     return WEATHER_IMAGES.fog;
   }
@@ -223,10 +214,10 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
   }, [weatherMain, weatherId, isDaytime, currentTime, sunsetTime, timezone]);
 
   return (
-    <View style={[StyleSheet.absoluteFill, styles.container]}>
-      <Image 
+    <View className="absolute inset-0 bg-black">
+      <Image
         source={backgroundImage}
-        style={styles.backgroundImage}
+        style={{ width: '100%', height: '100%' }}
         contentFit="cover"
         transition={300}
         priority={'high'}
@@ -235,13 +226,3 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#000000', // Fondo negro para evitar el flash blanco
-  },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-  },
-});
