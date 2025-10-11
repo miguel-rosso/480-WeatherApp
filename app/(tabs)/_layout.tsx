@@ -1,6 +1,6 @@
 import { prefetchAllCities } from "@/src/api/services/WeatherPrefetchService";
-import { HapticTab } from "@/src/components/ui/haptic-tab";
-import { WeatherBackground } from "@/src/components/WeatherBackground";
+import { HapticTab } from "@/src/components/common/haptic-tab";
+import { WeatherBackground } from "@/src/components/layout/WeatherBackground";
 import { useThemeColors } from "@/src/hooks/useThemeColor";
 import { store } from "@/src/store";
 import { useAppSelector } from "@/src/store/hooks";

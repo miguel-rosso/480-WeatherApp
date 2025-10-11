@@ -30,6 +30,7 @@ export interface OpenWeatherResponse {
   clouds: {
     all: number;
   };
+  visibility?: number; // Visibilidad en metros (opcional)
   dt: number;
   timezone: number; // Desplazamiento en segundos desde UTC
   sys: {

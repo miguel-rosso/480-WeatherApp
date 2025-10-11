@@ -3,6 +3,7 @@
  * Muestra imágenes de fondo que cambian según la condición climática
  */
 
+import { getLocalHours, getLocalMinutes, getLocalTime } from '@/src/utils/helpers';
 import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
@@ -36,6 +37,11 @@ const WEATHER_IMAGES = {
     day: require('@/assets/images/weatherBgImages/clouds/FewCloudsDay.jpg'),
     afternoon: require('@/assets/images/weatherBgImages/clouds/FewCloudsAfternoon.jpg'),
     night: require('@/assets/images/weatherBgImages/clouds/FewCloudsNight.jpg'),
+  },
+  brokenClouds: {
+    day: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsDay.png'),
+    afternoon: require('@/assets/images/weatherBgImages/clouds/FewCloudsAfternoon.jpg'),
+    night: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsNight.png'),
   },
   overcastClouds: {
     day: require('@/assets/images/weatherBgImages/overcastClouds/OvercastCloudsDay.png'),
@@ -88,17 +94,14 @@ const getTimeOfDay = (
     return isDaytime ? 'day' : 'night';
   }
 
-  // Calcular hora local actual
-  const nowUTC = currentTime.getTime();
-  const localNow = new Date(nowUTC + timezone * 1000);
-  const localHour = localNow.getUTCHours();
-  const localMinutes = localNow.getUTCMinutes();
+  // Calcular hora local usando helpers centralizados
+  const localNow = getLocalTime(currentTime.getTime(), timezone);
+  const localHour = getLocalHours(localNow);
+  const localMinutes = getLocalMinutes(localNow);
 
-  // Calcular hora local del sunset
-  const sunsetUTC = sunsetTime.getTime();
-  const localSunset = new Date(sunsetUTC + timezone * 1000);
-  const sunsetHour = localSunset.getUTCHours();
-  const sunsetMinutes = localSunset.getUTCMinutes();
+  const localSunset = getLocalTime(sunsetTime.getTime(), timezone);
+  const sunsetHour = getLocalHours(localSunset);
+  const sunsetMinutes = getLocalMinutes(localSunset);
 
   // Calcular tiempo en minutos desde medianoche
   const currentMinutes = localHour * 60 + localMinutes;
@@ -170,7 +173,11 @@ const getweatherBgImages = (weatherMain: string, weatherId?: number): weatherBgI
       console.log('✅ Category selected: OVERCAST CLOUDS (ID 804 - Muy nublado)');
       return WEATHER_IMAGES.overcastClouds;
     }
-    // Otros tipos de nubes (801: few, 802: scattered, 803: broken)
+    if (weatherId === 803) {
+      console.log('✅ Category selected: BROKEN CLOUDS (ID 803 - Nubes rotas)');
+      return WEATHER_IMAGES.brokenClouds;
+    }
+    // Otros tipos de nubes (801: few, 802: scattered)
     console.log('✅ Category selected: CLOUDS (Nublado normal)');
     return WEATHER_IMAGES.clouds;
   }

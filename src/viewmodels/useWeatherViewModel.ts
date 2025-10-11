@@ -5,18 +5,58 @@
  */
 
 import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
-import { Forecast } from '@/src/api/models/ForecastModel';
 import { refreshCityData } from '@/src/api/services/WeatherPrefetchService';
-import { useAppSelector } from '@/src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
+import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
-import { BackgroundUpdateData } from '@/src/types/viewModel.types';
+import { useFocusEffect } from 'expo-router';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
   const { i18n } = useTranslation();
+  const dispatch = useAppDispatch();
+  
+  // Estado local para el tiempo actual
+  const [currentTime, setCurrentTime] = useState(new Date());
   
   // 🎯 REDUX: Obtener datos del store
   const cityWeatherState = useAppSelector(selectCityWeather(initialCity));
+  
+  // Convertir el objeto plano a instancia de clase para usar sus métodos
+  const weather = useMemo(() => {
+    if (!cityWeatherState.weather) return null;
+    return new CurrentWeatherModel(cityWeatherState.weather);
+  }, [cityWeatherState.weather]);
+
+  /**
+   * Actualizar el tiempo actual cada minuto
+   */
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 60 segundos
+
+    return () => clearInterval(interval);
+  }, []);
+
+  /**
+   * Actualizar el fondo cuando la pantalla gana el foco o cambia el clima
+   */
+  useFocusEffect(
+    React.useCallback(() => {
+      if (weather) {
+        dispatch(updateBackground({
+          weatherMain: weather.weatherMain,
+          weatherId: weather.weatherId,
+          isDaytime: weather.isDaytime(),
+          currentTime: currentTime,
+          sunsetTime: weather.sunset,
+          timezone: weather.timezone,
+        }));
+      }
+    }, [currentTime, dispatch, weather])
+  );
 
   /**
    * Refrescar los datos de la ciudad
@@ -26,32 +66,16 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
     await refreshCityData(initialCity, lang);
   };
 
-  /**
-   * Prepara los datos para actualizar el fondo (Redux)
-   * El ViewModel prepara los datos, la View solo los despacha
-   */
-  const getBackgroundUpdateData = (currentTime: Date): BackgroundUpdateData | null => {
-    if (!cityWeatherState.weather) return null;
-    
-    return {
-      weatherMain: cityWeatherState.weather.weatherMain,
-      weatherId: cityWeatherState.weather.weatherId,
-      isDaytime: cityWeatherState.weather.isDaytime(),
-      currentTime: currentTime,
-      sunsetTime: cityWeatherState.weather.sunset,
-      timezone: cityWeatherState.weather.timezone,
-    };
-  };
-
   return {
-    // Estado desde Redux
-    weather: cityWeatherState.weather as CurrentWeatherModel | null,
-    forecast: cityWeatherState.forecast as Forecast[],
+    // Estado desde Redux (weather ya es una instancia de CurrentWeatherModel)
+    weather,
+    forecast: cityWeatherState.forecast,
+    hourlyForecast: cityWeatherState.hourlyForecast,
     isLoading: cityWeatherState.isLoading,
     error: cityWeatherState.error,
+    currentTime,
 
     // Acciones
     refresh,
-    getBackgroundUpdateData,
   };
 };

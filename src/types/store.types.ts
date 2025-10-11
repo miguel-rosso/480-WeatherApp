@@ -5,15 +5,18 @@
  * Definen la forma del estado global de la aplicación
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
+import { CurrentWeather } from '@/src/api/models/CurrentWeatherModel';
 import { Forecast } from '@/src/api/models/ForecastModel';
+import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
 
 /**
  * Estado del clima para una ciudad específica
+ * Almacena objetos planos (serializables) en lugar de instancias de clase
  */
 export interface CityWeatherState {
-  weather: CurrentWeatherModel | null;
+  weather: CurrentWeather | null;
   forecast: Forecast[];
+  hourlyForecast: HourlyForecast[];
   isLoading: boolean;
   error: string | null;
   lastUpdated: Date | null;

@@ -16,6 +16,7 @@ interface WeatherIconProps {
 // Mapa de iconos PNG disponibles
 const WEATHER_ICON_IMAGES: Record<string, any> = {
   'night-cloudy': require('@/assets/images/weatherIcons/night-cloudy-color-icon.png'),
+  'crescent-moon': require('@/assets/images/weatherIcons/crescent-moon.png'),
 };
 
 export const WeatherIcon: React.FC<WeatherIconProps> = ({ 

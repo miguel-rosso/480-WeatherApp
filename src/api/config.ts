@@ -34,7 +34,7 @@ export function getWeatherEmoji(weatherId: number, isDay: boolean = true): strin
   } else if (weatherId >= 700 && weatherId < 800) {
     return "🌫️"; // Niebla/Atmósfera
   } else if (weatherId === 800) {
-    return isDay ? "☀️" : "🌙"; // Despejado
+    return isDay ? "☀️" : "image:crescent-moon"; // Despejado
   } else if (weatherId === 801) {
     return isDay ? "🌤️" : "image:night-cloudy"; // Few clouds (pocas nubes 11-25%)
   } else if (weatherId === 802) {

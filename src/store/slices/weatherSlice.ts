@@ -5,8 +5,9 @@
  * para evitar hacer fetch cada vez que se cambia de pestaña
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
+import { CurrentWeather } from '@/src/api/models/CurrentWeatherModel';
 import { Forecast } from '@/src/api/models/ForecastModel';
+import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
 import type { RootState } from '@/src/store';
 import { CityWeatherState, WeatherState } from '@/src/types/store.types';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -28,6 +29,7 @@ export const weatherSlice = createSlice({
         state.cities[city] = {
           weather: null,
           forecast: [],
+          hourlyForecast: [],
           isLoading: true,
           error: null,
           lastUpdated: null,
@@ -41,13 +43,14 @@ export const weatherSlice = createSlice({
     // Actualizar datos del clima actual
     setWeather: (state, action: PayloadAction<{ 
       city: string; 
-      weather: CurrentWeatherModel;
+      weather: CurrentWeather;
     }>) => {
       const { city, weather } = action.payload;
       if (!state.cities[city]) {
         state.cities[city] = {
           weather: null,
           forecast: [],
+          hourlyForecast: [],
           isLoading: false,
           error: null,
           lastUpdated: null,
@@ -68,12 +71,32 @@ export const weatherSlice = createSlice({
         state.cities[city] = {
           weather: null,
           forecast: [],
+          hourlyForecast: [],
           isLoading: false,
           error: null,
           lastUpdated: null,
         };
       }
       state.cities[city].forecast = forecast;
+    },
+
+    // Actualizar pronóstico por hora
+    setHourlyForecast: (state, action: PayloadAction<{ 
+      city: string; 
+      hourlyForecast: HourlyForecast[];
+    }>) => {
+      const { city, hourlyForecast } = action.payload;
+      if (!state.cities[city]) {
+        state.cities[city] = {
+          weather: null,
+          forecast: [],
+          hourlyForecast: [],
+          isLoading: false,
+          error: null,
+          lastUpdated: null,
+        };
+      }
+      state.cities[city].hourlyForecast = hourlyForecast;
     },
 
     // Establecer error
@@ -86,6 +109,7 @@ export const weatherSlice = createSlice({
         state.cities[city] = {
           weather: null,
           forecast: [],
+          hourlyForecast: [],
           isLoading: false,
           error: null,
           lastUpdated: null,
@@ -98,12 +122,13 @@ export const weatherSlice = createSlice({
 });
 
 // 🎬 Exportar actions
-export const { setLoading, setWeather, setForecast, setError } = weatherSlice.actions;
+export const { setLoading, setWeather, setForecast, setHourlyForecast, setError } = weatherSlice.actions;
 
 // 🔍 Estado inicial para ciudad no encontrada
 const defaultCityState: CityWeatherState = {
   weather: null,
   forecast: [],
+  hourlyForecast: [],
   isLoading: false,
   error: null,
   lastUpdated: null,

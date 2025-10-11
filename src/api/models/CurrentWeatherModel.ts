@@ -7,6 +7,8 @@ export interface CurrentWeather {
   city: string;
   temperature: number;
   feelsLike: number; // Sensación térmica
+  tempMin: number; // Temperatura mínima
+  tempMax: number; // Temperatura máxima
   condition: string;
   weatherMain: string; // Main de la API (Clear, Clouds, Rain, etc.)
   weatherId: number; // ID numérico del weather (ej: 800=clear, 804=overcast)
@@ -14,6 +16,8 @@ export interface CurrentWeather {
   humidity: number;
   windSpeed: number;
   pressure: number; // Presión atmosférica en hPa
+  cloudiness: number; // Porcentaje de nubosidad (0-100)
+  visibility?: number; // Visibilidad en metros (opcional)
   icon: string;
   timestamp: Date;
   sunrise: Date;
@@ -25,6 +29,8 @@ export class CurrentWeatherModel implements CurrentWeather {
   city: string;
   temperature: number;
   feelsLike: number;
+  tempMin: number;
+  tempMax: number;
   condition: string;
   weatherMain: string;
   weatherId: number;
@@ -32,6 +38,8 @@ export class CurrentWeatherModel implements CurrentWeather {
   humidity: number;
   windSpeed: number;
   pressure: number;
+  cloudiness: number;
+  visibility?: number;
   icon: string;
   timestamp: Date;
   sunrise: Date;
@@ -42,6 +50,8 @@ export class CurrentWeatherModel implements CurrentWeather {
     this.city = data.city;
     this.temperature = data.temperature;
     this.feelsLike = data.feelsLike;
+    this.tempMin = data.tempMin;
+    this.tempMax = data.tempMax;
     this.condition = data.condition;
     this.weatherMain = data.weatherMain;
     this.weatherId = data.weatherId;
@@ -49,6 +59,8 @@ export class CurrentWeatherModel implements CurrentWeather {
     this.humidity = data.humidity;
     this.windSpeed = data.windSpeed;
     this.pressure = data.pressure;
+    this.cloudiness = data.cloudiness;
+    this.visibility = data.visibility;
     this.icon = data.icon;
     this.timestamp = data.timestamp;
     this.sunrise = data.sunrise;
@@ -151,5 +163,112 @@ export class CurrentWeatherModel implements CurrentWeather {
    */
   getFormattedTemp(): string {
     return `${Math.round(this.temperature)}°C`;
+  }
+
+  /**
+   * Obtiene el icono de humedad según el porcentaje
+   */
+  getHumidityIcon(): string {
+    if (this.humidity < 30) {
+      return '☀️'; // Seco
+    } else if (this.humidity < 70) {
+      return '💧'; // Normal
+    } else {
+      return '💦'; // Húmedo
+    }
+  }
+
+  /**
+   * Obtiene la descripción de la humedad
+   */
+  getHumidityDescription(t: (key: string) => string): string {
+    if (this.humidity < 30) {
+      return t('weather.humidityLow') || 'Low';
+    } else if (this.humidity < 70) {
+      return t('weather.humidityNormal') || 'Normal';
+    } else {
+      return t('weather.humidityHigh') || 'High';
+    }
+  }
+
+  /**
+   * Obtiene la descripción del "Feels Like" comparando con la temperatura real
+   */
+  getFeelsLikeDescription(t: (key: string) => string): string {
+    const diff = this.feelsLike - this.temperature;
+
+    if (Math.abs(diff) < 2) {
+      return t('weather.feelsLikeSimilar') || 'Similar';
+    } else if (diff >= 2) {
+      return t('weather.feelsLikeWarmer') || 'Warmer';
+    } else {
+      return t('weather.feelsLikeCooler') || 'Cooler';
+    }
+  }
+
+  /**
+   * Obtiene la descripción del viento
+   */
+  getWindDescription(t: (key: string) => string): string {
+    if (this.windSpeed < 10) {
+      return t('weather.windLight') || 'Light breeze';
+    } else if (this.windSpeed < 30) {
+      return t('weather.windModerate') || 'Moderate wind';
+    } else {
+      return t('weather.windStrong') || 'Strong wind';
+    }
+  }
+
+  /**
+   * Obtiene la descripción de la presión atmosférica
+   */
+  getPressureDescription(t: (key: string) => string): string {
+    if (this.pressure < 1013) {
+      return t('weather.pressureLow') || 'Low pressure';
+    } else if (this.pressure > 1020) {
+      return t('weather.pressureHigh') || 'High pressure';
+    } else {
+      return t('weather.pressureNormal') || 'Normal';
+    }
+  }
+
+  /**
+   * Obtiene la descripción de la nubosidad
+   */
+  getCloudinessDescription(t: (key: string) => string): string {
+    if (this.cloudiness < 20) {
+      return t('weather.cloudinessClear') || 'Clear sky';
+    } else if (this.cloudiness < 50) {
+      return t('weather.cloudinessPartly') || 'Partly cloudy';
+    } else if (this.cloudiness < 85) {
+      return t('weather.cloudinessMostly') || 'Mostly cloudy';
+    } else {
+      return t('weather.cloudinessOvercast') || 'Overcast';
+    }
+  }
+
+  /**
+   * Obtiene la descripción de la visibilidad
+   */
+  getVisibilityDescription(t: (key: string) => string): string {
+    if (!this.visibility) return '';
+    
+    if (this.visibility >= 10000) {
+      return t('weather.visibilityExcellent') || 'Excellent';
+    } else if (this.visibility >= 5000) {
+      return t('weather.visibilityGood') || 'Good';
+    } else if (this.visibility >= 2000) {
+      return t('weather.visibilityModerate') || 'Moderate';
+    } else {
+      return t('weather.visibilityPoor') || 'Poor';
+    }
+  }
+
+  /**
+   * Obtiene la visibilidad formateada en km
+   */
+  getFormattedVisibility(): string {
+    if (!this.visibility) return '';
+    return (this.visibility / 1000).toFixed(1);
   }
 }
