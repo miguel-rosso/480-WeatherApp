@@ -176,7 +176,7 @@ export const getDailyForecastGradient = (weatherId: number): string[] => {
   }
 
   // POCAS NUBES (801) -  NUBES DISPERSAS (802) Azul cielo con nubes
-  if (weatherId === 801 ) {
+  if (weatherId === 801 || weatherId === 802) {
     return ['#3570B8', '#4581C8'];
   }
 
