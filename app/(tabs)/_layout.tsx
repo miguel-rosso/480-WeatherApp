@@ -1,13 +1,13 @@
-import { prefetchAllCities } from "@/src/api/services/WeatherPrefetchService";
-import { HapticTab } from "@/src/components/common/haptic-tab";
-import { WeatherBackground } from "@/src/components/layout/WeatherBackground";
-import { useAppSelector } from "@/src/store/hooks";
-import { selectWeatherBackground } from "@/src/store/slices/weatherBackgroundSlice";
-import { Ionicons } from "@expo/vector-icons";
-import * as NavigationBar from "expo-navigation-bar";
-import { Tabs } from "expo-router";
-import React, { useEffect } from "react";
-import { Platform, View } from "react-native";
+import { prefetchAllCities } from '@/src/api/services/WeatherPrefetchService';
+import { HapticTab } from '@/src/components/common/haptic-tab';
+import { WeatherBackground } from '@/src/components/layout/WeatherBackground';
+import { useAppSelector } from '@/src/store/hooks';
+import { selectWeatherBackground } from '@/src/store/slices/weatherBackgroundSlice';
+import { Ionicons } from '@expo/vector-icons';
+import * as NavigationBar from 'expo-navigation-bar';
+import { Tabs } from 'expo-router';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 
 export default function TabLayout() {
   // 🎯 REDUX: Leer el estado del store usando el selector
@@ -15,15 +15,11 @@ export default function TabLayout() {
 
   // 🚀 Prefetch de todas las ciudades al iniciar la app (solo una vez)
   useEffect(() => {
+    NavigationBar.setButtonStyleAsync('light');
+    // prefetch de todas las ciudades
     prefetchAllCities(['London', 'Toronto', 'Singapore']);
-  }, []); // ✅ Sin dependencias - solo se ejecuta una vez al montar
-
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      NavigationBar.setBackgroundColorAsync("transparent");
-      NavigationBar.setButtonStyleAsync("light");
-    }
   }, []);
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -41,44 +37,38 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
           tabBarButton: HapticTab,
-          tabBarActiveTintColor: "#FFFFFF",
-          tabBarInactiveTintColor: "rgba(255, 255, 255, 0.5)",
+          tabBarActiveTintColor: '#FFFFFF',
+          tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.5)',
           tabBarStyle: {
-            backgroundColor: "transparent",
-            borderTopColor: "white",
-            position: "fixed",
+            backgroundColor: 'transparent',
+            borderTopColor: 'white',
+            position: 'fixed',
             elevation: 0,
           },
           sceneStyle: {
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
           },
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
-            title: "London",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="business" size={24} color={color} />
-            ),
+            title: 'London',
+            tabBarIcon: ({ color }) => <Ionicons name="business" size={24} color={color} />,
           }}
         />
         <Tabs.Screen
           name="toronto"
           options={{
-            title: "Toronto",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="leaf" size={24} color={color} />
-            ),
+            title: 'Toronto',
+            tabBarIcon: ({ color }) => <Ionicons name="leaf" size={24} color={color} />,
           }}
         />
         <Tabs.Screen
           name="singapore"
           options={{
-            title: "Singapore",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="sparkles" size={24} color={color} />
-            ),
+            title: 'Singapore',
+            tabBarIcon: ({ color }) => <Ionicons name="sparkles" size={24} color={color} />,
           }}
         />
       </Tabs>
