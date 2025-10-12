@@ -10,16 +10,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 interface DaySeparatorProps {
   dayName: string;
   dayIndex: number;
-  city: string;
-  totalDays: number;
   onNavigate: (dayIndex: number) => void;
 }
 
 export const DaySeparator: React.FC<DaySeparatorProps> = ({ 
   dayName, 
   dayIndex, 
-  city, 
-  totalDays,
   onNavigate 
 }) => {
   const { t } = useTranslation();

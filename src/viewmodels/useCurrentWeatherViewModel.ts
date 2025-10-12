@@ -13,7 +13,7 @@ import { useFocusEffect } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
+export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
   const { i18n } = useTranslation();
   const dispatch = useAppDispatch();
   

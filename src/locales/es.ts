@@ -107,6 +107,40 @@ export const es = {
       dayNotAvailable: 'Este día no está disponible en el pronóstico',
     },
 
+    // Formulario de contacto
+    contact: {
+      title: 'Contacto',
+      subtitle: 'Completa el formulario con tus datos',
+      name: 'Nombre completo',
+      namePlaceholder: 'Ingresa tu nombre',
+      birthdate: 'Fecha de nacimiento',
+      birthdatePlaceholder: 'Ingresa tu fecha de nacimiento',
+      city: 'Ciudad',
+      cityPlaceholder: 'Ingresa tu ciudad',
+      email: 'E-mail',
+      emailPlaceholder: 'ejemplo@correo.com',
+      phone: 'Teléfono',
+      phonePlaceholder: '+34 600 000 000',
+      submit: 'Enviar',
+      cancel: 'Cancelar',
+      confirm: 'Confirmar',
+      willHireMe: '¿Vais a contratarme?',
+      yes: 'Sí',
+      no: 'No',
+      // Validaciones
+      errorAllFields: 'Por favor, completa todos los campos y activa el switch',
+      errorInvalidEmail: 'Por favor, introduce un email válido',
+      errorInvalidPhone: 'Por favor, introduce un teléfono válido',
+      errorInvalidDate: 'Por favor, introduce una fecha válida (DD/MM/AAAA)',
+      requiredField: 'Este campo es obligatorio',
+      successTitle: '✅ Formulario válido',
+      successName: 'Nombre',
+      successBirthdate: 'Fecha de Nacimiento',
+      successCity: 'Ciudad',
+      successEmail: 'Email',
+      successPhone: 'Teléfono',
+    },
+
     // Weather descriptions (OpenWeatherMap codes)
     weatherDescriptions: {
       // Thunderstorm (2xx)

@@ -10,7 +10,7 @@ import { WeatherCard } from '@/src/components/cards/WeatherCard';
 import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { getWeatherDescriptionKey } from '@/src/utils/helpers';
-import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
+import { useCurrentWeatherViewModel } from '@/src/viewmodels/useCurrentWeatherViewModel';
 import Feather from '@expo/vector-icons/Feather';
 import { router, useFocusEffect } from 'expo-router';
 import React, { useRef } from 'react';
@@ -22,13 +22,13 @@ interface CurrentWeatherScreenProps {
 }
 
 export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city }) => {
-  const { weather, forecast, hourlyForecast, isLoading, refresh, currentTime } = useWeatherViewModel(city);
+  const { weather, forecast, hourlyForecast, isLoading, refresh, currentTime } = useCurrentWeatherViewModel(city);
   const { t } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Función para navegar a la pantalla de pronóstico diario del día actual (día 0)
   const navigateToDailyForecast = () => {
-    router.push(`/DailyForecast?city=${city}&day=0`);
+    router.push(`/dailyForecast?city=${city}&day=0`);
   };
 
   // Resetear scroll al inicio cuando la pantalla gana el foco (cambio de tab)

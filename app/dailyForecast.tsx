@@ -3,7 +3,7 @@
  * Punto de entrada para la pantalla de pronóstico diario
  */
 
-import { DailyForecastScreen } from '@/src/views/weather/DailyForecastScreen';
+import { DailyForecastScreen } from '@/src/views/DailyForecastScreen';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 

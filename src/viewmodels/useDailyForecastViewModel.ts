@@ -6,7 +6,7 @@
 import { getDailyForecastGradient, getDayNameKey, getTemperatureGradient } from '@/src/utils/helpers';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWeatherViewModel } from './useWeatherViewModel';
+import { useCurrentWeatherViewModel } from './useCurrentWeatherViewModel';
 
 interface UseDailyForecastViewModelProps {
   city: string;
@@ -18,7 +18,7 @@ export const useDailyForecastViewModel = ({ city, initialDay = 0 }: UseDailyFore
   const [selectedDay, setSelectedDay] = useState(initialDay);
   
   // Obtener datos del WeatherViewModel (fuente de verdad)
-  const { forecast, hourlyForecast, isLoading } = useWeatherViewModel(city);
+  const { forecast, hourlyForecast, isLoading } = useCurrentWeatherViewModel(city);
 
   // Obtener el forecast del día seleccionado
   const selectedForecast = useMemo(() => forecast[selectedDay], [forecast, selectedDay]);
