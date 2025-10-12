@@ -14,10 +14,9 @@ import {
 /**
  * Obtiene el clima actual de una ciudad y devuelve un objeto
  * @param city Nombre de la ciudad
- * @param lang Idioma ('es' o 'en')
  */
-export const getCurrentWeather = async (city: string, lang: string = "es"): Promise<CurrentWeather> => {
-    const url = `${API_CONFIG.BASE_URL}/weather?q=${city}&units=metric&lang=${lang}&appid=${API_CONFIG.API_KEY}`;
+export const getCurrentWeather = async (city: string): Promise<CurrentWeather> => {
+    const url = `${API_CONFIG.BASE_URL}/weather?q=${city}&units=metric&appid=${API_CONFIG.API_KEY}`;
 
     console.log("🌐 [CurrentWeather] Fetching URL:", url);
 
@@ -38,7 +37,7 @@ export const getCurrentWeather = async (city: string, lang: string = "es"): Prom
       console.log("📊 [CurrentWeather] Full response:", JSON.stringify(data, null, 2));
       console.log("✅ City:", data.name);
       console.log("🌡️ Temperature:", data.main.temp, "°C");
-      console.log("☁️ Condition:", data.weather[0].description);
+      console.log("☁️ Description:", data.weather[0].description);
       console.log("💧 Humidity:", data.main.humidity, "%");
       console.log("💨 Wind Speed:", data.wind.speed, "m/s");
       console.log("🌅 Sunrise (local):", formatLocalTime(sunriseLocal));
@@ -60,10 +59,9 @@ export const getCurrentWeather = async (city: string, lang: string = "es"): Prom
         feelsLike: Math.round(data.main.feels_like),
         tempMin: Math.round(data.main.temp_min),
         tempMax: Math.round(data.main.temp_max),
-        condition: data.weather[0].description,
+        description: data.weather[0].description,
         weatherMain: data.weather[0].main,
         weatherId: data.weather[0].id,
-        weatherDescription: data.weather[0].description,
         humidity: data.main.humidity,
         windSpeed: Math.round(data.wind.speed * 3.6), // m/s a km/h
         pressure: data.main.pressure,

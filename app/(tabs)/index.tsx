@@ -2,8 +2,8 @@
  * Screen - London
  */
 
-import { WeatherView } from '@/src/views/weather/WeatherView';
+import { CurrentWeatherScreen } from '@/src/views/weather/CurrentWeatherScreen';
 
 export default function LondonScreen() {
-  return <WeatherView city="London" />;
+  return <CurrentWeatherScreen city="London" />;
 }

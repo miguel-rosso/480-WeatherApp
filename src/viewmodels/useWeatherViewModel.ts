@@ -62,8 +62,7 @@ export const useWeatherViewModel = (initialCity: string = 'Madrid') => {
    * Refrescar los datos de la ciudad
    */
   const refresh = async () => {
-    const lang = i18n.language === 'es' ? 'es' : 'en';
-    await refreshCityData(initialCity, lang);
+    await refreshCityData(initialCity);
   };
 
   return {

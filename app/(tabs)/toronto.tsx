@@ -2,8 +2,8 @@
  * Screen - Toronto
  */
 
-import { WeatherView } from '@/src/views/weather/WeatherView';
+import { CurrentWeatherScreen } from '@/src/views/weather/CurrentWeatherScreen';
 
 export default function TorontoScreen() {
-  return <WeatherView city="Toronto" />;
+  return <CurrentWeatherScreen city="Toronto" />;
 }

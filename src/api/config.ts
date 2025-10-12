@@ -8,8 +8,8 @@ export const API_CONFIG = {
 } as const;
 
 /**
- * Mapea el código de condición de OpenWeatherMap a un emoji o path de imagen
- * @param weatherId ID de la condición del clima
+ * Mapea el código de weather de OpenWeatherMap a un emoji o path de imagen
+ * @param weatherId ID del del clima
  * @param isDay Si es de día o de noche
  * @returns string - Emoji o path prefijado con "image:" para imágenes PNG
  */

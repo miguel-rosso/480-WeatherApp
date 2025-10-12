@@ -13,11 +13,11 @@ import { setError, setForecast, setHourlyForecast, setLoading, setWeather } from
 /**
  * Obtiene el clima actual de una ciudad y lo guarda en Redux
  */
-const fetchCityWeather = async (city: string, lang: string = 'en') => {
+const fetchCityWeather = async (city: string) => {
   try {
     store.dispatch(setLoading({ city }));
 
-    const weather = await getCurrentWeather(city, lang);
+    const weather = await getCurrentWeather(city);
 
     store.dispatch(setWeather({ city, weather }));
   } catch (error) {
@@ -29,9 +29,14 @@ const fetchCityWeather = async (city: string, lang: string = 'en') => {
 /**
  * Obtiene el pronóstico de una ciudad y lo guarda en Redux
  */
-const fetchCityForecast = async (city: string, lang: string = 'en') => {
+const fetchCityForecast = async (
+  city: string,
+  timezone: number = 0,
+  currentTemperature?: number,
+  currentWeather?: { weatherId: number; description: string }
+) => {
   try {
-    const forecast = await getForecast(city, lang);
+    const forecast = await getForecast(city, timezone, currentTemperature, currentWeather);
 
     store.dispatch(setForecast({ city, forecast }));
   } catch (error) {
@@ -44,12 +49,21 @@ const fetchCityForecast = async (city: string, lang: string = 'en') => {
  */
 const fetchCityHourlyForecast = async (
   city: string,
-  lang: string = 'en',
   timezone: number = 0,
-  currentWeather?: { temperature: number; condition: string; weatherId: number; icon: string }
+  currentWeather?: { 
+    temperature: number; 
+    feelsLike: number;
+    description: string; 
+    weatherId: number; 
+    icon: string;
+    humidity: number;
+    windSpeed: number;
+    cloudiness: number;
+    visibility?: number;
+  }
 ) => {
   try {
-    const hourlyForecast = await getHourlyForecast(city, lang, timezone, currentWeather);
+    const hourlyForecast = await getHourlyForecast(city, timezone, currentWeather);
 
     store.dispatch(setHourlyForecast({ city, hourlyForecast }));
   } catch (error) {
@@ -60,14 +74,14 @@ const fetchCityHourlyForecast = async (
 /**
  * Hace prefetch de los datos de todas las ciudades
  */
-export const prefetchAllCities = async (cities: string[], lang: string = 'en') => {
+export const prefetchAllCities = async (cities: string[]) => {
   console.log('🚀 Prefetching weather data for all cities...');
 
   // Hacer fetch de todas las ciudades en paralelo
   await Promise.all(
     cities.map(async (city) => {
       // Primero obtener el clima actual para tener el timezone
-      await fetchCityWeather(city, lang);
+      await fetchCityWeather(city);
 
       // Obtener timezone y datos del clima actual del store
       const state = store.getState();
@@ -77,15 +91,26 @@ export const prefetchAllCities = async (cities: string[], lang: string = 'en') =
       // Preparar datos del clima actual para el hourly forecast
       const currentWeatherData = cityWeather ? {
         temperature: cityWeather.temperature,
-        condition: cityWeather.condition,
+        feelsLike: cityWeather.feelsLike,
+        description: cityWeather.description,
         weatherId: cityWeather.weatherId,
         icon: cityWeather.icon,
+        humidity: cityWeather.humidity,
+        windSpeed: cityWeather.windSpeed,
+        cloudiness: cityWeather.cloudiness,
+        visibility: cityWeather.visibility,
       } : undefined;
 
-      // Luego obtener pronósticos
+      // Preparar weatherId y description para el forecast del día de hoy
+      const currentWeatherForForecast = cityWeather ? {
+        weatherId: cityWeather.weatherId,
+        description: cityWeather.description,
+      } : undefined;
+
+      // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
       await Promise.all([
-        fetchCityForecast(city, lang),
-        fetchCityHourlyForecast(city, lang, timezone, currentWeatherData)
+        fetchCityForecast(city, timezone, cityWeather?.temperature, currentWeatherForForecast),
+        fetchCityHourlyForecast(city, timezone, currentWeatherData)
       ]);
     })
   );
@@ -96,9 +121,9 @@ export const prefetchAllCities = async (cities: string[], lang: string = 'en') =
 /**
  * Refresca los datos de una ciudad específica
  */
-export const refreshCityData = async (city: string, lang: string = 'en') => {
+export const refreshCityData = async (city: string) => {
   // Primero obtener el clima actual para tener el timezone
-  await fetchCityWeather(city, lang);
+  await fetchCityWeather(city);
 
   // Obtener timezone y datos del clima actual del store
   const state = store.getState();
@@ -108,14 +133,25 @@ export const refreshCityData = async (city: string, lang: string = 'en') => {
   // Preparar datos del clima actual para el hourly forecast
   const currentWeatherData = cityWeather ? {
     temperature: cityWeather.temperature,
-    condition: cityWeather.condition,
+    feelsLike: cityWeather.feelsLike,
+    description: cityWeather.description,
     weatherId: cityWeather.weatherId,
     icon: cityWeather.icon,
+    humidity: cityWeather.humidity,
+    windSpeed: cityWeather.windSpeed,
+    cloudiness: cityWeather.cloudiness,
+    visibility: cityWeather.visibility,
   } : undefined;
 
-  // Luego obtener pronósticos
+  // Preparar weatherId y description para el forecast del día de hoy
+  const currentWeatherForForecast = cityWeather ? {
+    weatherId: cityWeather.weatherId,
+    description: cityWeather.description,
+  } : undefined;
+
+  // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
   await Promise.all([
-    fetchCityForecast(city, lang),
-    fetchCityHourlyForecast(city, lang, timezone, currentWeatherData)
+    fetchCityForecast(city, timezone, cityWeather?.temperature, currentWeatherForForecast),
+    fetchCityHourlyForecast(city, timezone, currentWeatherData)
   ]);
 };

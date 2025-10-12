@@ -3,7 +3,7 @@
  */
 
 import React, { ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface InfoItemProps {
   icon: ReactNode;
@@ -18,6 +18,7 @@ interface InfoPairCardProps {
   titleIcon?: string;
   leftItem: InfoItemProps;
   rightItem: InfoItemProps;
+  onPress?: () => void; // Función opcional para hacer la card clickeable
 }
 
 const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, description, showIconBackground = true }) => (
@@ -43,26 +44,47 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, description, sh
   </View>
 );
 
-export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, leftItem, rightItem }) => (
-  <View className="p-4 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}>
-    {/* Header opcional */}
-    {title && (
-      <View className="flex-row items-center gap-2 mb-3">
-        {titleIcon && <Text style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.6)' }}>{titleIcon}</Text>}
-        <Text style={{ fontSize: 11, fontWeight: '600', color: 'rgba(255, 255, 255, 0.6)', letterSpacing: 0.5 }}>
-          {title.toUpperCase()}
-        </Text>
+export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, leftItem, rightItem, onPress }) => {
+  const content = (
+    <>
+      {/* Header opcional */}
+      {title && (
+        <View className="flex-row items-center gap-2 mb-3">
+          {titleIcon && <Text style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.6)' }}>{titleIcon}</Text>}
+          <Text style={{ fontSize: 11, fontWeight: '600', color: 'rgba(255, 255, 255, 0.6)', letterSpacing: 0.5 }}>
+            {title.toUpperCase()}
+          </Text>
+        </View>
+      )}
+
+      {/* Contenido en fila */}
+      <View className={`flex-row justify-around ${title ? '' : 'p-0'}`}>
+        <InfoItem {...leftItem} />
+
+        {/* Divisor vertical */}
+        <View style={{ width: 0.5, backgroundColor: 'rgba(255, 255, 255, 0.25)', marginHorizontal: 16 }} />
+
+        <InfoItem {...rightItem} />
       </View>
-    )}
+    </>
+  );
 
-    {/* Contenido en fila */}
-    <View className={`flex-row justify-around ${title ? '' : 'p-0'}`}>
-      <InfoItem {...leftItem} />
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={onPress}
+        className="p-4 rounded-3xl"
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+      >
+        {content}
+      </TouchableOpacity>
+    );
+  }
 
-      {/* Divisor vertical */}
-      <View style={{ width: 0.5, backgroundColor: 'rgba(255, 255, 255, 0.25)', marginHorizontal: 16 }} />
-
-      <InfoItem {...rightItem} />
+  return (
+    <View className="p-4 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}>
+      {content}
     </View>
-  </View>
-);
+  );
+};

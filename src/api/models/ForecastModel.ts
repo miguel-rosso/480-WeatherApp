@@ -4,25 +4,31 @@
  */
 
 export interface Forecast {
-  date: string;
+  date: string; // Nombre del día traducido (ej: "Mon", "Lun")
+  fullDate: string; // Fecha completa en formato YYYY-MM-DD para mapeo
   maxTemp: number;
   minTemp: number;
-  condition: string;
+  description: string; // Description del clima (ej: "clear sky", "overcast clouds")
+  weatherId: number; // ID de OpenWeather para consistencia
   icon: string;
 }
 
 export class ForecastModel implements Forecast {
   date: string;
+  fullDate: string;
   maxTemp: number;
   minTemp: number;
-  condition: string;
+  description: string;
+  weatherId: number;
   icon: string;
 
   constructor(data: Forecast) {
     this.date = data.date;
+    this.fullDate = data.fullDate;
     this.maxTemp = data.maxTemp;
     this.minTemp = data.minTemp;
-    this.condition = data.condition;
+    this.description = data.description;
+    this.weatherId = data.weatherId;
     this.icon = data.icon;
   }
 

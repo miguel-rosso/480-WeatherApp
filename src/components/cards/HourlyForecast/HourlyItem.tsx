@@ -4,23 +4,47 @@
 
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface HourlyItemProps {
   hour: HourlyForecast;
   isFirst: boolean;
   showBorder: boolean;
+  dayIndex: number;
+  city: string;
+  totalDays: number;
+  onNavigate: (dayIndex: number) => void;
 }
 
-export const HourlyItem: React.FC<HourlyItemProps> = ({ hour, isFirst, showBorder }) => {
+export const HourlyItem: React.FC<HourlyItemProps> = ({ 
+  hour, 
+  isFirst, 
+  showBorder, 
+  dayIndex, 
+  city,
+  totalDays,
+  onNavigate 
+}) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => {
+    onNavigate(dayIndex);
+  };
+
   return (
-    <View 
+    <TouchableOpacity 
+      activeOpacity={1}
+      onPress={handlePress}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
       className="items-center justify-between px-3"
       style={{ 
         minWidth: 60,
         borderRightWidth: showBorder ? 1 : 0,
-        borderRightColor: 'rgba(255, 255, 255, 0.15)'
+        borderRightColor: 'rgba(255, 255, 255, 0.15)',
+        backgroundColor: isPressed ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+        borderRadius: 8,
       }}
     >
       {/* Hora */}
@@ -49,6 +73,6 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({ hour, isFirst, showBorde
       >
         {Math.round(hour.temperature)}°
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };

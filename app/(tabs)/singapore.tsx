@@ -2,8 +2,8 @@
  * Screen - Singapore
  */
 
-import { WeatherView } from '@/src/views/weather/WeatherView';
+import { CurrentWeatherScreen } from '@/src/views/weather/CurrentWeatherScreen';
 
 export default function SingaporeScreen() {
-  return <WeatherView city="Singapore" />;
+  return <CurrentWeatherScreen city="Singapore" />;
 }

@@ -4,9 +4,12 @@
 
 import { Forecast } from '@/src/api/models/ForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { getDayNameKey } from '@/src/utils/helpers';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { Text, View } from 'react-native';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface DailyForecastItemProps {
   day: Forecast;
@@ -16,6 +19,8 @@ interface DailyForecastItemProps {
   startColor: string;
   endColor: string;
   showDivider: boolean;
+  dayIndex: number;
+  city: string;
 }
 
 export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
@@ -25,7 +30,12 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
   startColor,
   endColor,
   showDivider,
+  dayIndex,
+  city,
 }) => {
+  const { t } = useTranslation();
+  const [isPressed, setIsPressed] = useState(false);
+
   // Calcular posiciones para la barra de temperatura
   const minPosition = ((day.minTemp - globalMin) / tempRange) * 100;
   const maxPosition = ((day.maxTemp - globalMin) / tempRange) * 100;
@@ -45,7 +55,20 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
       )}
 
       {/* Fila del día */}
-      <View className="flex-row items-center justify-between py-2">
+      <TouchableOpacity 
+        className="flex-row items-center justify-between px-2 py-2"
+        onPress={() => router.push({
+          pathname: '/DailyForecastScreen',
+          params: { city, day: dayIndex.toString() }
+        })}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}
+        style={{ 
+          borderRadius: 8,
+          backgroundColor: isPressed ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+        }}
+      >
         {/* Día de la semana */}
         <Text
           className="text-base font-medium"
@@ -55,7 +78,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
             minWidth: 50,
           }}
         >
-          {day.date}
+          {t(getDayNameKey(day.date))}
         </Text>
 
         {/* Icono */}
@@ -117,7 +140,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
         >
           {Math.round(day.maxTemp)}°
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

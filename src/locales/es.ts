@@ -17,7 +17,7 @@ export const es = {
     weather: {
       title: 'Clima',
       current: 'Clima Actual',
-      forecast: 'Pronóstico de 5 Días',
+      forecast: 'Pronóstico Diario',
       hourlyForecast: 'Pronóstico por Hora',
       humidity: 'Humedad',
       humidityLow: 'Baja',
@@ -58,6 +58,27 @@ export const es = {
       refresh: 'Desliza para actualizar',
     },
 
+    // Pantalla de pronóstico diario
+    dailyForecast: {
+      title: 'Pronóstico Diario',
+      dayForecast: 'Pronóstico del Día',
+      temperature: 'Temperatura',
+      temperatureRange: 'Rango de Temperatura',
+      precipitation: 'Precipitación',
+      chanceOfRain: 'Probabilidad de lluvia',
+      rainExpected: 'Se espera lluvia durante el día',
+      noRainExpected: 'No se espera lluvia',
+      noData: 'No hay datos disponibles',
+      feelsLike: 'Sensación Térmica',
+      humidity: 'Humedad',
+      windSpeed: 'Viento',
+      visibility: 'Visibilidad',
+      cloudCover: 'Nubosidad',
+      weather: 'Clima',
+      precipitationTotal: 'Precipitación',
+      dailySummary: 'Resumen',
+    },
+
     // Días de la semana
     days: {
       monday: 'Lun',
@@ -67,6 +88,95 @@ export const es = {
       friday: 'Vie',
       saturday: 'Sáb',
       sunday: 'Dom',
+    },
+    
+    // Días de la semana completos
+    daysFull: {
+      monday: 'Lunes',
+      tuesday: 'Martes',
+      wednesday: 'Miércoles',
+      thursday: 'Jueves',
+      friday: 'Viernes',
+      saturday: 'Sábado',
+      sunday: 'Domingo',
+    },
+    
+    // Errores
+    error: {
+      title: 'Error',
+      dayNotAvailable: 'Este día no está disponible en el pronóstico',
+    },
+
+    // Weather descriptions (OpenWeatherMap codes)
+    weatherDescriptions: {
+      // Thunderstorm (2xx)
+      thunderstormWithLightRain: 'tormenta con lluvia ligera',
+      thunderstormWithRain: 'tormenta con lluvia',
+      thunderstormWithHeavyRain: 'tormenta con lluvia intensa',
+      lightThunderstorm: 'tormenta ligera',
+      thunderstorm: 'tormenta',
+      heavyThunderstorm: 'tormenta intensa',
+      raggedThunderstorm: 'tormenta irregular',
+      thunderstormWithLightDrizzle: 'tormenta con llovizna ligera',
+      thunderstormWithDrizzle: 'tormenta con llovizna',
+      thunderstormWithHeavyDrizzle: 'tormenta con llovizna intensa',
+      
+      // Drizzle (3xx)
+      lightIntensityDrizzle: 'llovizna ligera',
+      drizzle: 'llovizna',
+      heavyIntensityDrizzle: 'llovizna intensa',
+      lightIntensityDrizzleRain: 'llovizna con lluvia ligera',
+      drizzleRain: 'llovizna con lluvia',
+      heavyIntensityDrizzleRain: 'llovizna con lluvia intensa',
+      showerRainAndDrizzle: 'chubascos con llovizna',
+      heavyShowerRainAndDrizzle: 'chubascos intensos con llovizna',
+      showerDrizzle: 'chubascos de llovizna',
+      
+      // Rain (5xx)
+      lightRain: 'lluvia ligera',
+      moderateRain: 'lluvia moderada',
+      heavyIntensityRain: 'lluvia intensa',
+      veryHeavyRain: 'lluvia muy intensa',
+      extremeRain: 'lluvia extrema',
+      freezingRain: 'lluvia helada',
+      lightIntensityShowerRain: 'chubascos ligeros',
+      showerRain: 'chubascos',
+      heavyIntensityShowerRain: 'chubascos intensos',
+      raggedShowerRain: 'chubascos irregulares',
+      
+      // Snow (6xx)
+      lightSnow: 'nieve ligera',
+      snow: 'nieve',
+      heavySnow: 'nieve intensa',
+      sleet: 'aguanieve',
+      lightShowerSleet: 'chubascos ligeros de aguanieve',
+      showerSleet: 'chubascos de aguanieve',
+      lightRainAndSnow: 'lluvia y nieve ligera',
+      rainAndSnow: 'lluvia y nieve',
+      lightShowerSnow: 'chubascos ligeros de nieve',
+      showerSnow: 'chubascos de nieve',
+      heavyShowerSnow: 'chubascos intensos de nieve',
+      
+      // Atmosphere (7xx)
+      mist: 'neblina',
+      smoke: 'humo',
+      haze: 'bruma',
+      sandDustWhirls: 'remolinos de arena/polvo',
+      fog: 'niebla',
+      sand: 'arena',
+      dust: 'polvo',
+      volcanicAsh: 'ceniza volcánica',
+      squalls: 'turbonadas',
+      tornado: 'tornado',
+      
+      // Clear (800)
+      clearSky: 'cielo despejado',
+      
+      // Clouds (80x)
+      fewClouds: 'pocas nubes',
+      scatteredClouds: 'nubes dispersas',
+      brokenClouds: 'muy nuboso',
+      overcastClouds: 'nublado',
     },
   },
 };

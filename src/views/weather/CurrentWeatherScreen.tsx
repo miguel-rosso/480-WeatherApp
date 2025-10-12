@@ -1,5 +1,5 @@
 /**
- * View - Componente de UI que muestra el clima
+ * CurrentWeatherScreen - Componente de UI que muestra el clima actual
  * Solo se encarga de la presentación, no contiene lógica de negocio
  */
 
@@ -9,21 +9,27 @@ import { InfoPairCard } from '@/src/components/cards/InfoPairCard';
 import { WeatherCard } from '@/src/components/cards/WeatherCard';
 import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { getWeatherDescriptionKey } from '@/src/utils/helpers';
 import { useWeatherViewModel } from '@/src/viewmodels/useWeatherViewModel';
 import Feather from '@expo/vector-icons/Feather';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
 
-interface WeatherViewProps {
+interface CurrentWeatherScreenProps {
   city: string;
 }
 
-export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
+export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city }) => {
   const { weather, forecast, hourlyForecast, isLoading, refresh, currentTime } = useWeatherViewModel(city);
   const { t } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
+
+  // Función para navegar a la pantalla de pronóstico diario del día actual (día 0)
+  const navigateToDailyForecast = () => {
+    router.push(`/DailyForecastScreen?city=${city}&day=0`);
+  };
 
   // Resetear scroll al inicio cuando la pantalla gana el foco (cambio de tab)
   useFocusEffect(
@@ -51,11 +57,10 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
         ref={scrollViewRef}
         className="flex-1 px-6"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
         style={{ backgroundColor: 'transparent' }}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor="#fff" />}
       >
-        <View className="gap-6 pb-6" style={{ backgroundColor: 'transparent' }}>
+        <View className="gap-6 pb-8" style={{ backgroundColor: 'transparent' }}>
           {weather && (
             <>
               {/* Nombre de la ciudad y clima */}
@@ -66,14 +71,14 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                 <Text className="mb-2 font-bold text-7xl" style={{ color: '#fff' }}>
                   {weather.getFormattedTemp()}
                 </Text>
-                {/* Temperatura máxima y mínima */}
+                {/* Temperatura máxima y mínima del primer día del forecast (hoy) */}
                 <Text className="mb-2 text-xl" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                  {t('weather.max')}: {weather.tempMax}° • {t('weather.min')}: {weather.tempMin}°
+                  {t('weather.max')}: {forecast[0]?.maxTemp || weather.tempMax}° • {t('weather.min')}: {forecast[0]?.minTemp || weather.tempMin}°
                 </Text>
                 <View className="flex-row items-center gap-2">
                   <WeatherIcon icon={weather.icon} size={30} />
                   <Text className="text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                    {weather.condition}
+                    {t(getWeatherDescriptionKey(weather.weatherId))}
                   </Text>
                 </View>
               </View>
@@ -81,10 +86,10 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
           )}
 
           {/* Pronóstico por Horas */}
-          {hourlyForecast.length > 0 && <HourlyForecastCard hourlyData={hourlyForecast} />}
+          {hourlyForecast.length > 0 && <HourlyForecastCard hourlyData={hourlyForecast} city={city} forecast={forecast} />}
 
           {/* Pronóstico Diario */}
-          {forecast.length > 0 && <DailyForecastCard forecast={forecast} />}
+          {forecast.length > 0 && <DailyForecastCard forecast={forecast} city={city} />}
 
           {/* Cards de información detallada */}
           {weather && (
@@ -103,6 +108,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                         ? t('weather.feelsLikeWarmer')
                         : t('weather.feelsLikeCooler')
                   }
+                  onPress={navigateToDailyForecast}
                 />
                 <WeatherCard
                   icon={weather.getHumidityIcon()}
@@ -110,6 +116,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   value={weather.humidity.toString()}
                   unit="%"
                   description={weather.getHumidityDescription(t)}
+                  onPress={navigateToDailyForecast}
                 />
               </View>
               {/* Fila 1: Viento y Presión */}
@@ -120,6 +127,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   value={Math.round(weather.windSpeed).toString()}
                   unit="km/h"
                   description={weather.getWindDescription(t)}
+                  onPress={navigateToDailyForecast}
                 />
                 <WeatherCard
                   icon="🔽"
@@ -127,6 +135,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   value={weather.pressure.toString()}
                   unit="hPa"
                   description={weather.getPressureDescription(t)}
+                  onPress={navigateToDailyForecast}
                 />
               </View>
 
@@ -138,6 +147,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   value={weather.cloudiness.toString()}
                   unit="%"
                   description={weather.getCloudinessDescription(t)}
+                  onPress={navigateToDailyForecast}
                 />
                 {weather.visibility ? (
                   <WeatherCard
@@ -146,6 +156,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                     value={weather.getFormattedVisibility()}
                     unit="km"
                     description={weather.getVisibilityDescription(t)}
+                    onPress={navigateToDailyForecast}
                   />
                 ) : (
                   <View className="flex-1" />
@@ -168,6 +179,7 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ city }) => {
                   value: weather.formatDateToLocalTime(weather.sunset),
                   showIconBackground: false,
                 }}
+                onPress={navigateToDailyForecast}
               />
             </>
           )}

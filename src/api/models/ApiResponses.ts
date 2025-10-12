@@ -49,6 +49,7 @@ export interface OpenWeatherForecastResponse {
     dt: number;
     main: {
       temp: number;
+      feels_like: number;
       temp_min: number;
       temp_max: number;
       humidity: number;
@@ -61,6 +62,15 @@ export interface OpenWeatherForecastResponse {
     }>;
     wind: {
       speed: number;
+      deg: number;
+    };
+    clouds: {
+      all: number;
+    };
+    visibility?: number;
+    pop?: number; // Probability of precipitation (0-1)
+    rain?: {
+      '3h': number; // Lluvia en las últimas 3 horas (mm)
     };
     dt_txt: string;
   }>;

@@ -17,7 +17,7 @@ export const en = {
     weather: {
       title: 'Weather',
       current: 'Current Weather',
-      forecast: '5-Day Forecast',
+      forecast: 'Daily Forecast',
       hourlyForecast: 'Hourly Forecast',
       humidity: 'Humidity',
       humidityLow: 'Low',
@@ -58,6 +58,27 @@ export const en = {
       refresh: 'Pull to refresh',
     },
     
+    // Pantalla de pronóstico diario
+    dailyForecast: {
+      title: 'Daily Forecast',
+      dayForecast: 'Day Forecast',
+      temperature: 'Temperature',
+      temperatureRange: 'Temperature Range',
+      precipitation: 'Precipitation',
+      chanceOfRain: 'Chance of rain',
+      rainExpected: 'Rain expected during the day',
+      noRainExpected: 'No rain expected',
+      noData: 'No data available',
+      feelsLike: 'Feels Like',
+      humidity: 'Humidity',
+      windSpeed: 'Wind Speed',
+      visibility: 'Visibility',
+      cloudCover: 'Cloud Cover',
+      weather: 'Weather',
+      precipitationTotal: 'Precipitation',
+      dailySummary: 'Summary',
+    },
+    
     // Días de la semana
     days: {
       monday: 'Mon',
@@ -67,6 +88,95 @@ export const en = {
       friday: 'Fri',
       saturday: 'Sat',
       sunday: 'Sun',
+    },
+    
+    // Días de la semana completos
+    daysFull: {
+      monday: 'Monday',
+      tuesday: 'Tuesday',
+      wednesday: 'Wednesday',
+      thursday: 'Thursday',
+      friday: 'Friday',
+      saturday: 'Saturday',
+      sunday: 'Sunday',
+    },
+    
+    // Errores
+    error: {
+      title: 'Error',
+      dayNotAvailable: 'This day is not available in the forecast',
+    },
+
+    // Weather descriptions (OpenWeatherMap codes)
+    weatherDescriptions: {
+      // Thunderstorm (2xx)
+      thunderstormWithLightRain: 'thunderstorm with light rain',
+      thunderstormWithRain: 'thunderstorm with rain',
+      thunderstormWithHeavyRain: 'thunderstorm with heavy rain',
+      lightThunderstorm: 'light thunderstorm',
+      thunderstorm: 'thunderstorm',
+      heavyThunderstorm: 'heavy thunderstorm',
+      raggedThunderstorm: 'ragged thunderstorm',
+      thunderstormWithLightDrizzle: 'thunderstorm with light drizzle',
+      thunderstormWithDrizzle: 'thunderstorm with drizzle',
+      thunderstormWithHeavyDrizzle: 'thunderstorm with heavy drizzle',
+      
+      // Drizzle (3xx)
+      lightIntensityDrizzle: 'light drizzle',
+      drizzle: 'drizzle',
+      heavyIntensityDrizzle: 'heavy drizzle',
+      lightIntensityDrizzleRain: 'light drizzle rain',
+      drizzleRain: 'drizzle rain',
+      heavyIntensityDrizzleRain: 'heavy drizzle rain',
+      showerRainAndDrizzle: 'shower rain and drizzle',
+      heavyShowerRainAndDrizzle: 'heavy shower rain and drizzle',
+      showerDrizzle: 'shower drizzle',
+      
+      // Rain (5xx)
+      lightRain: 'light rain',
+      moderateRain: 'moderate rain',
+      heavyIntensityRain: 'heavy rain',
+      veryHeavyRain: 'very heavy rain',
+      extremeRain: 'extreme rain',
+      freezingRain: 'freezing rain',
+      lightIntensityShowerRain: 'light shower rain',
+      showerRain: 'shower rain',
+      heavyIntensityShowerRain: 'heavy shower rain',
+      raggedShowerRain: 'ragged shower rain',
+      
+      // Snow (6xx)
+      lightSnow: 'light snow',
+      snow: 'snow',
+      heavySnow: 'heavy snow',
+      sleet: 'sleet',
+      lightShowerSleet: 'light shower sleet',
+      showerSleet: 'shower sleet',
+      lightRainAndSnow: 'light rain and snow',
+      rainAndSnow: 'rain and snow',
+      lightShowerSnow: 'light shower snow',
+      showerSnow: 'shower snow',
+      heavyShowerSnow: 'heavy shower snow',
+      
+      // Atmosphere (7xx)
+      mist: 'mist',
+      smoke: 'smoke',
+      haze: 'haze',
+      sandDustWhirls: 'sand/dust whirls',
+      fog: 'fog',
+      sand: 'sand',
+      dust: 'dust',
+      volcanicAsh: 'volcanic ash',
+      squalls: 'squalls',
+      tornado: 'tornado',
+      
+      // Clear (800)
+      clearSky: 'clear sky',
+      
+      // Clouds (80x)
+      fewClouds: 'few clouds',
+      scatteredClouds: 'scattered clouds',
+      brokenClouds: 'broken clouds',
+      overcastClouds: 'overcast clouds',
     },
   },
 };

@@ -9,10 +9,9 @@ export interface CurrentWeather {
   feelsLike: number; // Sensación térmica
   tempMin: number; // Temperatura mínima
   tempMax: number; // Temperatura máxima
-  condition: string;
+  description: string; // Description de la API (ej: "clear sky", "overcast clouds")
   weatherMain: string; // Main de la API (Clear, Clouds, Rain, etc.)
   weatherId: number; // ID numérico del weather (ej: 800=clear, 804=overcast)
-  weatherDescription: string; // Description de la API (para mostrar al usuario)
   humidity: number;
   windSpeed: number;
   pressure: number; // Presión atmosférica en hPa
@@ -31,10 +30,9 @@ export class CurrentWeatherModel implements CurrentWeather {
   feelsLike: number;
   tempMin: number;
   tempMax: number;
-  condition: string;
+  description: string;
   weatherMain: string;
   weatherId: number;
-  weatherDescription: string;
   humidity: number;
   windSpeed: number;
   pressure: number;
@@ -52,10 +50,9 @@ export class CurrentWeatherModel implements CurrentWeather {
     this.feelsLike = data.feelsLike;
     this.tempMin = data.tempMin;
     this.tempMax = data.tempMax;
-    this.condition = data.condition;
+    this.description = data.description;
     this.weatherMain = data.weatherMain;
     this.weatherId = data.weatherId;
-    this.weatherDescription = data.weatherDescription;
     this.humidity = data.humidity;
     this.windSpeed = data.windSpeed;
     this.pressure = data.pressure;
@@ -154,7 +151,7 @@ export class CurrentWeatherModel implements CurrentWeather {
     return (
       this.city.length > 0 &&
       this.temperature !== undefined &&
-      this.condition.length > 0
+      this.description.length > 0
     );
   }
 

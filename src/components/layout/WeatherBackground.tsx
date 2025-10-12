@@ -213,7 +213,7 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({
   sunsetTime,
   timezone,
 }) => {
-  // Determinar la imagen a mostrar según condición, día/noche, hora actual y sunset
+  // Determinar la imagen a mostrar según clima, día/noche, hora actual y sunset
   const backgroundImage = useMemo(() => {
     const timeOfDay = getTimeOfDay(isDaytime, currentTime, sunsetTime, timezone);
     const images = getweatherBgImages(weatherMain, weatherId);
