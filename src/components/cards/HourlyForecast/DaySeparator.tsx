@@ -2,6 +2,7 @@
  * DaySeparator - Separador visual entre días en el pronóstico por hora
  */
 
+import { Colors } from '@/src/constants/Colors';
 import { getDayNameKey } from '@/src/utils/helpers';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,13 +39,13 @@ export const DaySeparator: React.FC<DaySeparatorProps> = ({
         className="rounded-full px-3 py-1.5"
         style={{ 
           backgroundColor: isPressed 
-            ? 'rgba(255, 255, 255, 0.5)' 
-            : 'rgba(255, 255, 255, 0.2)' 
+            ? Colors.whiteAlpha50
+            : Colors.whiteAlpha20
         }}
       >
         <Text 
           className="text-xs font-semibold text-center" 
-          style={{ color: '#fff' }}
+          style={{ color: 'white' }}
         >
           {t(getDayNameKey(dayName, false))}
         </Text>

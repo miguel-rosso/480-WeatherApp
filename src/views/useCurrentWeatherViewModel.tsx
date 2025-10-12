@@ -9,6 +9,7 @@ import { InfoPairCard } from '@/src/components/cards/InfoPairCard';
 import { WeatherCard } from '@/src/components/cards/WeatherCard';
 import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { Colors } from '@/src/constants/Colors';
 import { getWeatherDescriptionKey } from '@/src/utils/helpers';
 import { useCurrentWeatherViewModel } from '@/src/viewmodels/useCurrentWeatherViewModel';
 import Feather from '@expo/vector-icons/Feather';
@@ -44,7 +45,7 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
       <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor: 'transparent' }}>
         {/* Hora local de la ciudad */}
         {weather && (
-          <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
+          <Text className="text-lg font-semibold" style={{ color: 'white' }}>
             🕐 {weather.getFormattedLocalTime(currentTime)}
           </Text>
         )}
@@ -58,26 +59,26 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
         className="flex-1 px-6"
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: 'transparent' }}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor="#fff" />}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={'white'} />}
       >
         <View className="gap-6 pb-8" style={{ backgroundColor: 'transparent' }}>
           {weather && (
             <>
               {/* Nombre de la ciudad y clima */}
               <View className="items-center mt-4 mb-2" style={{ backgroundColor: 'transparent' }}>
-                <Text className="mb-3 text-4xl font-bold" style={{ color: '#fff' }}>
+                <Text className="mb-3 text-4xl font-bold" style={{ color: 'white' }}>
                   {t(`cities.${city.toLowerCase()}`)}
                 </Text>
-                <Text className="mb-2 font-bold text-7xl" style={{ color: '#fff' }}>
+                <Text className="mb-2 font-bold text-7xl" style={{ color: 'white' }}>
                   {weather.getFormattedTemp()}
                 </Text>
                 {/* Temperatura máxima y mínima del primer día del forecast (hoy) */}
-                <Text className="mb-2 text-xl" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                <Text className="mb-2 text-xl" style={{ color: Colors.whiteAlpha80 }}>
                   {t('weather.max')}: {forecast[0]?.maxTemp || weather.tempMax}° • {t('weather.min')}: {forecast[0]?.minTemp || weather.tempMin}°
                 </Text>
                 <View className="flex-row items-center gap-2">
                   <WeatherIcon icon={weather.icon} size={30} />
-                  <Text className="text-2xl" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                  <Text className="text-2xl" style={{ color: Colors.whiteAlpha80 }}>
                     {t(getWeatherDescriptionKey(weather.weatherId))}
                   </Text>
                 </View>

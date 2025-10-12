@@ -4,6 +4,7 @@
 
 import { Forecast } from '@/src/api/models/ForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { Colors } from '@/src/constants/Colors';
 import { getDayNameKey } from '@/src/utils/helpers';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -48,7 +49,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
         <View
           style={{
             height: 1,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: Colors.weatherDivider,
             marginVertical: 8,
           }}
         />
@@ -66,14 +67,14 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
         activeOpacity={1}
         style={{ 
           borderRadius: 8,
-          backgroundColor: isPressed ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+          backgroundColor: isPressed ? Colors.weatherPressedBackground : 'transparent',
         }}
       >
         {/* Día de la semana */}
         <Text
           className="text-base font-medium"
           style={{
-            color: '#fff',
+            color: 'white',
             flex: 1,
             minWidth: 50,
           }}
@@ -90,7 +91,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
         <Text
           className="text-base"
           style={{
-            color: 'rgba(255, 255, 255, 0.7)',
+            color: Colors.whiteAlpha70,
             minWidth: 35,
             textAlign: 'right',
           }}
@@ -104,7 +105,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
             flex: 2,
             marginHorizontal: 12,
             height: 6,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: Colors.whiteAlpha20,
             borderRadius: 3,
             position: 'relative',
             minWidth: 80,
@@ -133,7 +134,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
         <Text
           className="text-base font-medium"
           style={{
-            color: '#fff',
+            color: 'white',
             minWidth: 35,
             textAlign: 'left',
           }}

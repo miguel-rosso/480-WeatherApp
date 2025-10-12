@@ -5,6 +5,8 @@
  * La lógica de negocio debe estar en los Models o ViewModels.
  */
 
+import { Colors } from '../constants/Colors';
+
 // ============================================================================
 // TIMEZONE & TIME HELPERS
 // ============================================================================
@@ -104,13 +106,13 @@ export const getLocalDayOfWeek = (localDate: Date): number => {
  * @returns Color hexadecimal
  */
 export const getTemperatureColor = (temp: number): string => {
-  if (temp < 0) return '#4A90E2'; // Azul frío
-  if (temp < 10) return '#5BC0DE'; // Cyan
-  if (temp < 15) return '#81C784'; // Verde claro
-  if (temp < 20) return '#FFD54F'; // Amarillo
-  if (temp < 25) return '#FFB74D'; // Naranja claro
-  if (temp < 30) return '#FF9800'; // Naranja
-  return '#FF5252'; // Rojo caliente
+  if (temp < 0) return Colors.tempColdBlue; // Azul frío
+  if (temp < 10) return Colors.tempCyan; // Cyan
+  if (temp < 15) return Colors.tempLightGreen; // Verde claro
+  if (temp < 20) return Colors.tempYellow; // Amarillo
+  if (temp < 25) return Colors.tempLightOrange; // Naranja claro
+  if (temp < 30) return Colors.tempOrange; // Naranja
+  return Colors.tempHotRed; // Rojo caliente
 };
 
 /**
@@ -147,51 +149,51 @@ export const getDailyForecastGradient = (weatherId: number): string[] => {
 
   // TORMENTA (200-299) - Azul/gris oscuro dramático
   if (weatherId >= 200 && weatherId < 300) {
-    return ['#2C3E50', '#34495E'];
+    return [Colors.thunderstormTop, Colors.thunderstormBottom];
   }
 
   // LLOVIZNA (300-399) - Gris azulado suave
   if (weatherId >= 300 && weatherId < 400) {
-    return ['#546E7A', '#3A7CA5'];
+    return [Colors.drizzleTop, Colors.drizzleBottom];
   }
 
   // LLUVIA (500-599) - Azul oscuro lluvioso
   if (weatherId >= 500 && weatherId < 600) {
-    return ['#546E7A', '#3A7CA5'];
+    return [Colors.drizzleTop, Colors.drizzleBottom];
   }
 
   // NIEVE (600-699) - Gris azulado frío
   if (weatherId >= 600 && weatherId < 700) {
-    return ['#546E7A', '#607D8B'];
+    return [Colors.snowTop, Colors.snowBottom];
   }
 
   // NIEBLA/ATMÓSFERA (700-799) - Gris nebuloso
   if (weatherId >= 700 && weatherId < 800) {
-    return ['#5D6D7E', '#6C7A89'];
+    return [Colors.fogTop, Colors.fogBottom];
   }
 
   // DESPEJADO (800) - Azul cielo brillante
   if (weatherId === 800) {
-    return ['#3A7BC8', '#4A8BD5'];
+    return [Colors.clearTop, Colors.clearBottom];
   }
 
   // POCAS NUBES (801) -  NUBES DISPERSAS (802) Azul cielo con nubes
   if (weatherId === 801 || weatherId === 802) {
-    return ['#3570B8', '#4581C8'];
+    return [Colors.fewCloudsTop, Colors.fewCloudsBottom];
   }
 
   // NUBES ROTAS (803) - Gris azulado
   if (weatherId === 803) {
-    return ['#556B7F', '#667C91'];
+    return [Colors.brokenCloudsTop, Colors.brokenCloudsBottom];
   }
 
   // MUY NUBLADO (804) - Gris oscuro
   if (weatherId === 804 ) {
-    return ['#4F5B66', '#5F6C75'];
+    return [Colors.overcastTop, Colors.overcastBottom];
   }
 
   // DEFAULT - Azul cielo
-  return ['#3A7BC8', '#4A8BD5'];
+  return [Colors.clearTop, Colors.clearBottom];
 };
 
 // ============================================================================

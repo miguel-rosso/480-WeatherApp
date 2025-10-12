@@ -4,6 +4,7 @@
  */
 
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { Colors } from '@/src/constants/Colors';
 import { getWeatherDescriptionKey } from '@/src/utils/helpers';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -108,7 +109,7 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
       <View className="mb-4">
         <Text 
           className="text-xl font-bold" 
-          style={{ color: "#FFFFFF" }}
+          style={{ color: 'white' }}
         >
           {t('dailyForecast.dayForecast') || 'Day Forecast'}
         </Text>
@@ -118,20 +119,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
       {translatedDescription && (
         <View 
           className="p-4 mb-4 rounded-2xl" 
-          style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+          style={{ backgroundColor: Colors.weatherInfoBackground }}
         >
           <View className="flex-row items-center mb-3">
             <Text className="mr-2 text-xl">📋</Text>
             <Text 
               className="text-xs font-semibold tracking-wider uppercase" 
-              style={{ color: "rgba(255, 255, 255, 0.6)" }}
+              style={{ color: Colors.whiteAlpha60 }}
             >
               {t('dailyForecast.dailySummary')}
             </Text>
           </View>
           <Text 
             className="text-base leading-6" 
-            style={{ color: "#FFFFFF" }}
+            style={{ color: 'white' }}
           >
             {generateSummary()}
           </Text>
@@ -143,20 +144,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {/* Feels Like */}
         <View 
           className="p-4 mb-3 rounded-2xl" 
-          style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+          style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
         >
           <View className="flex-row items-center mb-2">
             <Text className="mr-2 text-xl">🌡️</Text>
             <Text 
               className="text-xs font-semibold tracking-wider uppercase" 
-              style={{ color: "rgba(255, 255, 255, 0.6)" }}
+              style={{ color: Colors.whiteAlpha60 }}
             >
               {t('dailyForecast.feelsLike')}
             </Text>
           </View>
           <Text 
             className="text-2xl font-bold" 
-            style={{ color: "#FFFFFF" }}
+            style={{ color: 'white' }}
           >
             {Math.round(avgFeelsLike)}°
           </Text>
@@ -166,20 +167,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {avgHumidity > 0 && (
           <View 
             className="p-4 mb-3 rounded-2xl" 
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+            style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
           >
             <View className="flex-row items-center mb-2">
               <Text className="mr-2 text-xl">💧</Text>
               <Text 
                 className="text-xs font-semibold tracking-wider uppercase" 
-                style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                style={{ color: Colors.whiteAlpha60 }}
               >
                 {t('dailyForecast.humidity')}
               </Text>
             </View>
             <Text 
               className="text-2xl font-bold" 
-              style={{ color: "#FFFFFF" }}
+              style={{ color: 'white' }}
             >
               {Math.round(avgHumidity)}%
             </Text>
@@ -190,20 +191,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {avgWindSpeed > 0 && (
           <View 
             className="p-4 mb-3 rounded-2xl" 
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+            style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
           >
             <View className="flex-row items-center mb-2">
               <Text className="mr-2 text-xl">💨</Text>
               <Text 
                 className="text-xs font-semibold tracking-wider uppercase" 
-                style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                style={{ color: Colors.whiteAlpha60 }}
               >
                 {t('dailyForecast.windSpeed')}
               </Text>
             </View>
             <Text 
               className="text-2xl font-bold" 
-              style={{ color: "#FFFFFF" }}
+              style={{ color: 'white' }}
             >
               {avgWindSpeed.toFixed(1)} <Text className="text-base">m/s</Text>
             </Text>
@@ -214,20 +215,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {avgVisibility > 0 && (
           <View 
             className="p-4 mb-3 rounded-2xl" 
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+            style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
           >
             <View className="flex-row items-center mb-2">
               <Text className="mr-2 text-xl">👁️</Text>
               <Text 
                 className="text-xs font-semibold tracking-wider uppercase" 
-                style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                style={{ color: Colors.whiteAlpha60 }}
               >
                 {t('dailyForecast.visibility')}
               </Text>
             </View>
             <Text 
               className="text-2xl font-bold" 
-              style={{ color: "#FFFFFF" }}
+              style={{ color: 'white' }}
             >
               {formatVisibility(avgVisibility)}
             </Text>
@@ -238,20 +239,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {avgCloudCover > 0 && (
           <View 
             className="p-4 mb-3 rounded-2xl" 
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+            style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
           >
             <View className="flex-row items-center mb-2">
               <Text className="mr-2 text-xl">☁️</Text>
               <Text 
                 className="text-xs font-semibold tracking-wider uppercase" 
-                style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                style={{ color: Colors.whiteAlpha60 }}
               >
                 {t('dailyForecast.cloudCover')}
               </Text>
             </View>
             <Text 
               className="text-2xl font-bold" 
-              style={{ color: "#FFFFFF" }}
+              style={{ color: 'white' }}
             >
               {Math.round(avgCloudCover)}%
             </Text>
@@ -261,20 +262,20 @@ export const DailyForecastDetails: React.FC<DailyForecastDetailsProps> = ({ data
         {/* Precipitation Total */}
           <View 
             className="p-4 mb-3 rounded-2xl" 
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", width: '48%' }}
+            style={{ backgroundColor: Colors.weatherInfoBackground, width: '48%' }}
           >
             <View className="flex-row items-center mb-2">
               <Text className="mr-2 text-xl">{totalRain > 0 ? '🌧️' : '☀️'}</Text>
               <Text 
                 className="text-xs font-semibold tracking-wider uppercase" 
-                style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                style={{ color: Colors.whiteAlpha60 }}
               >
                 {t('dailyForecast.precipitationTotal')}
               </Text>
             </View>
             <Text 
               className="text-2xl font-bold" 
-              style={{ color: "#FFFFFF" }}
+              style={{ color: 'white' }}
             >
               {totalRain.toFixed(1)} <Text className="text-base">mm</Text>
             </Text>

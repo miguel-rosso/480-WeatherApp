@@ -4,6 +4,7 @@
 
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { Colors } from '@/src/constants/Colors';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -42,8 +43,8 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
       style={{ 
         minWidth: 60,
         borderRightWidth: showBorder ? 1 : 0,
-        borderRightColor: 'rgba(255, 255, 255, 0.15)',
-        backgroundColor: isPressed ? 'rgba(255, 255, 255, 0.3)' : 'transparent',
+        borderRightColor: Colors.weatherBorder,
+        backgroundColor: isPressed ? Colors.weatherPressedBackground : 'transparent',
         borderRadius: 8,
       }}
     >
@@ -51,7 +52,7 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
       <Text 
         className="mb-3 text-base font-medium" 
         style={{ 
-          color: '#fff',
+          color: 'white',
           fontWeight: isFirst ? '700' : '400'
         }}
       >
@@ -67,7 +68,7 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
       <Text 
         className="text-xl font-semibold" 
         style={{ 
-          color: '#fff',
+          color: 'white',
           fontWeight: isFirst ? '700' : '600'
         }}
       >

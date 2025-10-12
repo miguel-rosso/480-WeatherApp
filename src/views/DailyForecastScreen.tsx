@@ -9,6 +9,7 @@ import { PrecipitationChart } from '@/src/components/dailyForecast/Precipitation
 import { TemperatureChart } from '@/src/components/dailyForecast/TemperatureChart';
 import { TemperatureRangeBar } from '@/src/components/dailyForecast/TemperatureRangeBar';
 import { DailyForecastGradient } from '@/src/components/layout/DailyForecastGradient';
+import { Colors } from '@/src/constants/Colors';
 import { useDailyForecastViewModel } from '@/src/viewmodels/useDailyForecastViewModel';
 import { Stack } from 'expo-router';
 import React from 'react';
@@ -50,7 +51,7 @@ export const DailyForecastScreen: React.FC<DailyForecastScreenProps> = ({ city, 
           headerStyle: {
             backgroundColor: backgroundGradient[0],
           },
-          headerTintColor: "#FFFFFF",
+          headerTintColor: Colors.headerTintColor,
           headerTitleStyle: {
             fontWeight: '600',
           },
@@ -72,7 +73,7 @@ export const DailyForecastScreen: React.FC<DailyForecastScreenProps> = ({ city, 
               <View className="px-6 mb-3">
                 <Text 
                   className="text-xs font-semibold tracking-wider uppercase" 
-                  style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                  style={{ color: Colors.whiteAlpha60 }}
                 >
                   {t('dailyForecast.temperature') || 'Temperature'}
                 </Text>
@@ -88,7 +89,7 @@ export const DailyForecastScreen: React.FC<DailyForecastScreenProps> = ({ city, 
               <View className="px-6 mb-3">
                 <Text 
                   className="text-xs font-semibold tracking-wider uppercase" 
-                  style={{ color: "rgba(255, 255, 255, 0.6)" }}
+                  style={{ color: Colors.whiteAlpha60 }}
                 >
                   {t('dailyForecast.precipitation') || 'Precipitation'}
                 </Text>

@@ -5,6 +5,7 @@
 
 import { Forecast } from '@/src/api/models/ForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
+import { Colors } from '@/src/constants/Colors';
 import { getDayNameKey } from '@/src/utils/helpers';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef } from 'react';
@@ -77,8 +78,8 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
                 paddingHorizontal: 16,
                 borderRadius: 16,
                 backgroundColor: isSelected 
-                  ? "rgba(255, 255, 255, 0.2)"
-                  : "rgba(255, 255, 255, 0.08)",
+                  ? Colors.weatherSelectedBackground
+                  : Colors.weatherUnselectedBackground,
                 minWidth: 80,
               }}
             >
@@ -86,7 +87,7 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
             <Text
               className="mb-2 text-sm font-semibold"
               style={{
-                color: isSelected ? "#FFFFFF" : "rgba(255, 255, 255, 0.7)",
+                color: isSelected ? 'white' : Colors.whiteAlpha70,
               }}
             >
               {t(getDayNameKey(day.date))}

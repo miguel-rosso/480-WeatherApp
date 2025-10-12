@@ -7,6 +7,7 @@
 
 import { Forecast } from '@/src/api/models/ForecastModel';
 import { DailyForecastItem } from '@/src/components/cards/DailyForecast/DailyForecastItem';
+import { Colors } from '@/src/constants/Colors';
 import { getTemperatureGradient } from '@/src/utils/helpers';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -45,12 +46,12 @@ export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city
       activeOpacity={0.7}
       onPress={handleCardPress}
       className="p-6 rounded-3xl" 
-      style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+      style={{ backgroundColor: Colors.weatherCardBackground }}
     >
       {/* Header */}
       <View className="flex-row items-center gap-2 mb-3">
-        <Text style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.6)' }}>📅</Text>
-        <Text style={{ fontSize: 11, fontWeight: '600', color: 'rgba(255, 255, 255, 0.6)', letterSpacing: 0.5 }}>
+        <Text style={{ fontSize: 11, color: Colors.whiteAlpha60 }}>📅</Text>
+        <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.whiteAlpha60, letterSpacing: 0.5 }}>
           {t('weather.forecast')?.toUpperCase() || 'DAILY FORECAST'}
         </Text>
       </View>

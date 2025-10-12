@@ -3,6 +3,7 @@
  * Displays min and max temperature with a visual gradient bar
  */
 
+import { Colors } from '@/src/constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,10 +25,10 @@ export const TemperatureRangeBar: React.FC<TemperatureRangeBarProps> = ({
   const temperatureDelta = Math.round(maxTemp - minTemp);
 
   return (
-    <View className="mx-6 mb-6 overflow-hidden rounded-2xl" style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}>
+    <View className="mx-6 mb-6 overflow-hidden rounded-2xl" style={{ backgroundColor: Colors.weatherInfoBackground }}>
       {/* Header */}
       <View className="flex-row items-center px-4 pt-3 pb-1">
-        <Text className="text-base font-semibold" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+        <Text className="text-base font-semibold" style={{ color: Colors.whiteAlpha70 }}>
           🌡️ {t('dailyForecast.temperatureRange')}
         </Text>
       </View>
@@ -43,10 +44,10 @@ export const TemperatureRangeBar: React.FC<TemperatureRangeBarProps> = ({
             >
               <Text className="text-lg">❄️</Text>
             </View>
-            <Text className="mb-1 text-xs font-medium" style={{ color: "rgba(255, 255, 255, 0.6)" }}>
+            <Text className="mb-1 text-xs font-medium" style={{ color: Colors.whiteAlpha60 }}>
               {t('weather.min')}
             </Text>
-            <Text className="text-2xl font-bold" style={{ color: "#FFFFFF" }}>
+            <Text className="text-2xl font-bold" style={{ color: 'white' }}>
               {Math.round(minTemp)}°
             </Text>
           </View>
@@ -63,7 +64,7 @@ export const TemperatureRangeBar: React.FC<TemperatureRangeBarProps> = ({
                 borderRadius: 2,
               }}
             />
-            <Text className="mt-1 text-xs" style={{ color: "rgba(255, 255, 255, 0.6)" }}>
+            <Text className="mt-1 text-xs" style={{ color: Colors.whiteAlpha60 }}>
               Δ {temperatureDelta}°
             </Text>
           </View>
@@ -76,10 +77,10 @@ export const TemperatureRangeBar: React.FC<TemperatureRangeBarProps> = ({
             >
               <Text className="text-lg">🔥</Text>
             </View>
-            <Text className="mb-1 text-xs font-medium" style={{ color: "rgba(255, 255, 255, 0.6)" }}>
+            <Text className="mb-1 text-xs font-medium" style={{ color: Colors.whiteAlpha60 }}>
               {t('weather.max')}
             </Text>
-            <Text className="text-2xl font-bold" style={{ color: "#FFFFFF" }}>
+            <Text className="text-2xl font-bold" style={{ color: 'white' }}>
               {Math.round(maxTemp)}°
             </Text>
           </View>

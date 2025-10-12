@@ -8,6 +8,7 @@ import { Forecast } from '@/src/api/models/ForecastModel';
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
 import { DaySeparator } from '@/src/components/cards/HourlyForecast/DaySeparator';
 import { HourlyItem } from '@/src/components/cards/HourlyForecast/HourlyItem';
+import { Colors } from '@/src/constants/Colors';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -85,18 +86,18 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
       activeOpacity={0.8}
       onPress={handleCardPress}
       className="overflow-hidden rounded-3xl" 
-      style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+      style={{ backgroundColor: Colors.weatherCardBackground }}
     >
       {/* Header */}
       <View className="flex-row items-center gap-2 px-6 pt-3 pb-3">
-        <Text style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.6)' }}>⏰</Text>
-        <Text style={{ fontSize: 11, fontWeight: '600', color: 'rgba(255, 255, 255, 0.6)', letterSpacing: 0.5 }}>
+        <Text style={{ fontSize: 11, color: Colors.whiteAlpha60 }}>⏰</Text>
+        <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.whiteAlpha60, letterSpacing: 0.5 }}>
           {t('weather.hourlyForecast')?.toUpperCase() || 'HOURLY FORECAST'}
         </Text>
       </View>
       
       {/* Divider */}
-      <View style={{ height: 0.5, backgroundColor: 'rgba(255, 255, 255, 0.25)', marginHorizontal: 16 }} />
+      <View style={{ height: 0.5, backgroundColor: Colors.whiteAlpha25, marginHorizontal: 16 }} />
       
       {/* Scrollable hourly items */}
       <ScrollView 
@@ -118,8 +119,6 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
                 <DaySeparator 
                   dayName={hour.dayName} 
                   dayIndex={dayIndex}
-                  city={city}
-                  totalDays={forecast.length}
                   onNavigate={validateAndNavigate}
                 />
               )}

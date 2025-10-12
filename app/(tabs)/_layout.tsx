@@ -18,10 +18,6 @@ export default function TabLayout() {
   const segments = useSegments();
   const isContactScreen = segments[segments.length - 1] === 'contact';
 
-  // 🎨 Obtener el color de fondo del tema actual
-  const colorScheme = useColorScheme() ?? 'light';
-  const backgroundColor = Colors[colorScheme].background;
-
   // 🚀 Prefetch de todas las ciudades al iniciar la app (solo una vez)
   useEffect(() => {
     NavigationBar.setButtonStyleAsync('light');
@@ -30,7 +26,7 @@ export default function TabLayout() {
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: isContactScreen ? backgroundColor : 'transparent' }}>
+    <View style={{ flex: 1, backgroundColor: isContactScreen ? Colors.background : 'transparent' }}>
       {/* Fondo con imagen dinámica compartido desde Redux - Solo visible cuando NO estamos en la pantalla de contacto */}
       {!isContactScreen && (
         <WeatherBackground
@@ -47,8 +43,8 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
           tabBarButton: HapticTab,
-          tabBarActiveTintColor: '#FFFFFF',
-          tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: Colors.whiteAlpha60,
           tabBarStyle: {
             backgroundColor: 'transparent',
             borderTopColor: 'white',

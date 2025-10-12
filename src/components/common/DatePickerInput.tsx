@@ -4,7 +4,7 @@
  * En iOS: muestra un spinner con botones de Confirmar/Cancelar
  */
 
-import { useThemeColors } from '@/src/hooks/useThemeColor';
+import { Colors } from '@/src/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
@@ -38,7 +38,6 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
   errorMessage,
   onBlur,
 }) => {
-  const colors = useThemeColors();
   const { t } = useTranslation();
   const [internalShowDatePicker, setInternalShowDatePicker] = useState(false);
   const [tempDate, setTempDate] = useState<Date>(value || new Date());
@@ -122,30 +121,30 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
 
   return (
     <View>
-      <Text className="mb-2 text-sm font-semibold" style={{ color: colors.text }}>
+      <Text className="mb-2 text-sm font-semibold" style={{ color: Colors.text }}>
         {label}
       </Text>
       
       <TouchableOpacity
         className="flex-row items-center justify-between p-4 border rounded-xl"
         style={{
-          backgroundColor: colors.inputBackground,
-          borderColor: hasError ? '#EF4444' : colors.inputBorder,
+          backgroundColor: Colors.inputBackground,
+          borderColor: hasError ? Colors.error : Colors.inputBorder,
           borderWidth: hasError ? 2 : 1,
         }}
         onPress={toggleDatePicker}
       >
         <Text
           className="text-base"
-          style={{ color: value ? colors.text : colors.textSecondary }}
+          style={{ color: value ? Colors.text : Colors.textSecondary }}
         >
           {value ? formatDate(value) : placeholder}
         </Text>
-        <Ionicons name="calendar-outline" size={20} color={colors.textSecondary} />
+        <Ionicons name="calendar-outline" size={20} color={Colors.textSecondary} />
       </TouchableOpacity>
 
       {hasError && errorMessage && (
-        <Text className="mt-1 text-xs" style={{ color: '#EF4444' }}>
+        <Text className="mt-1 text-xs" style={{ color: Colors.error }}>
           {errorMessage}
         </Text>
       )}
@@ -157,9 +156,9 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
             <View
               className="p-4 mt-4 rounded-xl"
               style={{
-                backgroundColor: colors.inputBackground,
+                backgroundColor: Colors.inputBackground,
                 borderWidth: 1,
-                borderColor: colors.inputBorder,
+                borderColor: Colors.inputBorder,
               }}
             >
               <DateTimePicker
@@ -176,17 +175,17 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
                   onPress={cancelDateSelection}
                   className="px-4 py-2 mr-3 rounded-lg"
                   style={{
-                    backgroundColor: colors.buttonDisabled,
+                    backgroundColor: Colors.buttonDisabled,
                   }}
                 >
-                  <Text style={{ color: colors.text }}>{t('contact.cancel')}</Text>
+                  <Text style={{ color: Colors.text }}>{t('contact.cancel')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={confirmDateSelection}
                   className="px-4 py-2 rounded-lg"
-                  style={{ backgroundColor: colors.buttonEnabled }}
+                  style={{ backgroundColor: Colors.buttonEnabled }}
                 >
-                  <Text style={{ color: colors.buttonTextEnabled }}>{t('contact.confirm')}</Text>
+                  <Text style={{ color: Colors.buttonTextEnabled }}>{t('contact.confirm')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

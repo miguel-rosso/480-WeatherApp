@@ -6,7 +6,7 @@
 import { getDailyForecastGradient, getDayNameKey, getTemperatureGradient } from '@/src/utils/helpers';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCurrentWeatherViewModel } from './useCurrentWeatherViewModel';
+import { useCurrentWeatherViewModel } from '@/src/viewmodels/useCurrentWeatherViewModel';
 
 interface UseDailyForecastViewModelProps {
   city: string;

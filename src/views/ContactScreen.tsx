@@ -7,7 +7,7 @@
 import { DatePickerInput } from '@/src/components/common/DatePickerInput';
 import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { TextInputWithError } from '@/src/components/common/TextInputWithError';
-import { useThemeColors } from '@/src/hooks/useThemeColor';
+import { Colors } from '@/src/constants/Colors';
 import { useContactViewModel } from '@/src/viewmodels/useContactViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, Platform, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export const ContactScreen: React.FC = () => {
-  const colors = useThemeColors();
   const { t } = useTranslation();
   const animationRef = useRef<LottieView>(null);
   const timerRef = useRef<number | null>(null);
@@ -80,7 +79,7 @@ export const ContactScreen: React.FC = () => {
       className="flex-1"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-      style={{ backgroundColor: colors.background }}
+      style={{ backgroundColor: Colors.background }}
     >
       <ScrollView className="flex-1" contentContainerClassName="px-6 pt-16 pb-6" keyboardShouldPersistTaps="handled" onScrollBeginDrag={handleScrollBegin}>
         {/* Language Selector */}
@@ -91,12 +90,12 @@ export const ContactScreen: React.FC = () => {
         {/* Header */}
         <View className="mb-8">
           <View className="flex-row items-center mb-2">
-            <Ionicons name="mail" size={32} color={colors.text} />
-            <Text className="ml-3 text-3xl font-bold" style={{ color: colors.text }}>
+            <Ionicons name="mail" size={32} color={Colors.text} />
+            <Text className="ml-3 text-3xl font-bold" style={{ color: Colors.text }}>
               {t('contact.title')}
             </Text>
           </View>
-          <Text className="text-base" style={{ color: colors.textSecondary }}>
+          <Text className="text-base" style={{ color: Colors.textSecondary }}>
             {t('contact.subtitle')}
           </Text>
         </View>
@@ -168,16 +167,16 @@ export const ContactScreen: React.FC = () => {
           {/* Switch - ¿Me vais a contratar? */}
           <View className="flex-row items-center justify-between py-4" style={{ position: 'relative' }}>
             <View className="flex-row items-center flex-1">
-              <Text className="text-base" style={{ color: colors.text }}>
+              <Text className="text-base" style={{ color: Colors.text }}>
                 {t('contact.willHireMe')}
               </Text>
             </View>
             <Switch
               value={willHireMe}
               onValueChange={handleSwitchChange}
-              trackColor={{ false: colors.textSecondary, true: colors.buttonEnabled }}
-              thumbColor={willHireMe ? colors.buttonTextEnabled : '#f4f3f4'}
-              ios_backgroundColor={colors.textSecondary}
+              trackColor={{ false: Colors.textSecondary, true: Colors.buttonEnabled }}
+              thumbColor={willHireMe ? Colors.buttonTextEnabled : Colors.switchThumbInactive}
+              ios_backgroundColor={Colors.textSecondary}
               style={Platform.OS === 'android' ? { transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] } : undefined}
             />
             {/* Animación de Lottie - Position absolute para no empujar elementos */}
@@ -210,8 +209,8 @@ export const ContactScreen: React.FC = () => {
         <TouchableOpacity
           className="items-center p-5 mt-8 mb-6 rounded-xl"
           style={{
-            backgroundColor: isFormValid ? colors.buttonEnabled : colors.buttonDisabled,
-            shadowColor: '#000',
+            backgroundColor: isFormValid ? Colors.buttonEnabled : Colors.buttonDisabled,
+            shadowColor: Colors.shadowBlack,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: isFormValid ? 0.1 : 0,
             shadowRadius: 4,
@@ -222,11 +221,11 @@ export const ContactScreen: React.FC = () => {
           activeOpacity={0.8}
         >
           <View className="flex-row items-center">
-            <Ionicons name="send" size={20} color={isFormValid ? colors.buttonTextEnabled : colors.buttonTextDisabled} className="mr-2" />
+            <Ionicons name="send" size={20} color={isFormValid ? Colors.buttonTextEnabled : Colors.buttonTextDisabled} className="mr-2" />
             <Text
               className="text-lg font-semibold"
               style={{
-                color: isFormValid ? colors.buttonTextEnabled : colors.buttonTextDisabled,
+                color: isFormValid ? Colors.buttonTextEnabled : Colors.buttonTextDisabled,
               }}
             >
               {t('contact.submit')}

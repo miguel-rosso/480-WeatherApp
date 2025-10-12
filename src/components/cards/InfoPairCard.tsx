@@ -2,6 +2,7 @@
  * InfoPairCard - Card genérica para mostrar dos valores relacionados
  */
 
+import { Colors } from '@/src/constants/Colors';
 import React, { ReactNode } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -24,20 +25,20 @@ interface InfoPairCardProps {
 const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, description, showIconBackground = true }) => (
   <View className="items-center flex-1 px-3 py-2">
     {showIconBackground ? (
-      <View className="items-center justify-center w-9 h-9 mb-1.5 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
+      <View className="items-center justify-center w-9 h-9 mb-1.5 rounded-full" style={{ backgroundColor: Colors.whiteAlpha20 }}>
         {typeof icon === 'string' ? <Text className="text-lg">{icon}</Text> : icon}
       </View>
     ) : (
       <View className="mb-1.5">{typeof icon === 'string' ? <Text className="text-lg">{icon}</Text> : icon}</View>
     )}
-    <Text className="mb-0.5 text-xs font-medium" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+    <Text className="mb-0.5 text-xs font-medium" style={{ color: Colors.whiteAlpha70 }}>
       {label}
     </Text>
-    <Text className="text-xl font-bold" style={{ color: '#fff' }}>
+    <Text className="text-xl font-bold" style={{ color: 'white' }}>
       {value}
     </Text>
     {description && (
-      <Text className="text-xs mt-0.5" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+      <Text className="text-xs mt-0.5" style={{ color: Colors.whiteAlpha60 }}>
         {description}
       </Text>
     )}
@@ -50,8 +51,8 @@ export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, le
       {/* Header opcional */}
       {title && (
         <View className="flex-row items-center gap-2 mb-3">
-          {titleIcon && <Text style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.6)' }}>{titleIcon}</Text>}
-          <Text style={{ fontSize: 11, fontWeight: '600', color: 'rgba(255, 255, 255, 0.6)', letterSpacing: 0.5 }}>
+          {titleIcon && <Text style={{ fontSize: 11, color: Colors.whiteAlpha60 }}>{titleIcon}</Text>}
+          <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.whiteAlpha60, letterSpacing: 0.5 }}>
             {title.toUpperCase()}
           </Text>
         </View>
@@ -62,7 +63,7 @@ export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, le
         <InfoItem {...leftItem} />
 
         {/* Divisor vertical */}
-        <View style={{ width: 0.5, backgroundColor: 'rgba(255, 255, 255, 0.25)', marginHorizontal: 16 }} />
+        <View style={{ width: 0.5, backgroundColor: Colors.whiteAlpha25, marginHorizontal: 16 }} />
 
         <InfoItem {...rightItem} />
       </View>
@@ -75,7 +76,7 @@ export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, le
         activeOpacity={0.7}
         onPress={onPress}
         className="p-4 rounded-3xl"
-        style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+        style={{ backgroundColor: Colors.weatherCardBackground }}
       >
         {content}
       </TouchableOpacity>
@@ -83,7 +84,7 @@ export const InfoPairCard: React.FC<InfoPairCardProps> = ({ title, titleIcon, le
   }
 
   return (
-    <View className="p-4 rounded-3xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}>
+    <View className="p-4 rounded-3xl" style={{ backgroundColor: Colors.weatherCardBackground }}>
       {content}
     </View>
   );

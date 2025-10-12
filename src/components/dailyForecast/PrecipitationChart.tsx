@@ -4,6 +4,7 @@
  */
 
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { Colors } from '@/src/constants/Colors';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Text, View } from 'react-native';
@@ -20,7 +21,7 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
   if (!data || data.length === 0) {
     return (
       <View className="items-center justify-center py-8">
-        <Text style={{ color: "rgba(255, 255, 255, 0.6)" }}>
+        <Text style={{ color: Colors.whiteAlpha60 }}>
           {t('dailyForecast.noData')}
         </Text>
       </View>
@@ -75,14 +76,14 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
                 y={y}
                 width={graphWidth}
                 height={1}
-                fill={"#FFFFFF"}
+                fill={'white'}
                 opacity={0.1}
               />
               {/* Etiqueta del eje Y */}
               <SvgText
                 x={padding.left - 10}
                 y={y + 4}
-                fill={"#FFFFFF"}
+                fill={'white'}
                 fontSize="10"
                 fontWeight="400"
                 textAnchor="end"
@@ -103,7 +104,7 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
               y={bar.y}
               width={bar.width}
               height={Math.max(bar.height, 3)}
-              fill={"#4FC3F7"}
+              fill={Colors.chartBlue}
               opacity={bar.pop === 0 ? 0.2 : 0.8}
               rx={3}
               ry={3}
@@ -113,7 +114,7 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
               <SvgText
                 x={bar.x + bar.width / 2}
                 y={bar.y - 5}
-                fill={"#FFFFFF"}
+                fill={'white'}
                 fontSize="11"
                 fontWeight="600"
                 textAnchor="middle"
@@ -125,7 +126,7 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
             <SvgText
               x={bar.x + bar.width / 2}
               y={chartHeight - padding.bottom + 20}
-              fill={"#FFFFFF"}
+              fill={'white'}
               fontSize="11"
               fontWeight="400"
               textAnchor="middle"
@@ -140,11 +141,11 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
       {/* Descripción adicional */}
       <View className="px-4 rounded-xl">
         {hasSignificantRain ? (
-          <Text className="text-sm" style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+          <Text className="text-sm" style={{ color: Colors.whiteAlpha80 }}>
             ☂️ {t('dailyForecast.rainExpected')}
           </Text>
         ) : (
-          <Text className="text-sm" style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+          <Text className="text-sm" style={{ color: Colors.whiteAlpha80 }}>
             ☀️ {t('dailyForecast.noRainExpected')}
           </Text>
         )}
