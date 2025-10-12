@@ -1,4 +1,5 @@
 import "@/global.css";
+import { LanguageSelector } from "@/src/components/common/LanguageSelector";
 import '@/src/locales/i18n'; // Inicializar i18n
 import { store } from '@/src/store';
 import { Stack } from "expo-router";
@@ -12,9 +13,10 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen 
-          name="DailyForecastScreen" 
+          name="dailyForecast" 
           options={{ 
             presentation: 'modal',
+            headerRight: () => <LanguageSelector />
           }} 
         />
       </Stack>

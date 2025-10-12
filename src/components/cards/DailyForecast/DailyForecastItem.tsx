@@ -58,7 +58,7 @@ export const DailyForecastItem: React.FC<DailyForecastItemProps> = ({
       <TouchableOpacity 
         className="flex-row items-center justify-between px-2 py-2"
         onPress={() => router.push({
-          pathname: '/DailyForecastScreen',
+          pathname: '/dailyForecast',
           params: { city, day: dayIndex.toString() }
         })}
         onPressIn={() => setIsPressed(true)}

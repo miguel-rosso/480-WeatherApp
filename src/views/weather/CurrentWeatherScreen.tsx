@@ -28,7 +28,7 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
 
   // Función para navegar a la pantalla de pronóstico diario del día actual (día 0)
   const navigateToDailyForecast = () => {
-    router.push(`/DailyForecastScreen?city=${city}&day=0`);
+    router.push(`/DailyForecast?city=${city}&day=0`);
   };
 
   // Resetear scroll al inicio cuando la pantalla gana el foco (cambio de tab)
@@ -40,8 +40,8 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
 
   return (
     <View className="flex-1">
-      {/* Header con hora local y selector de idioma */}
-      <View className="flex-row items-center justify-between px-6 pt-14" style={{ backgroundColor: 'transparent' }}>
+ {/* Header con hora local y selector de idioma */}
+      <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor: 'transparent' }}>
         {/* Hora local de la ciudad */}
         {weather && (
           <Text className="text-lg font-semibold" style={{ color: '#fff' }}>
@@ -51,7 +51,7 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
         {/* Selector de idioma */}
         <LanguageSelector />
       </View>
-
+      
       {/* Contenido principal */}
       <ScrollView
         ref={scrollViewRef}

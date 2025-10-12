@@ -58,7 +58,7 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
   // Navegar a DailyForecastScreen (día 0 por defecto)
   const handleCardPress = () => {
     router.push({
-      pathname: '/DailyForecastScreen',
+      pathname: '/dailyForecast',
       params: { city, day: '0' }
     });
   };
@@ -75,7 +75,7 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
     }
     
     router.push({
-      pathname: '/DailyForecastScreen',
+      pathname: '/dailyForecast',
       params: { city, day: dayIndex.toString() }
     });
   };
