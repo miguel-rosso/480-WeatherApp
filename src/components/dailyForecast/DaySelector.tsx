@@ -3,7 +3,7 @@
  * Horizontal scrollable list of days
  */
 
-import { Forecast } from '@/src/api/models/ForecastModel';
+import { Forecast } from '@/src/models/ForecastModel';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';
 import { getDayNameKey } from '@/src/utils/helpers';

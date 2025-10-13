@@ -2,7 +2,7 @@
  * HourlyItem - Item individual de pronóstico por hora
  */
 
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import { HourlyItemSkeleton } from '@/src/components/cards/HourlyForecast/HourlyItemSkeleton';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';

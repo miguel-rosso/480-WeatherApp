@@ -4,8 +4,8 @@
  * Muestra ciudad, temperatura actual, min/max y descripción del clima
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
-import { Forecast } from '@/src/api/models/ForecastModel';
+import { CurrentWeatherModel } from '@/src/models/CurrentWeatherModel';
+import { Forecast } from '@/src/models/ForecastModel';
 import { WeatherHeaderSkeleton } from '@/src/components/cards/WeatherHeader/WeatherHeaderSkeleton';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';

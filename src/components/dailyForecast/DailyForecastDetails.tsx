@@ -3,7 +3,7 @@
  * Shows additional weather details
  */
 
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import { Colors } from '@/src/constants/Colors';
 import { getWeatherDescriptionKey } from '@/src/utils/helpers';
 import React from 'react';

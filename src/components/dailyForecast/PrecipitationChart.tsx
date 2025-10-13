@@ -3,7 +3,7 @@
  * Custom SVG bar chart showing precipitation probability
  */
 
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import { Colors } from '@/src/constants/Colors';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

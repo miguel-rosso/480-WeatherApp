@@ -1,13 +1,13 @@
 /**
- * Models - Redux State Types
+ *  Redux State Types
  * 
  * Interfaces y tipos relacionados con el estado de Redux
  * Definen la forma del estado global de la aplicación
  */
 
-import { CurrentWeather } from '@/src/api/models/CurrentWeatherModel';
-import { Forecast } from '@/src/api/models/ForecastModel';
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { CurrentWeather } from '@/src/models/CurrentWeatherModel';
+import { Forecast } from '@/src/models/ForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 
 /**
  * Estado del clima para una ciudad específica

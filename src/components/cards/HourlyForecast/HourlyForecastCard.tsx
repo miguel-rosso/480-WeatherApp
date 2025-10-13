@@ -4,8 +4,8 @@
  * Componente que muestra el pronóstico horario en un scroll horizontal
  */
 
-import { Forecast } from '@/src/api/models/ForecastModel';
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { Forecast } from '@/src/models/ForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import { DaySeparator } from '@/src/components/cards/HourlyForecast/DaySeparator';
 import { HourlyItem } from '@/src/components/cards/HourlyForecast/HourlyItem';
 import { Colors } from '@/src/constants/Colors';

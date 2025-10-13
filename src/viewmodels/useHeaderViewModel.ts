@@ -8,7 +8,7 @@
  * - Formateo de la hora local
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
+import { CurrentWeatherModel } from '@/src/models/CurrentWeatherModel';
 import { useAppSelector } from '@/src/store/hooks';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
 import { useSegments } from 'expo-router';

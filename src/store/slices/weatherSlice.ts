@@ -5,11 +5,11 @@
  * para evitar hacer fetch cada vez que se cambia de pestaña
  */
 
-import { CurrentWeather } from '@/src/api/models/CurrentWeatherModel';
-import { Forecast } from '@/src/api/models/ForecastModel';
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { CurrentWeather } from '@/src/models/CurrentWeatherModel';
+import { Forecast } from '@/src/models/ForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import type { RootState } from '@/src/store';
-import { CityWeatherState, WeatherState } from '@/src/types/store.types';
+import { CityWeatherState, WeatherState } from '@/src/store/types/store.types';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 📦 Estado inicial

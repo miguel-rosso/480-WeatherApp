@@ -1,4 +1,4 @@
-import { prefetchAllCities } from '@/src/api/services/WeatherPrefetchService';
+import { prefetchAllCities } from '@/src/services/WeatherPrefetchService';
 import { HapticTab } from '@/src/components/common/haptic-tab';
 import { AppHeader } from '@/src/components/common/AppHeader';
 import { WeatherBackground } from '@/src/components/layout/WeatherBackground';

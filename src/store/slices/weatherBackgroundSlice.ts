@@ -9,7 +9,7 @@
  * Esto reemplaza el WeatherBackgroundContext
  */
 
-import { WeatherBackgroundState } from '@/src/types/store.types';
+import { WeatherBackgroundState } from '@/src/store/types/store.types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // 🎬 ESTADO INICIAL: El valor por defecto cuando la app inicia

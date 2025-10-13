@@ -5,7 +5,7 @@
  * Muestra todos los días disponibles de la API (típicamente 5-6 días)
  */
 
-import { Forecast } from '@/src/api/models/ForecastModel';
+import { Forecast } from '@/src/models/ForecastModel';
 import { DailyForecastItem } from '@/src/components/cards/DailyForecast/DailyForecastItem';
 import { Colors } from '@/src/constants/Colors';
 import { getTemperatureGradient } from '@/src/utils/helpers';

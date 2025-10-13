@@ -2,9 +2,9 @@
  * CurrentWeatherService - Servicio para obtener el clima actual desde OpenWeatherMap API
  */
 
-import { API_CONFIG, getWeatherEmoji } from '@/src/api/config';
-import { OpenWeatherResponse } from '@/src/api/models/ApiResponses';
-import { CurrentWeather } from '@/src/api/models/CurrentWeatherModel';
+import { API_CONFIG, getWeatherEmoji } from '@/src/services/config';
+import { OpenWeatherResponse } from '@/src/models/ApiResponses';
+import { CurrentWeather } from '@/src/models/CurrentWeatherModel';
 import {
   formatLocalTime,
   formatLocalTimeWithSeconds,

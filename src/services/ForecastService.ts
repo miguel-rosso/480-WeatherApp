@@ -2,10 +2,10 @@
  * ForecastService - Servicio para obtener el pronóstico de 5 días desde OpenWeatherMap API
  */
 
-import { API_CONFIG, getWeatherEmoji } from '@/src/api/config';
-import { OpenWeatherForecastResponse } from '@/src/api/models/ApiResponses';
-import { Forecast } from '@/src/api/models/ForecastModel';
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { API_CONFIG, getWeatherEmoji } from '@/src/services/config';
+import { OpenWeatherForecastResponse } from '@/src/models/ApiResponses';
+import { Forecast } from '@/src/models/ForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import {
   getLocalDateString,
   getLocalDayOfWeek,

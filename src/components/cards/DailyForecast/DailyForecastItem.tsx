@@ -2,7 +2,7 @@
  * DailyForecastItem - Item individual del pronóstico diario
  */
 
-import { Forecast } from '@/src/api/models/ForecastModel';
+import { Forecast } from '@/src/models/ForecastModel';
 import { DailyForecastItemSkeleton } from '@/src/components/cards/DailyForecast/DailyForecastItemSkeleton';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';

@@ -5,8 +5,8 @@
  * Este servicio coordina las llamadas a la API y actualiza Redux
  */
 
-import { getCurrentWeather } from '@/src/api/services/CurrentWeatherService';
-import { getForecast, getHourlyForecast } from '@/src/api/services/ForecastService';
+import { getCurrentWeather } from '@/src/services/CurrentWeatherService';
+import { getForecast, getHourlyForecast } from '@/src/services/ForecastService';
 import { store } from '@/src/store';
 import { setError, setForecast, setHourlyForecast, setLoading, setWeather } from '@/src/store/slices/weatherSlice';
 

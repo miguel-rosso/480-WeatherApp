@@ -4,7 +4,7 @@
  * Each point has a different color based on its temperature
  */
 
-import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { HourlyForecast } from '@/src/models/HourlyForecastModel';
 import { Colors } from '@/src/constants/Colors';
 import { getTemperatureColor } from '@/src/utils/helpers';
 import React from 'react';

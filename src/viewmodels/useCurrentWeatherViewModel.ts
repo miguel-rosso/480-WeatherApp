@@ -4,8 +4,8 @@
  * Conectado con Redux para obtener datos del clima
  */
 
-import { CurrentWeatherModel } from '@/src/api/models/CurrentWeatherModel';
-import { refreshCityData } from '@/src/api/services/WeatherPrefetchService';
+import { CurrentWeatherModel } from '@/src/models/CurrentWeatherModel';
+import { refreshCityData } from '@/src/services/WeatherPrefetchService';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
