@@ -5,29 +5,26 @@
  */
 
 import { DatePickerInput } from '@/src/components/common/DatePickerInput';
-import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { TextInputWithError } from '@/src/components/common/TextInputWithError';
 import { Colors } from '@/src/constants/Colors';
 import { useContactViewModel } from '@/src/viewmodels/useContactViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export const ContactScreen: React.FC = () => {
   const { t } = useTranslation();
-  const animationRef = useRef<LottieView>(null);
-  const timerRef = useRef<number | null>(null);
-  const [showAnimation, setShowAnimation] = useState(false);
-  const [currentAnimation, setCurrentAnimation] = useState<'confetti' | 'crying'>('confetti');
+  const confettiRef = useRef<LottieView>(null);
 
-  // 🎯 ViewModel: Toda la lógica del formulario
+  // 🎯 ViewModel: Toda la lógica del formulario (incluida la lógica de animación)
   const {
     formData,
     birthDate,
     willHireMe,
     isDatePickerOpen,
+    showConfetti,
     setBirthDate,
     setWillHireMe,
     setIsDatePickerOpen,
@@ -40,64 +37,41 @@ export const ContactScreen: React.FC = () => {
     handleScrollBegin,
   } = useContactViewModel();
 
-  // 🎬 Efecto para reproducir la animación cuando cambia el switch
-  useEffect(() => {
-    if (showAnimation) {
-      // Limpiar el timeout anterior si existe
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      animationRef.current?.play();
-
-      // Ocultar la animación después de que termine
-      timerRef.current = setTimeout(() => {
-        setShowAnimation(false);
-        timerRef.current = null;
-      }, 2000); // 2 segundos
-    }
-
-    // Cleanup: limpiar el timeout cuando el componente se desmonte o showAnimation cambie
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [showAnimation, currentAnimation]);
-
-  // Manejar el cambio del switch con animación
-  const handleSwitchChange = (value: boolean) => {
-    setWillHireMe(value);
-    // Establecer qué animación mostrar según el valor del switch
-    setCurrentAnimation(value ? 'confetti' : 'crying');
-    setShowAnimation(true);
-  };
-
   return (
-    <KeyboardAvoidingView
-      className="flex-1"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-      style={{ backgroundColor: Colors.background }}
-    >
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-16 pb-6" keyboardShouldPersistTaps="handled" onScrollBeginDrag={handleScrollBegin}>
-        {/* Language Selector */}
-        <View className="absolute z-10 top-2 right-6">
-          <LanguageSelector />
+    <KeyboardAvoidingView className="flex-1" style={{ backgroundColor: Colors.background }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      {/* 🎉 Animación de confeti de fondo */}
+      {showConfetti && (
+        <View style={styles.confettiContainer} pointerEvents="none">
+          <LottieView
+            ref={confettiRef}
+            source={require('@/assets/animations/Confetti.json')}
+            style={styles.confetti}
+            loop={false}
+            autoPlay
+            resizeMode="cover"
+          />
         </View>
+      )}
 
-        {/* Header */}
-        <View className="mb-8">
-          <View className="flex-row items-center mb-2">
-            <Ionicons name="mail" size={32} color={Colors.text} />
-            <Text className="ml-3 text-3xl font-bold" style={{ color: Colors.text }}>
-              {t('contact.title')}
-            </Text>
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="px-6 py-8"
+        keyboardShouldPersistTaps="handled"
+        onScrollBeginDrag={handleScrollBegin}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header decorativo */}
+        <View className="mb-4">
+          <View className="flex-row items-center mb-3">
+            <View className="items-center justify-center w-12 h-12 mr-4 rounded-2xl" style={{ backgroundColor: Colors.buttonEnabled + '20' }}>
+              <Ionicons name="person-circle-outline" size={28} color={Colors.buttonEnabled} />
+            </View>
+            <View className="flex-1">
+              <Text className="mt-1 text-sm" style={{ color: Colors.textSecondary }}>
+                {t('contact.subtitle')}
+              </Text>
+            </View>
           </View>
-          <Text className="text-base" style={{ color: Colors.textSecondary }}>
-            {t('contact.subtitle')}
-          </Text>
         </View>
 
         {/* Formulario */}
@@ -165,65 +139,65 @@ export const ContactScreen: React.FC = () => {
           />
 
           {/* Switch - ¿Me vais a contratar? */}
-          <View className="flex-row items-center justify-between py-4" style={{ position: 'relative' }}>
-            <View className="flex-row items-center flex-1">
-              <Text className="text-base" style={{ color: Colors.text }}>
-                {t('contact.willHireMe')}
-              </Text>
-            </View>
-            <Switch
-              value={willHireMe}
-              onValueChange={handleSwitchChange}
-              trackColor={{ false: Colors.textSecondary, true: Colors.buttonEnabled }}
-              thumbColor={willHireMe ? Colors.buttonTextEnabled : Colors.switchThumbInactive}
-              ios_backgroundColor={Colors.textSecondary}
-              style={Platform.OS === 'android' ? { transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] } : undefined}
-            />
-            {/* Animación de Lottie - Position absolute para no empujar elementos */}
-            {showAnimation && (
-              <View
-                style={{
-                  position: 'absolute',
-                  right: 70, // Posicionar a la izquierda del switch (ajusta según el ancho del switch)
-                  top: '50%',
-                  marginTop: -25, // Centrar verticalmente
-                  width: 72,
-                  height: 72,
-                  zIndex: 10,
-                }}
-              >
-                <LottieView
-                  ref={animationRef}
-                  source={currentAnimation === 'confetti' ? require('@/assets/animations/Success.json') : require('@/assets/animations/Crying.json')}
-                  style={{ width: 72, height: 72 }}
-                  loop={false}
-                  autoPlay
-                  resizeMode="contain"
-                />
+          <View
+            className="p-5 mt-3 rounded-2xl"
+            style={{
+              backgroundColor: Colors.background,
+              borderWidth: 1,
+              borderColor: Colors.textSecondary + '30',
+              position: 'relative',
+            }}
+          >
+            <View className="flex-row items-center justify-between">
+              <View className="flex-row items-center flex-1 gap-3">
+                <View
+                  className="items-center justify-center rounded-full size-10"
+                  style={{ backgroundColor: willHireMe ? Colors.buttonEnabled + '20' : Colors.textSecondary + '20' }}
+                >
+                  <Ionicons name={willHireMe ? 'checkmark-circle' : 'alert-circle'} size={24} color={willHireMe ? Colors.buttonEnabled : Colors.error} />
+                </View>
+                <Text className="flex-1 text-base font-medium" style={{ color: Colors.text }}>
+                  {t('contact.willHireMe')}
+                </Text>
               </View>
-            )}
+              <Switch
+                value={willHireMe}
+                onValueChange={setWillHireMe}
+                trackColor={{ false: Colors.textSecondary, true: Colors.buttonEnabled }}
+                thumbColor={willHireMe ? Colors.buttonTextEnabled : Colors.switchThumbInactive}
+                ios_backgroundColor={Colors.textSecondary}
+                style={Platform.OS === 'android' ? { transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] } : undefined}
+              />
+            </View>
           </View>
         </View>
 
-        {/* Botón Enviar */}
+        {/* Botón Enviar - Diseño mejorado */}
         <TouchableOpacity
-          className="items-center p-5 mt-8 mb-6 rounded-xl"
+          className="items-center justify-center p-5 mt-8 mb-6 rounded-2xl"
           style={{
             backgroundColor: isFormValid ? Colors.buttonEnabled : Colors.buttonDisabled,
-            shadowColor: Colors.shadowBlack,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: isFormValid ? 0.1 : 0,
-            shadowRadius: 4,
-            elevation: isFormValid ? 3 : 0,
+            shadowColor: isFormValid ? Colors.buttonEnabled : Colors.shadowBlack,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: isFormValid ? 0.3 : 0.1,
+            shadowRadius: 12,
+            elevation: isFormValid ? 5 : 1,
+            borderWidth: isFormValid ? 0 : 1,
+            borderColor: Colors.textSecondary + '30',
+            minHeight: 60,
           }}
           onPress={handleSubmit}
           disabled={!isFormValid}
-          activeOpacity={0.8}
+          activeOpacity={0.7}
         >
-          <View className="flex-row items-center">
-            <Ionicons name="send" size={20} color={isFormValid ? Colors.buttonTextEnabled : Colors.buttonTextDisabled} className="mr-2" />
+          <View className="flex-row items-center gap-3">
+            <Ionicons
+              name={isFormValid ? 'paper-plane' : 'paper-plane-outline'}
+              size={22}
+              color={isFormValid ? Colors.buttonTextEnabled : Colors.buttonTextDisabled}
+            />
             <Text
-              className="text-lg font-semibold"
+              className="text-lg font-bold tracking-wide"
               style={{
                 color: isFormValid ? Colors.buttonTextEnabled : Colors.buttonTextDisabled,
               }}
@@ -236,3 +210,18 @@ export const ContactScreen: React.FC = () => {
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  confettiContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10,
+  },
+  confetti: {
+    width: '100%',
+    height: '100%',
+  },
+});

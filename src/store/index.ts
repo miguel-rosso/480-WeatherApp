@@ -21,9 +21,7 @@ export const store = configureStore({
     weatherBackground: weatherBackgroundReducer,
     weather: weatherReducer,
     
-    // Aquí puedes agregar más slices en el futuro:
-    // user: userReducer,
-    // settings: settingsReducer,
+    // Agregar más slices en el futuro:
   },
   // Configuración adicional para serializar/deserializar Dates
   middleware: (getDefaultMiddleware) =>

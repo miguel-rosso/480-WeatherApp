@@ -1,5 +1,6 @@
 import { prefetchAllCities } from '@/src/api/services/WeatherPrefetchService';
 import { HapticTab } from '@/src/components/common/haptic-tab';
+import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { WeatherBackground } from '@/src/components/layout/WeatherBackground';
 import { Colors } from '@/src/constants/Colors';
 import { useAppSelector } from '@/src/store/hooks';
@@ -7,8 +8,9 @@ import { selectWeatherBackground } from '@/src/store/slices/weatherBackgroundSli
 import { Ionicons } from '@expo/vector-icons';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Tabs, useSegments } from 'expo-router';
+import { t } from 'i18next';
 import React, { useEffect } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { View } from 'react-native';
 
 export default function TabLayout() {
   // 🎯 REDUX: Leer el estado del store usando el selector
@@ -80,8 +82,19 @@ export default function TabLayout() {
         <Tabs.Screen
           name="contact"
           options={{
-            title: 'Contacto',
+            title: t('contact.title'),
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: Colors.background,
+            },
+            headerTintColor: 'white',
             tabBarIcon: ({ color }) => <Ionicons name="mail" size={24} color={color} />,
+            headerRight: () => (
+              <View className="pr-4">
+                <LanguageSelector />
+              </View>
+            ),
           }}
         />
       </Tabs>

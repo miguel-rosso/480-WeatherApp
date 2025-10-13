@@ -4,6 +4,7 @@
  * En React, esto es un custom hook que encapsula la lógica
  */
 
+import { Audio } from 'expo-av';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, Platform } from 'react-native';
@@ -41,6 +42,9 @@ export const useContactViewModel = () => {
   // Estado para el Switch
   const [willHireMe, setWillHireMe] = useState(false);
 
+  // Estado para la animación de confeti
+  const [showConfetti, setShowConfetti] = useState(false);
+
   // Estado para campos tocados (para mostrar errores)
   const [touchedFields, setTouchedFields] = useState<TouchedFields>({
     nombre: false,
@@ -68,6 +72,50 @@ export const useContactViewModel = () => {
   }, [isDatePickerOpen]);
 
   /**
+   * Mostrar animación de confeti y reproducir sonido cuando willHireMe cambia a true
+   */
+  useEffect(() => {
+    let sound: Audio.Sound | undefined;
+
+    const playCelebrationSound = async () => {
+      try {
+        // Configurar el modo de audio
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: false,
+        });
+
+        // Cargar y reproducir el sonido
+        const { sound: audioSound } = await Audio.Sound.createAsync(require('@/assets/sounds/crowd-cheer-and-applause-406644.mp3'), {
+          shouldPlay: true,
+          volume: 0.5,
+        });
+        sound = audioSound;
+      } catch (error) {
+        console.error('Error al reproducir el sonido:', error);
+      }
+    };
+
+    if (willHireMe) {
+      setShowConfetti(true);
+      playCelebrationSound();
+
+      // Ocultar el confeti después de la animación
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 4500); // 4.5 segundos
+
+      return () => {
+        clearTimeout(timer);
+        // Limpiar el sonido cuando el componente se desmonte
+        sound?.unloadAsync();
+      };
+    } else {
+      setShowConfetti(false);
+    }
+  }, [willHireMe]);
+
+  /**
    * Validar formato de email
    */
   const isEmailValid = (email: string): boolean => {
@@ -88,10 +136,10 @@ export const useContactViewModel = () => {
    */
   const isFormValid = (): boolean => {
     return (
-      formData.nombre.trim() !== '' && 
-      birthDate !== null && 
-      formData.ciudad.trim() !== '' && 
-      formData.email.trim() !== '' && 
+      formData.nombre.trim() !== '' &&
+      birthDate !== null &&
+      formData.ciudad.trim() !== '' &&
+      formData.email.trim() !== '' &&
       isEmailValid(formData.email) &&
       formData.telefono.trim() !== '' &&
       isPhoneValid(formData.telefono) &&
@@ -104,7 +152,7 @@ export const useContactViewModel = () => {
    */
   const hasFieldError = (fieldName: keyof TouchedFields): boolean => {
     if (!touchedFields[fieldName]) return false;
-    
+
     if (fieldName === 'birthDate') {
       return birthDate === null;
     }
@@ -116,25 +164,25 @@ export const useContactViewModel = () => {
    */
   const getFieldErrorMessage = (fieldName: keyof TouchedFields): string => {
     if (!touchedFields[fieldName]) return '';
-    
+
     if (fieldName === 'birthDate') {
       return birthDate === null ? t('contact.requiredField') : '';
     }
-    
+
     const fieldValue = formData[fieldName as keyof FormData];
     if (!fieldValue || fieldValue.trim() === '') {
       return t('contact.requiredField');
     }
-    
+
     // Validaciones específicas
     if (fieldName === 'email' && !isEmailValid(fieldValue)) {
       return t('contact.errorInvalidEmail');
     }
-    
+
     if (fieldName === 'telefono' && !isPhoneValid(fieldValue)) {
       return t('contact.errorInvalidPhone');
     }
-    
+
     return '';
   };
 
@@ -152,14 +200,14 @@ export const useContactViewModel = () => {
    * Actualizar un campo del formulario
    */
   const updateField = (fieldName: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [fieldName]: value }));
+    setFormData((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   /**
    * Marcar un campo como tocado
    */
   const markFieldAsTouched = (fieldName: keyof TouchedFields) => {
-    setTouchedFields(prev => ({ ...prev, [fieldName]: true }));
+    setTouchedFields((prev) => ({ ...prev, [fieldName]: true }));
   };
 
   /**
@@ -207,6 +255,7 @@ export const useContactViewModel = () => {
     willHireMe,
     isDatePickerOpen,
     touchedFields,
+    showConfetti,
 
     // Setters
     setBirthDate,
