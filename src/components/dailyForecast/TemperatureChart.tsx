@@ -39,7 +39,7 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
 
   // Extraer temperaturas y etiquetas
   const temperatures = data.map((hour) => hour.temperature);
-  const labels = data.map((hour) => (hour.time === 'Now' ? 'Now' : hour.time.replace(':00', '')));
+  const labels = data.map((hour) => hour.time);
 
   // Calcular rango de temperaturas
   const minTemp = Math.min(...temperatures);

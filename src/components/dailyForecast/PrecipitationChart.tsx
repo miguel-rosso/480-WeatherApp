@@ -30,7 +30,7 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
 
   // Extraer datos de precipitación y etiquetas
   const precipitationData = data.map(hour => hour.pop * 100); // Convertir a porcentaje (0-100)
-  const labels = data.map(hour => (hour.time === 'Now' ? 'Now' : hour.time.replace(':00', '')));
+  const labels = data.map(hour => hour.time);
 
   // Dimensiones del gráfico
   const chartWidth = screenWidth - 24;
