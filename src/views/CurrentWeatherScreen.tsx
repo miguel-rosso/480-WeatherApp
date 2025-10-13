@@ -5,17 +5,15 @@
 
 import { DailyForecastCard } from '@/src/components/cards/DailyForecast/DailyForecastCard';
 import { HourlyForecastCard } from '@/src/components/cards/HourlyForecast/HourlyForecastCard';
-import { InfoPairCard } from '@/src/components/cards/InfoPairCard';
-import { WeatherCard } from '@/src/components/cards/WeatherCard';
-import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
-import { Colors } from '@/src/constants/Colors';
-import { getWeatherDescriptionKey } from '@/src/utils/helpers';
+import { InfoPairCard } from '@/src/components/cards/InfoPairCard/InfoPairCard';
+import { WeatherCard } from '@/src/components/cards/WeatherCard/WeatherCard';
+import { WeatherHeader } from '@/src/components/cards/WeatherHeader/WeatherHeader';
 import { useCurrentWeatherViewModel } from '@/src/viewmodels/useCurrentWeatherViewModel';
 import Feather from '@expo/vector-icons/Feather';
 import { router, useFocusEffect } from 'expo-router';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 
 interface CurrentWeatherScreenProps {
   city: string;
@@ -53,128 +51,125 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={'white'} />}
       >
         <View className="gap-6 pb-8" style={{ backgroundColor: 'transparent' }}>
-          {weather && (
-            <>
-              {/* Nombre de la ciudad y clima */}
-              <View className="items-center mt-4 mb-2" style={{ backgroundColor: 'transparent' }}>
-                <Text className="mb-3 text-4xl font-bold" style={{ color: 'white' }}>
-                  {t(`cities.${city.toLowerCase()}`)}
-                </Text>
-                <Text className="mb-2 font-bold text-7xl" style={{ color: 'white' }}>
-                  {weather.getFormattedTemp()}
-                </Text>
-                {/* Temperatura máxima y mínima del primer día del forecast (hoy) */}
-                <Text className="mb-2 text-xl" style={{ color: Colors.whiteAlpha80 }}>
-                  {t('weather.max')}: {forecast[0]?.maxTemp || weather.tempMax}° • {t('weather.min')}: {forecast[0]?.minTemp || weather.tempMin}°
-                </Text>
-                <View className="flex-row items-center gap-2">
-                  <WeatherIcon icon={weather.icon} size={30} />
-                  <Text className="text-2xl" style={{ color: Colors.whiteAlpha80 }}>
-                    {t(getWeatherDescriptionKey(weather.weatherId))}
-                  </Text>
-                </View>
-              </View>
-            </>
-          )}
+          {/* Header del clima */}
+          <WeatherHeader
+            city={city}
+            weather={weather}
+            forecast={forecast}
+            t={t}
+            isLoading={!weather}
+          />
 
           {/* Pronóstico por Horas */}
-          {hourlyForecast.length > 0 && <HourlyForecastCard hourlyData={hourlyForecast} city={city} forecast={forecast} />}
+          <HourlyForecastCard 
+            hourlyData={hourlyForecast} 
+            city={city} 
+            forecast={forecast} 
+            isLoading={hourlyForecast.length === 0}
+          />
 
           {/* Pronóstico Diario */}
-          {forecast.length > 0 && <DailyForecastCard forecast={forecast} city={city} />}
+          <DailyForecastCard 
+            forecast={forecast} 
+            city={city} 
+            isLoading={forecast.length === 0}
+          />
 
           {/* Cards de información detallada */}
-          {weather && (
-            <>
-              {/* Sensación térmica y Humedad en cards separadas */}
-              <View className="flex-row gap-3">
-                <WeatherCard
-                  icon="🌡️"
-                  title={t('weather.feelsLike') || 'Feels Like'}
-                  value={Math.round(weather.feelsLike).toString()}
-                  unit="°C"
-                  description={
-                    Math.abs(weather.feelsLike - weather.temperature) <= 2
+          <>
+            {/* Sensación térmica y Humedad en cards separadas */}
+            <View className="flex-row gap-3">
+              <WeatherCard
+                icon="🌡️"
+                title={t('weather.feelsLike') || 'Feels Like'}
+                value={weather ? Math.round(weather.feelsLike).toString() : '0'}
+                unit="°C"
+                description={
+                  weather 
+                    ? Math.abs(weather.feelsLike - weather.temperature) <= 2
                       ? t('weather.feelsLikeSimilar')
                       : weather.feelsLike > weather.temperature
                         ? t('weather.feelsLikeWarmer')
                         : t('weather.feelsLikeCooler')
-                  }
-                  onPress={navigateToDailyForecast}
-                />
-                <WeatherCard
-                  icon={weather.getHumidityIcon()}
-                  title={t('weather.humidity') || 'Humidity'}
-                  value={weather.humidity.toString()}
-                  unit="%"
-                  description={weather.getHumidityDescription(t)}
-                  onPress={navigateToDailyForecast}
-                />
-              </View>
-              {/* Fila 1: Viento y Presión */}
-              <View className="flex-row gap-3">
-                <WeatherCard
-                  icon="💨"
-                  title={t('weather.wind') || 'Wind'}
-                  value={Math.round(weather.windSpeed).toString()}
-                  unit="km/h"
-                  description={weather.getWindDescription(t)}
-                  onPress={navigateToDailyForecast}
-                />
-                <WeatherCard
-                  icon="🔽"
-                  title={t('weather.pressure') || 'Pressure'}
-                  value={weather.pressure.toString()}
-                  unit="hPa"
-                  description={weather.getPressureDescription(t)}
-                  onPress={navigateToDailyForecast}
-                />
-              </View>
-
-              {/* Fila 2: Nubosidad y Visibilidad */}
-              <View className="flex-row gap-3">
-                <WeatherCard
-                  icon="☁️"
-                  title={t('weather.cloudiness') || 'Cloudiness'}
-                  value={weather.cloudiness.toString()}
-                  unit="%"
-                  description={weather.getCloudinessDescription(t)}
-                  onPress={navigateToDailyForecast}
-                />
-                {weather.visibility ? (
-                  <WeatherCard
-                    icon="👁️"
-                    title={t('weather.visibility') || 'Visibility'}
-                    value={weather.getFormattedVisibility()}
-                    unit="km"
-                    description={weather.getVisibilityDescription(t)}
-                    onPress={navigateToDailyForecast}
-                  />
-                ) : (
-                  <View className="flex-1" />
-                )}
-              </View>
-
-              {/* Amanecer y Atardecer */}
-              <InfoPairCard
-                title={t('weather.sunSchedule') || 'Sun'}
-                titleIcon="☀️"
-                leftItem={{
-                  icon: <Feather name="sunrise" size={32} color="orange" />,
-                  label: t('weather.sunrise'),
-                  value: weather.formatDateToLocalTime(weather.sunrise),
-                  showIconBackground: false,
-                }}
-                rightItem={{
-                  icon: <Feather name="sunset" size={32} color="darkorange" />,
-                  label: t('weather.sunset'),
-                  value: weather.formatDateToLocalTime(weather.sunset),
-                  showIconBackground: false,
-                }}
+                    : ''
+                }
                 onPress={navigateToDailyForecast}
+                isLoading={!weather}
               />
-            </>
-          )}
+              <WeatherCard
+                icon={weather?.getHumidityIcon() || '💧'}
+                title={t('weather.humidity') || 'Humidity'}
+                value={weather ? weather.humidity.toString() : '0'}
+                unit="%"
+                description={weather ? weather.getHumidityDescription(t) : ''}
+                onPress={navigateToDailyForecast}
+                isLoading={!weather}
+              />
+            </View>
+            {/* Fila 1: Viento y Presión */}
+            <View className="flex-row gap-3">
+              <WeatherCard
+                icon="💨"
+                title={t('weather.wind') || 'Wind'}
+                value={weather ? Math.round(weather.windSpeed).toString() : '0'}
+                unit="km/h"
+                description={weather ? weather.getWindDescription(t) : ''}
+                onPress={navigateToDailyForecast}
+                isLoading={!weather}
+              />
+              <WeatherCard
+                icon="🔽"
+                title={t('weather.pressure') || 'Pressure'}
+                value={weather ? weather.pressure.toString() : '0'}
+                unit="hPa"
+                description={weather ? weather.getPressureDescription(t) : ''}
+                onPress={navigateToDailyForecast}
+                isLoading={!weather}
+              />
+            </View>
+
+            {/* Fila 2: Nubosidad y Visibilidad */}
+            <View className="flex-row gap-3">
+              <WeatherCard
+                icon="☁️"
+                title={t('weather.cloudiness') || 'Cloudiness'}
+                value={weather ? weather.cloudiness.toString() : '0'}
+                unit="%"
+                description={weather ? weather.getCloudinessDescription(t) : ''}
+                onPress={navigateToDailyForecast}
+                isLoading={!weather}
+              />
+              <WeatherCard
+                icon="👁️"
+                title={t('weather.visibility') || 'Visibility'}
+                value={weather?.visibility ? weather.getFormattedVisibility() : '0'}
+                unit="km"
+                description={weather?.visibility ? weather.getVisibilityDescription(t) : ''}
+                onPress={navigateToDailyForecast}
+                isLoading={!weather}
+              />
+            </View>
+
+            {/* Amanecer y Atardecer */}
+            <InfoPairCard
+              title={t('weather.sunSchedule') || 'Sun'}
+              titleIcon="☀️"
+              leftItem={{
+                icon: <Feather name="sunrise" size={32} color="orange" />,
+                label: t('weather.sunrise'),
+                value: weather ? weather.formatDateToLocalTime(weather.sunrise) : '00:00',
+                showIconBackground: false,
+              }}
+              rightItem={{
+                icon: <Feather name="sunset" size={32} color="darkorange" />,
+                label: t('weather.sunset'),
+                value: weather ? weather.formatDateToLocalTime(weather.sunset) : '00:00',
+                showIconBackground: false,
+              }}
+              onPress={navigateToDailyForecast}
+              isLoading={!weather}
+            />
+          </>
         </View>
       </ScrollView>
     </View>

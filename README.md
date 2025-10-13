@@ -2,6 +2,7 @@ cosas a decir
 
 mvvc (despues explicar con ia)
 uso 2 apis
+refresh fetch
 COMPONENTES HOURLY FORECAST
 COMPONENTE 5 DAY FORECAST
 primer elemento hourly forecast es con api clima atual

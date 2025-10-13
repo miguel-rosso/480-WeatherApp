@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "480-tecnica",
-    "slug": "480-tecnica",
+    "name": "480-Weather",
+    "slug": "480-Weather",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/build/icon.png",
-    "scheme": "480tecnica",
+    "scheme": "480Weather",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rivotx.x480tecnica"
+      "bundleIdentifier": "com.rivotx.x480Weather"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.rivotx.x480tecnica"
+      "package": "com.rivotx.x480Weather"
     },
     "web": {
       "bundler": "metro"

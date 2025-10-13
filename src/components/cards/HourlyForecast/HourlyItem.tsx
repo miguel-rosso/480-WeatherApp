@@ -3,6 +3,7 @@
  */
 
 import { HourlyForecast } from '@/src/api/models/HourlyForecastModel';
+import { HourlyItemSkeleton } from '@/src/components/cards/HourlyForecast/HourlyItemSkeleton';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';
 import React, { useState } from 'react';
@@ -16,6 +17,7 @@ interface HourlyItemProps {
   city: string;
   totalDays: number;
   onNavigate: (dayIndex: number) => void;
+  isLoading?: boolean;
 }
 
 export const HourlyItem: React.FC<HourlyItemProps> = ({ 
@@ -25,20 +27,23 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
   dayIndex, 
   city,
   totalDays,
-  onNavigate 
+  onNavigate,
+  isLoading = false
 }) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePress = () => {
-    onNavigate(dayIndex);
+    if (!isLoading) {
+      onNavigate(dayIndex);
+    }
   };
 
   return (
     <TouchableOpacity 
       activeOpacity={1}
       onPress={handlePress}
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
+      onPressIn={() => !isLoading && setIsPressed(true)}
+      onPressOut={() => !isLoading && setIsPressed(false)}
       className="items-center justify-between px-3"
       style={{ 
         minWidth: 60,
@@ -47,33 +52,40 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
         backgroundColor: isPressed ? Colors.weatherPressedBackground : 'transparent',
         borderRadius: 8,
       }}
+      disabled={isLoading}
     >
-      {/* Hora */}
-      <Text 
-        className="mb-3 text-base font-medium" 
-        style={{ 
-          color: 'white',
-          fontWeight: isFirst ? '700' : '400'
-        }}
-      >
-        {hour.time}
-      </Text>
-      
-      {/* Icono del clima */}
-      <View className="mb-3">
-        <WeatherIcon icon={hour.icon} size={32} />
-      </View>
-      
-      {/* Temperatura */}
-      <Text 
-        className="text-xl font-semibold" 
-        style={{ 
-          color: 'white',
-          fontWeight: isFirst ? '700' : '600'
-        }}
-      >
-        {Math.round(hour.temperature)}°
-      </Text>
+      {isLoading ? (
+        <HourlyItemSkeleton />
+      ) : (
+        <>
+          {/* Hora */}
+          <Text 
+            className="mb-3 text-base font-medium" 
+            style={{ 
+              color: 'white',
+              fontWeight: isFirst ? '700' : '400'
+            }}
+          >
+            {hour.time}
+          </Text>
+          
+          {/* Icono del clima */}
+          <View className="mb-3">
+            <WeatherIcon icon={hour.icon} size={32} />
+          </View>
+          
+          {/* Temperatura */}
+          <Text 
+            className="text-xl font-semibold" 
+            style={{ 
+              color: 'white',
+              fontWeight: isFirst ? '700' : '600'
+            }}
+          >
+            {Math.round(hour.temperature)}°
+          </Text>
+        </>
+      )}
     </TouchableOpacity>
   );
 };

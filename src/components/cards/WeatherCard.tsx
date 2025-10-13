@@ -5,8 +5,8 @@
  */
 
 import { Colors } from '@/src/constants/Colors';
-import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
 
 interface WeatherCardProps {
   icon: string;
@@ -15,10 +15,102 @@ interface WeatherCardProps {
   unit?: string;
   description?: string;
   onPress?: () => void; // Función opcional para hacer la card clickeable
+  isLoading?: boolean; // Prop para mostrar skeleton
 }
 
-export const WeatherCard: React.FC<WeatherCardProps> = ({ icon, title, value, unit, description, onPress }) => {
-  const content = (
+export const WeatherCard: React.FC<WeatherCardProps> = ({ icon, title, value, unit, description, onPress, isLoading = false }) => {
+  const opacity = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    if (isLoading) {
+      const animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      animation.start();
+      return () => animation.stop();
+    }
+  }, [isLoading, opacity]);
+
+  const content = isLoading ? (
+    <>
+      {/* Header - Skeleton */}
+      <View className="flex-row items-center gap-2 mb-2" style={{ minHeight: 16 }}>
+        <Animated.View 
+          style={{ 
+            width: 16, 
+            height: 16, 
+            borderRadius: 8, 
+            backgroundColor: Colors.whiteAlpha25,
+            opacity 
+          }} 
+        />
+        <Animated.View 
+          style={{ 
+            width: 80, 
+            height: 11, 
+            borderRadius: 6, 
+            backgroundColor: Colors.whiteAlpha25,
+            opacity 
+          }} 
+        />
+      </View>
+      
+      {/* Value y Unit - Skeleton */}
+      <View className="flex-row items-baseline gap-1 mb-1">
+        <Animated.View 
+          style={{ 
+            width: 60, 
+            height: 36, 
+            borderRadius: 18, 
+            backgroundColor: Colors.whiteAlpha25,
+            opacity 
+          }} 
+        />
+        <Animated.View 
+          style={{ 
+            width: 30, 
+            height: 16, 
+            borderRadius: 8, 
+            backgroundColor: Colors.whiteAlpha25,
+            opacity 
+          }} 
+        />
+      </View>
+      
+      {/* Description - Skeleton */}
+      <Animated.View 
+        className="mt-1"
+        style={{ 
+          width: '90%', 
+          height: 14, 
+          borderRadius: 7, 
+          backgroundColor: Colors.whiteAlpha25,
+          opacity 
+        }} 
+      />
+      <Animated.View 
+        className="mt-1"
+        style={{ 
+          width: '70%', 
+          height: 14, 
+          borderRadius: 7, 
+          backgroundColor: Colors.whiteAlpha25,
+          opacity 
+        }} 
+      />
+    </>
+  ) : (
     <>
       <View className="flex-row items-center gap-2 mb-2">
         <Text style={{ fontSize: 11, color: Colors.whiteAlpha60 }}>{icon}</Text>
@@ -51,6 +143,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ icon, title, value, un
         onPress={onPress}
         className="flex-1 p-4 rounded-3xl"
         style={{ backgroundColor: Colors.weatherCardBackground, minWidth: '47%' }}
+        disabled={isLoading}
       >
         {content}
       </TouchableOpacity>

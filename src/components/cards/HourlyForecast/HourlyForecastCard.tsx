@@ -18,15 +18,24 @@ interface HourlyForecastCardProps {
   hourlyData: HourlyForecast[];
   city: string;
   forecast: Forecast[]; // Array de forecast diario para mapear correctamente las fechas
+  isLoading?: boolean; // Prop para mostrar skeleton
 }
 
-export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyData, city, forecast }) => {
+export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyData, city, forecast, isLoading = false }) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  if (!hourlyData || hourlyData.length === 0) {
-    return null;
-  }
+  // Si está cargando, crear datos placeholder
+  const displayData = isLoading 
+    ? Array.from({ length: 6 }, (_, i) => ({
+        time: '--',
+        temperature: 0,
+        icon: '01d', // icono por defecto
+        timestamp: i,
+        fullDate: '',
+        dayName: '',
+      } as HourlyForecast))
+    : hourlyData;
 
   // Crear un mapa de fullDate a índice del daily forecast
   // Extraemos las fechas únicas del hourly forecast en orden
@@ -104,16 +113,17 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
         horizontal 
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 16 }}
+        scrollEnabled={!isLoading}
       >
-        {hourlyData.map((hour, index) => {
+        {displayData.map((hour, index) => {
           const isFirst = index === 0;
-          const isLast = index === hourlyData.length - 1;
-          const showDaySeparator = shouldShowDaySeparator(index);
-          const showBorder = !isLast && !shouldShowDaySeparator(index + 1);
+          const isLast = index === displayData.length - 1;
+          const showDaySeparator = !isLoading && shouldShowDaySeparator(index);
+          const showBorder = !isLast && !showDaySeparator && (!isLoading || index < displayData.length - 1);
           const dayIndex = hour.fullDate ? (dateToIndexMap.get(hour.fullDate) ?? 0) : 0;
           
           return (
-            <React.Fragment key={hour.timestamp}>
+            <React.Fragment key={isLoading ? `skeleton-${index}` : hour.timestamp}>
               {/* Separador de día */}
               {showDaySeparator && hour.dayName && (
                 <DaySeparator 
@@ -132,6 +142,7 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
                 city={city}
                 totalDays={forecast.length}
                 onNavigate={validateAndNavigate}
+                isLoading={isLoading}
               />
             </React.Fragment>
           );

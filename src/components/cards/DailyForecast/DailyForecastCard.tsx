@@ -17,28 +17,41 @@ import { Text, TouchableOpacity, View } from 'react-native';
 interface DailyForecastProps {
   forecast: Forecast[];
   city: string;
+  isLoading?: boolean;
 }
 
-export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city }) => {
+export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city, isLoading = false }) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  if (!forecast || forecast.length === 0) {
-    return null;
-  }
+  // Si está cargando, crear datos placeholder
+  const displayData = isLoading
+    ? Array.from({ length: 5 }, (_, i) => ({
+        dayName: '',
+        date: '',
+        fullDate: '',
+        weatherId: 800,
+        icon: '01d',
+        minTemp: 0,
+        maxTemp: 0,
+        description: '',
+      } as Forecast))
+    : forecast;
 
   // Calcular el rango global de temperaturas para las barras
-  const allTemps = forecast.flatMap(day => [day.maxTemp, day.minTemp]);
+  const allTemps = isLoading ? [0, 30] : displayData.flatMap(day => [day.maxTemp, day.minTemp]);
   const globalMin = Math.min(...allTemps);
   const globalMax = Math.max(...allTemps);
   const tempRange = globalMax - globalMin || 1; // Evitar división por 0
 
   // Navegar a DailyForecastScreen (día 0 = hoy por defecto)
   const handleCardPress = () => {
-    router.push({
-      pathname: '/dailyForecast',
-      params: { city, day: '0' }
-    });
+    if (!isLoading) {
+      router.push({
+        pathname: '/dailyForecast',
+        params: { city, day: '0' }
+      });
+    }
   };
 
   return (
@@ -47,6 +60,7 @@ export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city
       onPress={handleCardPress}
       className="p-6 rounded-3xl" 
       style={{ backgroundColor: Colors.weatherCardBackground }}
+      disabled={isLoading}
     >
       {/* Header */}
       <View className="flex-row items-center gap-2 mb-3">
@@ -58,13 +72,13 @@ export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city
 
       {/* Pronósticos diarios */}
       <View>
-        {forecast.map((day, index) => {
+        {displayData.map((day, index) => {
           // Obtener colores del gradiente basados en las temperaturas
           const [startColor, endColor] = getTemperatureGradient(day.minTemp, day.maxTemp);
 
           return (
             <DailyForecastItem
-              key={index}
+              key={isLoading ? `skeleton-${index}` : index}
               day={day}
               globalMin={globalMin}
               globalMax={globalMax}
@@ -74,6 +88,7 @@ export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city
               showDivider={index > 0}
               dayIndex={index}
               city={city}
+              isLoading={isLoading}
             />
           );
         })}
