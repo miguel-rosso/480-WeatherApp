@@ -50,35 +50,37 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
         style={{ backgroundColor: 'transparent' }}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={'white'} />}
       >
-        <View className="gap-6 pb-8" style={{ backgroundColor: 'transparent' }}>
-          {/* Header del clima */}
-          <WeatherHeader
-            city={city}
-            weather={weather}
-            forecast={forecast}
-            t={t}
-            isLoading={!weather}
-          />
+        <View className="pb-8" style={{ backgroundColor: 'transparent' }}>
+          <View className="gap-6"  >
+            {/* Header del clima */}
+            <WeatherHeader
+              city={city}
+              weather={weather}
+              forecast={forecast}
+              t={t}
+              isLoading={!weather}
+            />
 
-          {/* Pronóstico por Horas */}
-          <HourlyForecastCard 
-            hourlyData={hourlyForecast} 
-            city={city} 
-            forecast={forecast} 
-            isLoading={hourlyForecast.length === 0}
-          />
+            {/* Pronóstico por Horas */}
+            <HourlyForecastCard 
+              hourlyData={hourlyForecast} 
+              city={city} 
+              forecast={forecast} 
+              isLoading={hourlyForecast.length === 0}
+            />
 
-          {/* Pronóstico Diario */}
-          <DailyForecastCard 
-            forecast={forecast} 
-            city={city} 
-            isLoading={forecast.length === 0}
-          />
+            {/* Pronóstico Diario */}
+            <DailyForecastCard 
+              forecast={forecast} 
+              city={city} 
+              isLoading={forecast.length === 0}
+            />
+          </View>
 
           {/* Cards de información detallada */}
-          <>
-            {/* Sensación térmica y Humedad en cards separadas */}
-            <View className="flex-row gap-3">
+          <View className="gap-3 mt-3">
+            {/* Fila 1: Sensación térmica y Humedad */}
+            <View className="flex-row gap-2">
               <WeatherCard
                 icon="🌡️"
                 title={t('weather.feelsLike') || 'Feels Like'}
@@ -106,8 +108,8 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
                 isLoading={!weather}
               />
             </View>
-            {/* Fila 1: Viento y Presión */}
-            <View className="flex-row gap-3">
+            {/* Fila 2: Viento y Presión */}
+            <View className="flex-row gap-2">
               <WeatherCard
                 icon="💨"
                 title={t('weather.wind') || 'Wind'}
@@ -128,8 +130,8 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
               />
             </View>
 
-            {/* Fila 2: Nubosidad y Visibilidad */}
-            <View className="flex-row gap-3">
+            {/* Fila 3: Nubosidad y Visibilidad */}
+            <View className="flex-row gap-2">
               <WeatherCard
                 icon="☁️"
                 title={t('weather.cloudiness') || 'Cloudiness'}
@@ -169,7 +171,7 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
               onPress={navigateToDailyForecast}
               isLoading={!weather}
             />
-          </>
+          </View>
         </View>
       </ScrollView>
     </View>
