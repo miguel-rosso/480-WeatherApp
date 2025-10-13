@@ -62,6 +62,7 @@ export default function TabLayout() {
           sceneStyle: {
             backgroundColor: 'transparent',
           },
+          lazy: false, // Deshabilitar lazy loading - renderiza todas las tabs inmediatamente
         }}
       >
         <Tabs.Screen
