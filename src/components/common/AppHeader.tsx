@@ -33,11 +33,22 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
       style={{ backgroundColor }}
     >
       {/* Contenido izquierdo */}
-      {type === 'city' && localTime ? (
-        // Para ciudades: mostrar hora local
-        <Text className="text-lg font-semibold" style={{ color: 'white' }}>
-          🕐 {localTime}
-        </Text>
+      {type === 'city' ? (
+        // Para ciudades: mostrar hora local o skeleton
+        localTime ? (
+          <Text className="text-lg font-semibold" style={{ color: 'white' }}>
+            🕐 {localTime}
+          </Text>
+        ) : (
+          <View 
+            style={{ 
+              width: 60, 
+              height: 20, 
+              backgroundColor: Colors.whiteAlpha25,
+              borderRadius: 6 
+            }} 
+          />
+        )
       ) : (
         // Para contacto: mostrar título
         <Text className="text-2xl font-bold" style={{ color: 'white' }}>
