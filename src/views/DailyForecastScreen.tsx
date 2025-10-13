@@ -14,7 +14,7 @@ import { useDailyForecastViewModel } from '@/src/viewmodels/useDailyForecastView
 import { Stack } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface DailyForecastScreenProps {
@@ -60,7 +60,7 @@ export const DailyForecastScreen: React.FC<DailyForecastScreenProps> = ({ city, 
       />
       <DailyForecastGradient colors={backgroundGradient as [string, string]}>
         <SafeAreaView className="flex-1" edges={['bottom']} style={{ backgroundColor: 'transparent' }}>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView className='flex-1'>
             {/* Day Selector */}
             <DaySelector 
               forecast={forecast} 
@@ -117,9 +117,3 @@ export const DailyForecastScreen: React.FC<DailyForecastScreenProps> = ({ city, 
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-});
