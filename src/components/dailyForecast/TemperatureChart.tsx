@@ -32,7 +32,7 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
   if (data.length < 2) {
     return (
       <View className="items-center justify-center py-8">
-        <Text style={{ color: Colors.whiteAlpha60 }}>{t('dailyForecast.noData')} (insufficient data)</Text>
+        <Text style={{ color: Colors.whiteAlpha60 }}>{t('dailyForecast.noData')}</Text>
       </View>
     );
   }

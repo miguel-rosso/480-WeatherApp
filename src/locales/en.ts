@@ -5,14 +5,14 @@ export const en = {
       english: 'English',
       spanish: 'Spanish',
     },
-    
+
     // Ciudades
     cities: {
       london: 'London',
       toronto: 'Toronto',
       singapore: 'Singapore',
     },
-    
+
     // Pantalla principal
     weather: {
       title: 'Weather',
@@ -57,7 +57,7 @@ export const en = {
       error: 'Unable to load weather data',
       refresh: 'Pull to refresh',
     },
-    
+
     // Pantalla de pronóstico diario
     dailyForecast: {
       title: 'Daily Forecast',
@@ -68,7 +68,7 @@ export const en = {
       chanceOfRain: 'Chance of rain',
       rainExpected: 'Rain expected during the day',
       noRainExpected: 'No rain expected',
-      noData: 'No data available',
+      noData: 'No data available (insufficient API data)',
       feelsLike: 'Feels Like',
       humidity: 'Humidity',
       windSpeed: 'Wind Speed',
@@ -81,7 +81,7 @@ export const en = {
       temperatureAxis: 'Temperature (°C)',
       precipitationAxis: 'Probability (%)',
     },
-    
+
     // Días de la semana
     days: {
       monday: 'Mon',
@@ -92,7 +92,7 @@ export const en = {
       saturday: 'Sat',
       sunday: 'Sun',
     },
-    
+
     // Días de la semana completos
     daysFull: {
       monday: 'Monday',
@@ -103,7 +103,7 @@ export const en = {
       saturday: 'Saturday',
       sunday: 'Sunday',
     },
-    
+
     // Errores
     error: {
       title: 'Error',
@@ -157,7 +157,7 @@ export const en = {
       thunderstormWithLightDrizzle: 'thunderstorm with light drizzle',
       thunderstormWithDrizzle: 'thunderstorm with drizzle',
       thunderstormWithHeavyDrizzle: 'thunderstorm with heavy drizzle',
-      
+
       // Drizzle (3xx)
       lightIntensityDrizzle: 'light drizzle',
       drizzle: 'drizzle',
@@ -168,7 +168,7 @@ export const en = {
       showerRainAndDrizzle: 'shower rain and drizzle',
       heavyShowerRainAndDrizzle: 'heavy shower rain and drizzle',
       showerDrizzle: 'shower drizzle',
-      
+
       // Rain (5xx)
       lightRain: 'light rain',
       moderateRain: 'moderate rain',
@@ -180,7 +180,7 @@ export const en = {
       showerRain: 'shower rain',
       heavyIntensityShowerRain: 'heavy shower rain',
       raggedShowerRain: 'ragged shower rain',
-      
+
       // Snow (6xx)
       lightSnow: 'light snow',
       snow: 'snow',
@@ -193,7 +193,7 @@ export const en = {
       lightShowerSnow: 'light shower snow',
       showerSnow: 'shower snow',
       heavyShowerSnow: 'heavy shower snow',
-      
+
       // Atmosphere (7xx)
       mist: 'mist',
       smoke: 'smoke',
@@ -205,10 +205,10 @@ export const en = {
       volcanicAsh: 'volcanic ash',
       squalls: 'squalls',
       tornado: 'tornado',
-      
+
       // Clear (800)
       clearSky: 'clear sky',
-      
+
       // Clouds (80x)
       fewClouds: 'few clouds',
       scatteredClouds: 'scattered clouds',

@@ -68,7 +68,7 @@ export const es = {
       chanceOfRain: 'Probabilidad de lluvia',
       rainExpected: 'Se espera lluvia durante el día',
       noRainExpected: 'No se espera lluvia',
-      noData: 'No hay datos disponibles',
+      noData: 'No hay datos disponibles (datos de la API insuficientes)',
       feelsLike: 'Sensación Térmica',
       humidity: 'Humedad',
       windSpeed: 'Viento',
