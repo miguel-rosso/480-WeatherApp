@@ -7,7 +7,6 @@ import { DailyForecastCard } from '@/src/components/cards/DailyForecast/DailyFor
 import { HourlyForecastCard } from '@/src/components/cards/HourlyForecast/HourlyForecastCard';
 import { InfoPairCard } from '@/src/components/cards/InfoPairCard';
 import { WeatherCard } from '@/src/components/cards/WeatherCard';
-import { LanguageSelector } from '@/src/components/common/LanguageSelector';
 import { WeatherIcon } from '@/src/components/common/WeatherCustomIcon';
 import { Colors } from '@/src/constants/Colors';
 import { getWeatherDescriptionKey } from '@/src/utils/helpers';
@@ -41,18 +40,6 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
 
   return (
     <View className="flex-1">
- {/* Header con hora local y selector de idioma */}
-      <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor: 'transparent' }}>
-        {/* Hora local de la ciudad */}
-        {weather && (
-          <Text className="text-lg font-semibold" style={{ color: 'white' }}>
-            🕐 {weather.getFormattedLocalTime(currentTime)}
-          </Text>
-        )}
-        {/* Selector de idioma */}
-        <LanguageSelector />
-      </View>
-      
       {/* Contenido principal */}
       <ScrollView
         ref={scrollViewRef}

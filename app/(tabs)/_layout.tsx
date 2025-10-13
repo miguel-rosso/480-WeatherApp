@@ -1,24 +1,24 @@
 import { prefetchAllCities } from '@/src/api/services/WeatherPrefetchService';
 import { HapticTab } from '@/src/components/common/haptic-tab';
-import { LanguageSelector } from '@/src/components/common/LanguageSelector';
+import { AppHeader } from '@/src/components/common/AppHeader';
 import { WeatherBackground } from '@/src/components/layout/WeatherBackground';
 import { Colors } from '@/src/constants/Colors';
 import { useAppSelector } from '@/src/store/hooks';
 import { selectWeatherBackground } from '@/src/store/slices/weatherBackgroundSlice';
+import { useHeaderViewModel } from '@/src/viewmodels/useHeaderViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import * as NavigationBar from 'expo-navigation-bar';
-import { Tabs, useSegments } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { t } from 'i18next';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 export default function TabLayout() {
-  // 🎯 REDUX: Leer el estado del store usando el selector
-  const backgroundState = useAppSelector(selectWeatherBackground);
+  // 🎯 MVVM: ViewModel del header
+  const { isContactScreen, localTime } = useHeaderViewModel();
 
-  // 🎯 Detectar en qué tab estamos
-  const segments = useSegments();
-  const isContactScreen = segments[segments.length - 1] === 'contact';
+  // 🎯 REDUX: Leer el estado del fondo desde el store
+  const backgroundState = useAppSelector(selectWeatherBackground);
 
   // 🚀 Prefetch de todas las ciudades al iniciar la app (solo una vez)
   useEffect(() => {
@@ -40,6 +40,12 @@ export default function TabLayout() {
           timezone={backgroundState.timezone}
         />
       )}
+
+      {/* Header unificado - UI controlada por ViewModel */}
+      <AppHeader 
+        type={isContactScreen ? 'contact' : 'city'}
+        localTime={localTime}
+      />
 
       <Tabs
         screenOptions={{
@@ -83,18 +89,8 @@ export default function TabLayout() {
           name="contact"
           options={{
             title: t('contact.title'),
-            headerShown: true,
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: Colors.background,
-            },
-            headerTintColor: 'white',
+            headerShown: false,
             tabBarIcon: ({ color }) => <Ionicons name="mail" size={24} color={color} />,
-            headerRight: () => (
-              <View className="pr-4">
-                <LanguageSelector />
-              </View>
-            ),
           }}
         />
       </Tabs>
