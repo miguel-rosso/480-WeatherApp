@@ -1,50 +1,58 @@
-{
-  "expo": {
-    "name": "480-Weather",
-    "slug": "480-Weather",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/build/icon.png",
-    "scheme": "480Weather",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.rivotx.x480Weather"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/build/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/build/android-icon-background.png",
-        "monochromeImage": "./assets/images/build/android-icon-monochrome.png"
+  {
+    "expo": {
+      "name": "480-Weather",
+      "slug": "480-Weather",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/images/build/icon.png",
+      "scheme": "480Weather",
+      "userInterfaceStyle": "automatic",
+      "newArchEnabled": true,
+      "ios": {
+        "supportsTablet": true,
+        "bundleIdentifier": "com.rivotx.x480Weather"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.rivotx.x480Weather"
-    },
-    "web": {
-      "bundler": "metro"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/build/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
+      "android": {
+        "adaptiveIcon": {
+          "backgroundColor": "#E6F4FE",
+          "backgroundImage": "./assets/images/build/icon.png"
+        },
+        "edgeToEdgeEnabled": true,
+        "predictiveBackGestureEnabled": false,
+        "package": "com.rivotx.x480Weather",
+        "permissions": [
+          "android.permission.RECORD_AUDIO",
+          "android.permission.MODIFY_AUDIO_SETTINGS"
+        ]
+      },
+      "web": {
+        "bundler": "metro"
+      },
+      "plugins": [
+        "expo-router",
+        [
+          "expo-splash-screen",
+          {
+            "image": "./assets/images/build/icon.png",
+            "imageWidth": 200,
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff",
+            "dark": {
+              "backgroundColor": "#000000"
+            }
           }
-        }
+        ],
+        "expo-audio"
       ],
-      "expo-audio"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+      "experiments": {
+        "typedRoutes": true,
+        "reactCompiler": true
+      },
+      "extra": {
+        "router": {},
+        "eas": {
+          "projectId": "84fa6e12-a0fa-4b97-84ff-4888b91a1482"
+        }
+      }
     }
   }
-}

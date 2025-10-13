@@ -53,7 +53,7 @@ export const WeatherHeader: React.FC<WeatherHeaderProps> = ({
       <View className="flex-row items-center gap-2">
         <WeatherIcon icon={weather.icon} size={30} />
         <Text className="text-2xl" style={{ color: Colors.whiteAlpha80 }}>
-          {t(getWeatherDescriptionKey(weather.weatherId))}
+          {t(getWeatherDescriptionKey(weather.weatherId)).charAt(0).toUpperCase() + t(getWeatherDescriptionKey(weather.weatherId)).slice(1)}
         </Text>
       </View>
     </View>
