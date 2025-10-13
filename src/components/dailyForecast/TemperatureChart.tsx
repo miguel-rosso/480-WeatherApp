@@ -49,7 +49,10 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
   // Dimensiones del gráfico
   const chartWidth = screenWidth - 24; // Reducido de 48 a 24 para más ancho
   const chartHeight = 240; // Aumentado de 220 a 240
-  const padding = { top: 30, right: 15, bottom: 40, left: 40 }; // Reducido padding right
+  // Aumentar padding izquierdo si hay decimales para evitar solapamiento con la etiqueta vertical
+  const useDecimals = tempRange < 4;
+  const leftPadding = useDecimals ? 48 : 40; // Más espacio cuando hay decimales
+  const padding = { top: 30, right: 15, bottom: 40, left: leftPadding };
   const graphWidth = chartWidth - padding.left - padding.right;
   const graphHeight = chartHeight - padding.top - padding.bottom;
 
@@ -95,11 +98,46 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
     );
   };
 
-  // Calcular valores del eje Y
-  const yAxisValues = Array.from({ length: 5 }, (_, i) => {
-    const value = maxTemp - (i * tempRange) / 4;
-    return Math.round(value);
-  });
+  // Calcular valores del eje Y evitando duplicados
+  const calculateYAxisValues = () => {
+    const numLabels = 5;
+    const values: number[] = [];
+    
+    // Si el rango es muy pequeño, usar decimales
+    const useDecimals = tempRange < 4;
+    const step = tempRange / (numLabels - 1);
+    
+    for (let i = 0; i < numLabels; i++) {
+      const value = maxTemp - (i * step);
+      
+      if (useDecimals) {
+        // Redondear a 1 decimal
+        values.push(Math.round(value * 10) / 10);
+      } else {
+        values.push(Math.round(value));
+      }
+    }
+    
+    // Verificar y eliminar duplicados manteniendo 5 valores
+    const uniqueValues = Array.from(new Set(values));
+    
+    // Si hay duplicados, recalcular con decimales
+    if (uniqueValues.length < numLabels) {
+      const decimalValues: number[] = [];
+      const decimalStep = tempRange / (numLabels - 1);
+      
+      for (let i = 0; i < numLabels; i++) {
+        const value = maxTemp - (i * decimalStep);
+        decimalValues.push(Math.round(value * 10) / 10);
+      }
+      
+      return decimalValues;
+    }
+    
+    return values;
+  };
+
+  const yAxisValues = calculateYAxisValues();
 
   return (
     <View className="px-3 py-4">
@@ -110,6 +148,8 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
         {[0, 0.25, 0.5, 0.75, 1].map((ratio, i) => {
           const y = padding.top + ratio * graphHeight;
           const tempValue = yAxisValues[i];
+          // Mostrar decimales si el valor no es un entero
+          const displayValue = Number.isInteger(tempValue) ? tempValue : tempValue.toFixed(1);
 
           return (
             <React.Fragment key={i}>
@@ -117,7 +157,7 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
               <Path d={`M ${padding.left} ${y} L ${chartWidth - padding.right} ${y}`} stroke={'white'} strokeOpacity={0.1} strokeWidth={1} />
               {/* Etiqueta del eje Y */}
               <SvgText x={padding.left - 10} y={y + 4} fill={'white'} fontSize="10" fontWeight="400" textAnchor="end" opacity={0.6}>
-                {tempValue}°
+                {displayValue}°
               </SvgText>
             </React.Fragment>
           );
@@ -138,22 +178,55 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
         <Path d={pathData} fill="none" stroke="url(#dynamicLineGradient)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
 
         {/* Puntos con colores individuales según temperatura */}
-        {points.map((point, index) => (
-          <React.Fragment key={index}>
-            {/* Punto exterior (borde blanco) */}
-            <Circle cx={point.x} cy={point.y} r={7} fill={'white'} opacity={0.9} />
-            {/* Punto interior (color de temperatura) */}
-            <Circle cx={point.x} cy={point.y} r={5} fill={point.color} />
-            {/* Temperatura sobre el punto */}
-            <SvgText x={point.x} y={point.y - 15} fill={'white'} fontSize="12" fontWeight="600" textAnchor="middle">
-              {Math.round(point.temp)}°
-            </SvgText>
-            {/* Etiqueta de hora debajo */}
-            <SvgText x={point.x} y={chartHeight - padding.bottom + 20} fill={'white'} fontSize="11" fontWeight="400" textAnchor="middle" opacity={0.7}>
-              {point.label}
-            </SvgText>
-          </React.Fragment>
-        ))}
+        {points.map((point, index) => {
+          // Mostrar decimales si el rango es pequeño
+          const displayTemp = tempRange < 4 ? (Math.round(point.temp * 10) / 10).toFixed(1) : Math.round(point.temp).toString();
+          
+          return (
+            <React.Fragment key={index}>
+              {/* Punto exterior (borde blanco) */}
+              <Circle cx={point.x} cy={point.y} r={7} fill={'white'} opacity={0.9} />
+              {/* Punto interior (color de temperatura) */}
+              <Circle cx={point.x} cy={point.y} r={5} fill={point.color} />
+              {/* Temperatura sobre el punto */}
+              <SvgText x={point.x} y={point.y - 15} fill={'white'} fontSize="12" fontWeight="600" textAnchor="middle">
+                {displayTemp}°
+              </SvgText>
+              {/* Etiqueta de hora debajo */}
+              <SvgText x={point.x} y={chartHeight - padding.bottom + 20} fill={'white'} fontSize="11" fontWeight="400" textAnchor="middle" opacity={0.7}>
+                {point.label}
+              </SvgText>
+            </React.Fragment>
+          );
+        })}
+
+        {/* Etiqueta del eje Y (vertical) */}
+        <SvgText
+          x={10}
+          y={chartHeight / 2}
+          fill={'white'}
+          fontSize="11"
+          fontWeight="500"
+          textAnchor="middle"
+          opacity={0.7}
+          rotation="-90"
+          origin={`10, ${chartHeight / 2}`}
+        >
+          {t('dailyForecast.temperatureAxis')}
+        </SvgText>
+
+        {/* Etiqueta del eje X (horizontal) */}
+        <SvgText
+          x={chartWidth / 2}
+          y={chartHeight - 5}
+          fill={'white'}
+          fontSize="11"
+          fontWeight="500"
+          textAnchor="middle"
+          opacity={0.7}
+        >
+          {t('dailyForecast.timeAxis')}
+        </SvgText>
       </Svg>
     </View>
   );

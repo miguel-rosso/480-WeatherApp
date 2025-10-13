@@ -77,6 +77,9 @@ export const en = {
       weather: 'Weather',
       precipitationTotal: 'Precipitation',
       dailySummary: 'Summary',
+      timeAxis: 'Time',
+      temperatureAxis: 'Temperature (°C)',
+      precipitationAxis: 'Probability (%)',
     },
     
     // Días de la semana

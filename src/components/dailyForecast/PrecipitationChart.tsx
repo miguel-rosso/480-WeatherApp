@@ -136,6 +136,34 @@ export const PrecipitationChart: React.FC<PrecipitationChartProps> = ({ data }) 
             </SvgText>
           </React.Fragment>
         ))}
+
+        {/* Etiqueta del eje Y (vertical) */}
+        <SvgText
+          x={10}
+          y={chartHeight / 2}
+          fill={'white'}
+          fontSize="11"
+          fontWeight="500"
+          textAnchor="middle"
+          opacity={0.7}
+          rotation="-90"
+          origin={`10, ${chartHeight / 2}`}
+        >
+          {t('dailyForecast.precipitationAxis')}
+        </SvgText>
+
+        {/* Etiqueta del eje X (horizontal) */}
+        <SvgText
+          x={chartWidth / 2}
+          y={chartHeight - 5}
+          fill={'white'}
+          fontSize="11"
+          fontWeight="500"
+          textAnchor="middle"
+          opacity={0.7}
+        >
+          {t('dailyForecast.timeAxis')}
+        </SvgText>
       </Svg>
 
       {/* Descripción adicional */}
