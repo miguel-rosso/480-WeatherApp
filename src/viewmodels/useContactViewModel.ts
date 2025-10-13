@@ -4,7 +4,7 @@
  * En React, esto es un custom hook que encapsula la lógica
  */
 
-import { Audio } from 'expo-av';
+import { useAudioPlayer } from 'expo-audio';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, Platform } from 'react-native';
@@ -26,6 +26,9 @@ export interface TouchedFields {
 
 export const useContactViewModel = () => {
   const { t } = useTranslation();
+
+  // Audio player para el sonido de celebración
+  const audioPlayer = useAudioPlayer(require('@/assets/sounds/crowd-cheer-and-applause-406644.mp3'));
 
   // Estados del formulario
   const [formData, setFormData] = useState<FormData>({
@@ -75,30 +78,12 @@ export const useContactViewModel = () => {
    * Mostrar animación de confeti y reproducir sonido cuando willHireMe cambia a true
    */
   useEffect(() => {
-    let sound: Audio.Sound | undefined;
-
-    const playCelebrationSound = async () => {
-      try {
-        // Configurar el modo de audio
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true,
-          staysActiveInBackground: false,
-        });
-
-        // Cargar y reproducir el sonido
-        const { sound: audioSound } = await Audio.Sound.createAsync(require('@/assets/sounds/crowd-cheer-and-applause-406644.mp3'), {
-          shouldPlay: true,
-          volume: 0.5,
-        });
-        sound = audioSound;
-      } catch (error) {
-        console.error('Error al reproducir el sonido:', error);
-      }
-    };
-
     if (willHireMe) {
       setShowConfetti(true);
-      playCelebrationSound();
+      
+      // Configurar volumen y reproducir
+      audioPlayer.volume = 0.5;
+      audioPlayer.play();
 
       // Ocultar el confeti después de la animación
       const timer = setTimeout(() => {
@@ -107,13 +92,13 @@ export const useContactViewModel = () => {
 
       return () => {
         clearTimeout(timer);
-        // Limpiar el sonido cuando el componente se desmonte
-        sound?.unloadAsync();
+        // Pausar el sonido cuando el efecto se limpie
+        audioPlayer.pause();
       };
     } else {
       setShowConfetti(false);
     }
-  }, [willHireMe]);
+  }, [willHireMe, audioPlayer]);
 
   /**
    * Validar formato de email
