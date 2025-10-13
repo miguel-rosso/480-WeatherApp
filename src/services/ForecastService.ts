@@ -14,18 +14,25 @@ import {
 } from '@/src/utils/helpers';
 
 /**
- * Obtiene el pronóstico de 5 días y devuelve un array de modelos
- * @param city Nombre de la ciudad
- * @param timezone Zona horaria de la ciudad en segundos (para convertir a hora local)
- * @param currentTemperature Temperatura actual del Weather API (opcional) - se usa para ajustar el máximo del primer día
- * @param currentWeather Clima actual (weatherId y description) - se usa para el primer día en lugar del calculado
+ * Hace una única llamada al API de forecast y devuelve ambos: daily y hourly
+ * Esto optimiza las llamadas al API reduciendo de 3 a 2 fetches por ciudad
  */
-export const getForecast = async (
+export const getForecastData = async (
   city: string,
   timezone: number = 0,
   currentTemperature?: number,
-  currentWeather?: { weatherId: number; description: string }
-): Promise<Forecast[]> => {
+  currentWeather?: { 
+    weatherId: number; 
+    description: string;
+    temperature: number; 
+    feelsLike: number;
+    icon: string;
+    humidity: number;
+    windSpeed: number;
+    cloudiness: number;
+    visibility?: number;
+  }
+): Promise<{ daily: Forecast[]; hourly: HourlyForecast[] }> => {
     const url = `${API_CONFIG.BASE_URL}/forecast?q=${city}&units=metric&appid=${API_CONFIG.API_KEY}`;
 
     console.log("🌐 [Forecast] Fetching URL:", url);
@@ -45,8 +52,28 @@ export const getForecast = async (
       }
 
       const data: OpenWeatherForecastResponse = await response.json();
+      
+      // Procesar ambos tipos de datos
+      const daily = processDailyForecast(data, timezone, currentTemperature, currentWeather);
+      const hourly = processHourlyForecast(data, timezone, currentWeather);
+      
+      return { daily, hourly };
+    } catch (error) {
+      console.error("❌ [ForecastAPI] Error fetching forecast:", error);
+      throw error;
+    }
+};
 
-      console.log("📊 [Forecast] Response received for", city);
+/**
+ * Procesa los datos del API para obtener el forecast diario
+ */
+const processDailyForecast = (
+  data: OpenWeatherForecastResponse,
+  timezone: number,
+  currentTemperature?: number,
+  currentWeather?: { weatherId: number; description: string }
+): Forecast[] => {
+      console.log("📊 [Forecast] Processing daily forecast");
       console.log("📅 Forecast entries:", data.list.length);
       console.log("🗓️ Forecast first result:", data.list.slice(0, 1))
       // Transformar a modelos
@@ -156,21 +183,14 @@ export const getForecast = async (
           icon: getWeatherEmoji(representativeWeather.id, true),
         };
       });
-    } catch (error) {
-      console.error("❌ [ForecastAPI] Error fetching forecast:", error);
-      throw error;
-    }
 };
 
 /**
- * Obtiene el pronóstico por hora (hasta 5 días)
- * @param city Nombre de la ciudad
- * @param timezone Zona horaria de la ciudad en segundos (para convertir a hora local)
- * @param currentWeather Datos del clima actual (opcional) - si se proporciona, el primer ítem usará estos datos
+ * Procesa los datos del API para obtener el forecast horario
  */
-export const getHourlyForecast = async (
-  city: string,
-  timezone: number = 0,
+const processHourlyForecast = (
+  data: OpenWeatherForecastResponse,
+  timezone: number,
   currentWeather?: { 
     temperature: number; 
     feelsLike: number;
@@ -182,21 +202,8 @@ export const getHourlyForecast = async (
     cloudiness: number;
     visibility?: number;
   }
-): Promise<HourlyForecast[]> => {
-    const url = `${API_CONFIG.BASE_URL}/forecast?q=${city}&units=metric&appid=${API_CONFIG.API_KEY}`;
-
-    console.log("🌐 [HourlyForecast] Fetching URL:", url);
-
-    try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      const data: OpenWeatherForecastResponse = await response.json();
-
-      console.log("⏰ [Hourly Forecast] Response received for", city);
+): HourlyForecast[] => {
+      console.log("⏰ [Hourly Forecast] Processing hourly forecast");
       console.log("📊 [Hourly Forecast] Total entries:", data.list.length);
       console.log("🕐 [Hourly Forecast] Timezone offset:", timezone, "seconds");
       
@@ -291,8 +298,6 @@ export const getHourlyForecast = async (
       console.log(`\n✅ [Hourly Forecast] Returning ${hourlyForecasts.length} hourly forecasts\n`);
       
       return hourlyForecasts;
-    } catch (error) {
-      console.error("❌ [Hourly ForecastAPI] Error fetching hourly forecast:", error);
-      throw error;
-    }
 };
+
+

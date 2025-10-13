@@ -6,7 +6,7 @@
  */
 
 import { getCurrentWeather } from '@/src/services/CurrentWeatherService';
-import { getForecast, getHourlyForecast } from '@/src/services/ForecastService';
+import { getForecastData } from '@/src/services/ForecastService';
 import { store } from '@/src/store';
 import { setError, setForecast, setHourlyForecast, setLoading, setWeather } from '@/src/store/slices/weatherSlice';
 
@@ -27,29 +27,13 @@ const fetchCityWeather = async (city: string) => {
 };
 
 /**
- * Obtiene el pronóstico de una ciudad y lo guarda en Redux
+ * Obtiene el pronóstico diario y por hora de una ciudad y lo guarda en Redux
+ * OPTIMIZADO: Hace una sola llamada al API en lugar de dos
  */
-const fetchCityForecast = async (
+const fetchCityForecasts = async (
   city: string,
   timezone: number = 0,
   currentTemperature?: number,
-  currentWeather?: { weatherId: number; description: string }
-) => {
-  try {
-    const forecast = await getForecast(city, timezone, currentTemperature, currentWeather);
-
-    store.dispatch(setForecast({ city, forecast }));
-  } catch (error) {
-    console.error(`Error fetching forecast for ${city}:`, error);
-  }
-};
-
-/**
- * Obtiene el pronóstico por hora de una ciudad y lo guarda en Redux
- */
-const fetchCityHourlyForecast = async (
-  city: string,
-  timezone: number = 0,
   currentWeather?: { 
     temperature: number; 
     feelsLike: number;
@@ -63,11 +47,13 @@ const fetchCityHourlyForecast = async (
   }
 ) => {
   try {
-    const hourlyForecast = await getHourlyForecast(city, timezone, currentWeather);
+    // Una sola llamada al API que devuelve ambos: daily y hourly
+    const { daily, hourly } = await getForecastData(city, timezone, currentTemperature, currentWeather);
 
-    store.dispatch(setHourlyForecast({ city, hourlyForecast }));
+    store.dispatch(setForecast({ city, forecast: daily }));
+    store.dispatch(setHourlyForecast({ city, hourlyForecast: hourly }));
   } catch (error) {
-    console.error(`Error fetching hourly forecast for ${city}:`, error);
+    console.error(`Error fetching forecasts for ${city}:`, error);
   }
 };
 
@@ -101,17 +87,9 @@ export const prefetchAllCities = async (cities: string[]) => {
         visibility: cityWeather.visibility,
       } : undefined;
 
-      // Preparar weatherId y description para el forecast del día de hoy
-      const currentWeatherForForecast = cityWeather ? {
-        weatherId: cityWeather.weatherId,
-        description: cityWeather.description,
-      } : undefined;
-
       // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
-      await Promise.all([
-        fetchCityForecast(city, timezone, cityWeather?.temperature, currentWeatherForForecast),
-        fetchCityHourlyForecast(city, timezone, currentWeatherData)
-      ]);
+      // OPTIMIZADO: Una sola llamada en lugar de dos
+      await fetchCityForecasts(city, timezone, cityWeather?.temperature, currentWeatherData);
     })
   );
 
@@ -143,15 +121,7 @@ export const refreshCityData = async (city: string) => {
     visibility: cityWeather.visibility,
   } : undefined;
 
-  // Preparar weatherId y description para el forecast del día de hoy
-  const currentWeatherForForecast = cityWeather ? {
-    weatherId: cityWeather.weatherId,
-    description: cityWeather.description,
-  } : undefined;
-
   // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
-  await Promise.all([
-    fetchCityForecast(city, timezone, cityWeather?.temperature, currentWeatherForForecast),
-    fetchCityHourlyForecast(city, timezone, currentWeatherData)
-  ]);
+  // OPTIMIZADO: Una sola llamada en lugar de dos
+  await fetchCityForecasts(city, timezone, cityWeather?.temperature, currentWeatherData);
 };
