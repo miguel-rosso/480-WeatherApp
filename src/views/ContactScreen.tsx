@@ -38,7 +38,12 @@ export const ContactScreen: React.FC = () => {
   } = useContactViewModel();
 
   return (
-    <KeyboardAvoidingView className="flex-1" style={{ backgroundColor: Colors.background }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      className="flex-1"
+      style={{ backgroundColor: Colors.background }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+      keyboardVerticalOffset={100}
+    >
       {/* 🎉 Animación de confeti de fondo */}
       {showConfetti && (
         <View style={styles.confettiContainer} pointerEvents="none">
