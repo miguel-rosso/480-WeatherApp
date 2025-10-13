@@ -81,7 +81,8 @@ export const useContactViewModel = () => {
     if (willHireMe) {
       setShowConfetti(true);
       
-      // Configurar volumen y reproducir
+      // Reiniciar el audio desde el inicio y configurar volumen
+      audioPlayer.seekTo(0);
       audioPlayer.volume = 0.5;
       audioPlayer.play();
 
@@ -92,11 +93,11 @@ export const useContactViewModel = () => {
 
       return () => {
         clearTimeout(timer);
-        // Pausar el sonido cuando el efecto se limpie
-        audioPlayer.pause();
       };
     } else {
+      // Al desactivar, pausar el audio y ocultar el confeti
       setShowConfetti(false);
+      audioPlayer.pause();
     }
   }, [willHireMe, audioPlayer]);
 
