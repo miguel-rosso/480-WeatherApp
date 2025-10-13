@@ -9,8 +9,9 @@ import { refreshCityData } from '@/src/api/services/WeatherPrefetchService';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
-import { useFocusEffect } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import { useFocusEffect, useSegments } from 'expo-router';
+import React, { useMemo, useRef, useState } from 'react';
+import { Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
@@ -29,6 +30,10 @@ export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
     return new CurrentWeatherModel(cityWeatherState.weather);
   }, [cityWeatherState.weather]);
 
+  // 🎯 Lógica de navegación: detectar si venimos de dailyForecast
+  const segments = useSegments();
+  const wasOnDailyForecast = useRef(false);
+
   /**
    * Actualizar el tiempo actual cada minuto
    */
@@ -39,6 +44,17 @@ export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
 
     return () => clearInterval(interval);
   }, []);
+
+  /**
+   * Detectar cuando estamos en la pantalla dailyForecast
+   * Para evitar scroll automático en iOS al cerrar el modal
+   */
+  React.useEffect(() => {
+    const isOnDailyForecast = segments[0] === 'dailyForecast';
+    if (isOnDailyForecast) {
+      wasOnDailyForecast.current = true;
+    }
+  }, [segments]);
 
   /**
    * Actualizar el fondo cuando la pantalla gana el foco o cambia el clima
@@ -65,6 +81,18 @@ export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
     await refreshCityData(initialCity);
   };
 
+  /**
+   * Determinar si debe hacer scroll al inicio cuando gana el foco
+   * En iOS, NO hacer scroll si venimos del modal dailyForecast
+   */
+  const shouldScrollToTop = React.useCallback(() => {
+    if (Platform.OS === 'ios' && wasOnDailyForecast.current) {
+      wasOnDailyForecast.current = false;
+      return false;
+    }
+    return true;
+  }, []);
+
   return {
     // Estado desde Redux (weather ya es una instancia de CurrentWeatherModel)
     weather,
@@ -76,5 +104,8 @@ export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
 
     // Acciones
     refresh,
+    
+    // Lógica de navegación
+    shouldScrollToTop,
   };
 };

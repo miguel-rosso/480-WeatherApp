@@ -22,7 +22,8 @@ interface CurrentWeatherScreenProps {
 }
 
 export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city }) => {
-  const { weather, forecast, hourlyForecast, isLoading, refresh } = useCurrentWeatherViewModel(city);
+  // 🎯 MVVM: ViewModel maneja toda la lógica
+  const { weather, forecast, hourlyForecast, isLoading, refresh, shouldScrollToTop } = useCurrentWeatherViewModel(city);
   const { t } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -32,10 +33,13 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
   };
 
   // Resetear scroll al inicio cuando la pantalla gana el foco (cambio de tab)
+  // La lógica está en el ViewModel, aquí solo ejecutamos lo que nos dice
   useFocusEffect(
     React.useCallback(() => {
-      scrollViewRef.current?.scrollTo({ y: 0, animated: false });
-    }, [])
+      if (shouldScrollToTop()) {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+      }
+    }, [shouldScrollToTop])
   );
 
   return (
