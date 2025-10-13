@@ -55,7 +55,7 @@ export const ContactScreen: React.FC = () => {
 
       <ScrollView
         className="flex-1"
-        contentContainerClassName="px-6 py-8"
+        contentContainerClassName="px-6 py-4"
         keyboardShouldPersistTaps="handled"
         onScrollBeginDrag={handleScrollBegin}
         showsVerticalScrollIndicator={false}

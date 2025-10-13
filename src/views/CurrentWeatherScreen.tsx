@@ -22,7 +22,7 @@ interface CurrentWeatherScreenProps {
 }
 
 export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city }) => {
-  const { weather, forecast, hourlyForecast, isLoading, refresh, currentTime } = useCurrentWeatherViewModel(city);
+  const { weather, forecast, hourlyForecast, isLoading, refresh } = useCurrentWeatherViewModel(city);
   const { t } = useTranslation();
   const scrollViewRef = useRef<ScrollView>(null);
 
