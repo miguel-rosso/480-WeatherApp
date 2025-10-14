@@ -50,10 +50,17 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
           />
         )
       ) : (
-        // Para contacto: mostrar título
-        <Text className="text-2xl font-bold" style={{ color: 'white' }}>
-          {t('contact.title')}
-        </Text>
+        // Para contacto: espacio vacío para mantener el layout
+        <View style={{ width: 60 }} />
+      )}
+      
+      {/* Título centrado para contacto */}
+      {type === 'contact' && (
+        <View style={{ position: 'absolute', left: 0, right: 0, alignItems: 'center', top: 56 }}>
+          <Text className="text-2xl font-bold" style={{ color: 'white' }}>
+            {t('contact.title')}
+          </Text>
+        </View>
       )}
       
       {/* Selector de idioma - siempre visible */}
