@@ -80,7 +80,7 @@ En caso contrario:
  git clone https://github.com/miguel-rosso/480-tecnica-WeatherApp
 ```
 
-2. Ejecuta:2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
+2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
 ```bash
 cd 480-tecnica-WeatherApp
 npm install
