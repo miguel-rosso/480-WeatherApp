@@ -21,10 +21,11 @@
 
 Buenas, presento mi prueba técnica, me he centrado en seguir las directrices de la prueba al pie de la letra (**Arquitectura - Redux - Funcionalidades**).
 
-> [!NOTE]
-> La app Android está **optimizada para producción**, por lo que agradecería que para probarla simplemente se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio) o se utilice `npx expo prebuild` + `npx expo run:android`. 
-
 En **iOS** usar `npm start` con Expo Go.
+
+> [!NOTE]
+> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo mas recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
+
 
 ---
 
