@@ -11,7 +11,7 @@
 
 *Prueba técnica desarrollada siguiendo principios SOLID, arquitectura MVVM y manejo de estado con Redux*
 
-[📱 Descargar APK](#-android) • [📖 Features](#-características-principales) • [🏗️ Arquitectura](#️-arquitectura-técnica)
+[📱 Descargar APK](480weatherApp.apk){:download} • [✨ Características Principales](#-características-principales) • [🏗️ Arquitectura](#️-arquitectura-técnica)
 
 </div>
 
@@ -19,12 +19,14 @@
 
 ## 👋 Introducción
 
-Buenas, presento mi prueba técnica, me he centrado en seguir las directrices de la prueba al pie de la letra (**Arquitectura - Redux - Funcionalidades**).
+Buenas, presento mi prueba técnica, me he centrado en seguir las directrices de la prueba al pie de la letra (**Arquitectura - Redux - Funcionalidades**). 
+
+Esta app ha sido desarrollada en 3-4 dias (viernes sabado domingo), creo que es una buena base y tiene una arquitectura escalable.
 
 En **iOS** usar `npm start` con Expo Go.
 
 > [!NOTE]
-> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo mas recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
+> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo más recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
 
 
 ---
@@ -37,6 +39,10 @@ En **iOS** usar `npm start` con Expo Go.
 
 > [!IMPORTANT]
 > La app está optimizada para producción. Se recomienda simplemente **instalar y usar el APK adjunto**.
+
+
+
+Para hacerlo, pulsar el enlace [📱 Descargar APK](480weatherApp.apk){:download}, o descargarlo desde el repositorio (está subido en la raiz del repositorio).
 
 En caso contrario:
 **Instalación desde código:**
@@ -209,6 +215,6 @@ Pronóstico de 5 dias cada 3 horas
 
 <div align="center">
 
-### Desarrollado con poco tiempo, pero con ❤️ =)  -- Miguel Rosso
+### Desarrollado con ❤️ --> Miguel Rosso
 
 </div>
