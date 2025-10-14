@@ -46,7 +46,7 @@ export const WeatherHeader: React.FC<WeatherHeaderProps> = ({
       
       {/* Temperatura máxima y mínima del primer día del forecast (hoy) */}
       <Text className="mb-2 text-xl" style={{ color: Colors.whiteAlpha80 }}>
-        {t('weather.max')}: {forecast[0]?.maxTemp || weather.tempMax}° • {t('weather.min')}: {forecast[0]?.minTemp || weather.tempMin}°
+        {t('weather.min')}: {forecast[0]?.minTemp || weather.tempMin}° • {t('weather.max')}: {forecast[0]?.maxTemp || weather.tempMax}°
       </Text>
       
       {/* Icono y descripción del clima */}
