@@ -11,7 +11,8 @@
 
 *Prueba técnica desarrollada siguiendo principios SOLID, arquitectura MVVM y manejo de estado con Redux*
 
-[📱 Descargar APK](#-android) • [📖 Features](#-características-principales) • [🏗️ Arquitectura](#️-arquitectura-técnica)
+[📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk) • [✨ Características Principales](#características-principales) • [🏗️ Arquitectura](#arquitectura-técnica)
+
 
 </div>
 
@@ -19,12 +20,14 @@
 
 ## 👋 Introducción
 
-Buenas, presento mi prueba técnica, me he centrado en seguir las directrices de la prueba al pie de la letra (**Arquitectura - Redux - Funcionalidades**).
+Buenas, presento mi prueba técnica, me he centrado en seguir las directrices de la prueba al pie de la letra (**Arquitectura - Redux - Funcionalidades**). 
+
+Esta app ha sido desarrollada en 3-4 dias (viernes sabado domingo), creo que es una buena base y tiene una arquitectura escalable.
 
 En **iOS** usar `npm start` con Expo Go.
 
 > [!NOTE]
-> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo mas recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
+> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo más recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
 
 
 ---
@@ -38,11 +41,27 @@ En **iOS** usar `npm start` con Expo Go.
 > [!IMPORTANT]
 > La app está optimizada para producción. Se recomienda simplemente **instalar y usar el APK adjunto**.
 
+
+
+#### Accediendo a este repositorio desde el movil
+1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk)
+2. Instalar y utilizar la aplicación en tu dispositivo Android
+
+#### Accediendo a este repositorio desde otro dispositivo (pc)
+1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk)
+2. Pasar el APK a tu móvil usando tu método preferido (WhatsApp, Telegram, correo, Google Drive, Discord, etc.)
+3. Instalar y utilizar la aplicación en tu dispositivo Android
+
 En caso contrario:
 **Instalación desde código:**
 1. Clona el repositorio
-2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
+  ```bash
+ git clone https://github.com/miguel-rosso/480-tecnica-WeatherApp
+```
+
+2. Ejecuta:2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
 ```bash
+cd 480-tecnica-WeatherApp
 npm install
 npx expo prebuild
 npx expo run:android
@@ -55,9 +74,14 @@ npx expo run:android
 ### 🍎 iOS
 
 1. Clona el repositorio
+  ```bash
+ git clone https://github.com/miguel-rosso/480-tecnica-WeatherApp
+```
+
 2. Ejecuta:
 
 ```bash
+cd 480-tecnica-WeatherApp
 npm install
 npm start
 ```
@@ -209,6 +233,6 @@ Pronóstico de 5 dias cada 3 horas
 
 <div align="center">
 
-### Desarrollado con poco tiempo, pero con ❤️ =)  -- Miguel Rosso
+### Desarrollado con ❤️ --> Miguel Rosso
 
 </div>
