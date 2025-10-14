@@ -27,7 +27,7 @@ Esta app ha sido desarrollada en 3-4 dias (viernes sabado domingo), creo que es 
 En **iOS** usar `npm start` con Expo Go.
 
 > [!NOTE]
-> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo más recomendable es que se instale y se use el **APK adjunto** (enlace o archivo `480weatherApp.apk` subido al repositorio). 
+> La app Android está **optimizada para producción**, por lo que agradecería que para probarla no se utilice expo go. Lo más recomendable es que se instale y se use el **APK adjunto**. 
 
 
 ---
