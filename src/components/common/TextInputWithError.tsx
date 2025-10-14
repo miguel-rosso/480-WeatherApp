@@ -21,7 +21,7 @@ export const TextInputWithError: React.FC<TextInputWithErrorProps> = ({ label, h
         {label}
       </Text>
       <TextInput
-        className="p-4 text-base border rounded-xl"
+        className="p-3.5 text-base border rounded-xl"
         style={{
           backgroundColor: Colors.inputBackground,
           borderColor: hasError ? Colors.error : Colors.inputBorder,

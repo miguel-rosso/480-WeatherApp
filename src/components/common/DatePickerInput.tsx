@@ -126,7 +126,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
       </Text>
       
       <TouchableOpacity
-        className="flex-row items-center justify-between p-4 border rounded-xl"
+        className="flex-row items-center justify-between p-3.5 border rounded-xl"
         style={{
           backgroundColor: Colors.inputBackground,
           borderColor: hasError ? Colors.error : Colors.inputBorder,

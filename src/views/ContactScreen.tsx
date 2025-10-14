@@ -60,19 +60,19 @@ export const ContactScreen: React.FC = () => {
 
       <ScrollView
         className="flex-1"
-        contentContainerClassName="px-6 py-4"
+        contentContainerClassName="px-6 py-3"
         keyboardShouldPersistTaps="handled"
         onScrollBeginDrag={handleScrollBegin}
         showsVerticalScrollIndicator={false}
       >
         {/* Header decorativo */}
-        <View className="mb-4">
-          <View className="flex-row items-center mb-3">
-            <View className="items-center justify-center w-12 h-12 mr-4 rounded-2xl" style={{ backgroundColor: Colors.buttonEnabled + '20' }}>
-              <Ionicons name="person-circle-outline" size={28} color={Colors.buttonEnabled} />
+        <View className="mb-3">
+          <View className="flex-row items-center mb-2">
+            <View className="items-center justify-center mr-3 size-11 rounded-2xl" style={{ backgroundColor: Colors.buttonEnabled + '20' }}>
+              <Ionicons name="person-circle-outline" size={26} color={Colors.buttonEnabled} />
             </View>
             <View className="flex-1">
-              <Text className="mt-1 text-sm" style={{ color: Colors.textSecondary }}>
+              <Text className="mt-1 text-base" style={{ color: Colors.textSecondary }}>
                 {t('contact.subtitle')}
               </Text>
             </View>
@@ -80,7 +80,7 @@ export const ContactScreen: React.FC = () => {
         </View>
 
         {/* Formulario */}
-        <View className="gap-5">
+        <View className="gap-4">
           {/* Nombre */}
           <TextInputWithError
             label={t('contact.name')}
@@ -145,7 +145,7 @@ export const ContactScreen: React.FC = () => {
 
           {/* Switch - ¿Me vais a contratar? */}
           <View
-            className="p-5 mt-3 rounded-2xl"
+            className="p-4 mt-2 rounded-2xl"
             style={{
               backgroundColor: Colors.background,
               borderWidth: 1,
@@ -156,10 +156,10 @@ export const ContactScreen: React.FC = () => {
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center flex-1 gap-3">
                 <View
-                  className="items-center justify-center rounded-full size-10"
+                  className="items-center justify-center rounded-full size-9"
                   style={{ backgroundColor: willHireMe ? Colors.buttonEnabled + '20' : Colors.textSecondary + '20' }}
                 >
-                  <Ionicons name={willHireMe ? 'checkmark-circle' : 'alert-circle'} size={24} color={willHireMe ? Colors.buttonEnabled : Colors.error} />
+                  <Ionicons name={willHireMe ? 'checkmark-circle' : 'alert-circle'} size={22} color={willHireMe ? Colors.buttonEnabled : Colors.error} />
                 </View>
                 <Text className="flex-1 text-base font-medium" style={{ color: Colors.text }}>
                   {t('contact.willHireMe')}
@@ -179,7 +179,7 @@ export const ContactScreen: React.FC = () => {
 
         {/* Botón Enviar - Diseño mejorado */}
         <TouchableOpacity
-          className="items-center justify-center p-5 mt-8 mb-6 rounded-2xl"
+          className="items-center justify-center p-4 mt-6 mb-5 rounded-2xl"
           style={{
             backgroundColor: isFormValid ? Colors.buttonEnabled : Colors.buttonDisabled,
             shadowColor: isFormValid ? Colors.buttonEnabled : Colors.shadowBlack,
@@ -189,7 +189,7 @@ export const ContactScreen: React.FC = () => {
             elevation: isFormValid ? 5 : 1,
             borderWidth: isFormValid ? 0 : 1,
             borderColor: Colors.textSecondary + '30',
-            minHeight: 60,
+            minHeight: 56,
           }}
           onPress={handleSubmit}
           disabled={!isFormValid}
