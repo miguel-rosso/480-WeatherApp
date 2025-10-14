@@ -11,7 +11,25 @@
 
 *Prueba técnica desarrollada siguiendo principios SOLID, arquitectura MVVM y manejo de estado con Redux*
 
-[📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk) • [✨ Características Principales](#características-principales) • [🏗️ Arquitectura](#arquitectura-técnica)
+[📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weather.apk) • [✨ Características Principales](#características-principales) • [🏗️ Arquitectura](#arquitectura-técnica)
+
+
+</div>
+
+## 📸 Capturas de Pantalla
+
+<div align="center">
+
+<img src="./zzReadmeImages/Sun.jpeg" width="250" />
+<img src="./zzReadmeImages/NightClouds.jpeg" width="250" />
+<img src="./zzReadmeImages/SnowAfternoon(hardcode).jpeg" width="250" />
+<img src="./zzReadmeImages/afternoonClouds.jpeg" width="250" />
+<img src="./zzReadmeImages/overCastClouds.jpeg" width="250" />
+
+<img src="./zzReadmeImages/SunDetail.jpeg" width="250" />
+<img src="./zzReadmeImages/OvercastCloudsDetail.jpeg" width="250" />
+<img src="./zzReadmeImages/RainDetail.jpeg" width="250" />
+<img src="./zzReadmeImages/contact.jpeg" width="250" />
 
 
 </div>
@@ -44,11 +62,11 @@ En **iOS** usar `npm start` con Expo Go.
 
 
 #### Accediendo a este repositorio desde el movil
-1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk)
+1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weather.apk)
 2. Instalar y utilizar la aplicación en tu dispositivo Android
 
 #### Accediendo a este repositorio desde otro dispositivo (pc)
-1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weatherApp.apk)
+1. Pulsar el enlace [📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weather.apk)
 2. Pasar el APK a tu móvil usando tu método preferido (WhatsApp, Telegram, correo, Google Drive, Discord, etc.)
 3. Instalar y utilizar la aplicación en tu dispositivo Android
 
@@ -176,37 +194,47 @@ La app también utiliza una **escala de colores para representar rangos de tempe
 
 Controla el fondo animado según el clima actual.
 
+**Estado:**
 ```typescript
 {
-  weatherMain: string,    // Tipo de clima (Clear, Rain, Clouds)
-  isDaytime: boolean,     // Día o noche
-  currentTime: string,    // Hora actual
-  sunsetTime: string,     // Hora del atardecer
-  weatherId: number       // ID específico del clima
+  weatherMain: string,      // Tipo de clima (Clear, Rain, Clouds)
+  weatherId?: number,       // ID específico del clima OpenWeather (opcional)
+  isDaytime: boolean,       // Indicador de día o noche
+  currentTime: Date,        // Hora actual
+  sunsetTime?: Date,        // Hora del atardecer (opcional)
+  timezone?: number         // Zona horaria en segundos desde UTC (opcional)
 }
 ```
 
 ✅ **Beneficio:** Todas las pantallas comparten un mismo fondo dinámico sincronizado.
 
+---
+
 ### 2️⃣ weatherSlice.ts
 
 Gestiona el caché meteorológico de todas las ciudades.
 
+**Estado:**
 ```typescript
 {
-  weather: Object,         // Clima actual
-  forecast: Array,         // Pronóstico de 5 días
-  hourlyForecast: Array,   // Pronóstico cada 3 horas
-  isLoading: boolean,      // Estado de carga
-  error: string | null,    // Errores
-  lastUpdated: string      // Última actualización
+  cities: {
+    [cityName: string]: {
+      weather: CurrentWeather | null,      // Clima actual
+      forecast: Forecast[],                // Pronóstico de 5 días
+      hourlyForecast: HourlyForecast[],   // Pronóstico cada 3 horas
+      isLoading: boolean,                  // Estado de carga
+      error: string | null,                // Mensajes de error
+      lastUpdated: Date | null             // Última actualización
+    }
+  }
 }
 ```
 
 ✅ **Ventajas:**
-- 💾 Caché inteligente: evita llamadas repetidas a la API
-- ⚡ Rendimiento óptimo: datos persistentes
-- 🔄 Sincronización total: información consistente en todas las pantallas
+- 💾 **Caché inteligente:** Evita llamadas repetidas a la API
+- ⚡ **Rendimiento óptimo:** Datos persistentes en memoria
+- 🔄 **Sincronización total:** Información consistente en todas las pantallas
+- 🏙️ **Multi-ciudad:** Cada ciudad tiene su propio espacio en el estado
 
 ---
 
