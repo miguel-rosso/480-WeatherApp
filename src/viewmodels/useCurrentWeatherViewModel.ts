@@ -14,7 +14,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-export const useCurrentWeatherViewModel = (initialCity: string = 'Madrid') => {
+export const useCurrentWeatherViewModel = (initialCity: string = 'London') => {
   const { i18n } = useTranslation();
   const dispatch = useAppDispatch();
   
