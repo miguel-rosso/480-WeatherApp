@@ -11,8 +11,7 @@
 
 *Prueba técnica desarrollada siguiendo principios SOLID, arquitectura MVVM y manejo de estado con Redux*
 
-[📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weather.apk) • [✨ Características Principales](#características-principales) • [🏗️ Arquitectura](#arquitectura-técnica)
-
+[📱 Descargar APK](https://github.com/miguel-rosso/480-tecnica-WeatherApp/releases/download/v1.0.0/480weather.apk) • [✨ Características Principales](#caracteristicas-principales) • [🏗️ Arquitectura](#arquitectura-tecnica)
 
 </div>
 
@@ -34,7 +33,9 @@
 
 </div>
 
+
 ---
+
 
 ## 👋 Introducción
 
@@ -49,6 +50,8 @@ En **iOS** usar `npm start` con Expo Go.
 
 
 ---
+</div>
+
 
 
 
@@ -77,7 +80,7 @@ En caso contrario:
  git clone https://github.com/miguel-rosso/480-tecnica-WeatherApp
 ```
 
-2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
+2. Ejecuta:2. Ejecuta con tu dispositivo android conectado via USB o con un simulador Android instalado
 ```bash
 cd 480-tecnica-WeatherApp
 npm install
@@ -108,7 +111,8 @@ npm start
 
 ---
 
-## ✨ Características Principales
+<a id="caracteristicas-principales"></a>
+## ✨ Caracteristicas Principales
 
 ### 🌤️ Información Meteorológica
 
@@ -164,25 +168,27 @@ La app también utiliza una **escala de colores para representar rangos de tempe
 
 </div>
 
-
+<a id="arquitectura-tecnica"></a>
 ## 🏗️ Arquitectura Técnica
 
-### 🧩 Patrón MVVM
+### 🧩 Patrón MVVM (MVVC)
 
 ```
-┌─────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────┐
 │                    🎯 ARQUITECTURA MVVM                      │
 ├──────────────┬──────────────────┬────────────────────────────┤
 │ CAPA         │ UBICACIÓN        │ DESCRIPCIÓN                │
 ├──────────────┼──────────────────┼────────────────────────────┤
 │ ROUTER       │ app/             │ File-based routing         │
+│ COMPONENTS   │ src/components/  │ Componentes reutilizables  │
+│ CONSTANTS    │ src/constants/   │ Constantes globales        │
+│ LOCALES      │ src/locales/     │ Traducciones e i18n        │
 │ MODEL        │ src/models/      │ Estructura de datos        │
-│ VIEW         │ src/views/       │ Interfaz pura (UI)         │
-│ VIEWMODEL    │ src/viewmodels/  │ Lógica de negocio          │
 │ SERVICES     │ src/services/    │ APIs externas              │
 │ STORE        │ src/store/       │ Estado global (Redux)      │
 │ UTILS        │ src/utils/       │ Funciones helper           │
-│ COMPONENTS   │ src/components/  │ Componentes reutilizables  │
+│ VIEWMODEL    │ src/viewmodels/  │ Lógica de negocio          │
+│ VIEW         │ src/views/       │ Interfaz pura (UI)         │
 └──────────────┴──────────────────┴────────────────────────────┘
 ```
 
