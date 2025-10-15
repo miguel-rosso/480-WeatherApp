@@ -52,5 +52,5 @@ app-example
 # Android
 *.apk
 
-# package-lock.json
+# DESCOMENTAR SI QUIERES HACER BUILD APK
 package-lock.json
