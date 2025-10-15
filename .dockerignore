@@ -1,0 +1,43 @@
+# Dependencias - IMPORTANTE: No copiar node_modules del host
+node_modules/
+npm-debug.log
+yarn-error.log
+# NO excluir package-lock.json - lo necesitamos para mantener versiones consistentes
+# package-lock.json
+yarn.lock
+
+# Builds
+.expo/
+.expo-shared/
+dist/
+build/
+android/build/
+android/app/build/
+ios/build/
+ios/Pods/
+
+# Cache
+.cache/
+*.log
+.npm/
+
+# Sistema
+.DS_Store
+.git/
+.gitignore
+.gitattributes
+
+# Desarrollo local
+.env.local
+.env.*.local
+.vscode/
+.idea/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+DOCKER-SETUP.md
+
+# README e imágenes de documentación
+zzReadmeImages/
