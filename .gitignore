@@ -51,3 +51,6 @@ app-example
 
 # Android
 *.apk
+
+# package-lock.json
+package-lock.json

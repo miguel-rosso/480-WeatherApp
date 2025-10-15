@@ -26,7 +26,7 @@ export const DailyForecastCard: React.FC<DailyForecastProps> = ({ forecast, city
 
   // Si está cargando, crear datos placeholder
   const displayData = isLoading
-    ? Array.from({ length: 5 }, (_, i) => ({
+    ? Array.from({ length: 6 }, (_, i) => ({
         dayName: '',
         date: '',
         fullDate: '',
