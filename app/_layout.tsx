@@ -4,7 +4,6 @@ import '@/src/locales/i18n'; // Inicializar i18n
 import { store } from '@/src/store';
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
 import { Provider } from 'react-redux';
 
 export default function RootLayout() {
