@@ -1,6 +1,6 @@
 /**
  * AppHeader - Componente de header unificado para toda la app
- * 
+ *
  * Características:
  * - Muestra el selector de idioma en todas las pantallas
  * - En las pantallas de ciudades: muestra la hora local
@@ -26,12 +26,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
   const { t } = useTranslation();
 
   const backgroundColor = type === 'contact' ? Colors.background : 'transparent';
-  
+
   return (
-    <View 
-      className="flex-row items-center justify-between px-6 pb-2 pt-14" 
-      style={{ backgroundColor }}
-    >
+    <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor }}>
       {/* Contenido izquierdo */}
       {type === 'city' ? (
         // Para ciudades: mostrar hora local o skeleton
@@ -40,29 +37,26 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
             🕐 {localTime}
           </Text>
         ) : (
-          <View 
-            style={{ 
-              width: 60, 
-              height: 20, 
+          <View
+            style={{
+              width: 60,
+              height: 20,
               backgroundColor: Colors.whiteAlpha25,
-              borderRadius: 6 
-            }} 
+              borderRadius: 6,
+            }}
           />
         )
       ) : (
-        // Para contacto: espacio vacío para mantener el layout
         <View style={{ width: 60 }} />
       )}
-      
-      {/* Título centrado para contacto */}
+
+      {/* Título centrado solo en pantalla de contacto */}
       {type === 'contact' && (
-        <View style={{ position: 'absolute', left: 0, right: 0, alignItems: 'center', top: 56 }}>
-          <Text className="text-2xl font-bold" style={{ color: 'white' }}>
-            {t('contact.title')}
-          </Text>
-        </View>
+        <Text className="text-2xl font-bold pt-14" style={{ color: 'white', position: 'absolute', left: 0, right: 0, textAlign: 'center' }}>
+          {t('contact.title')}
+        </Text>
       )}
-      
+
       {/* Selector de idioma - siempre visible */}
       <LanguageSelector />
     </View>

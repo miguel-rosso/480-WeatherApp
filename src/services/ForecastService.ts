@@ -15,7 +15,6 @@ import {
 
 /**
  * Hace una única llamada al API de forecast y devuelve ambos: daily y hourly
- * Esto optimiza las llamadas al API reduciendo de 3 a 2 fetches por ciudad
  */
 export const getForecastData = async (
   city: string,

@@ -25,8 +25,6 @@ export const HourlyItem: React.FC<HourlyItemProps> = ({
   isFirst, 
   showBorder, 
   dayIndex, 
-  city,
-  totalDays,
   onNavigate,
   isLoading = false
 }) => {

@@ -23,7 +23,7 @@ export const store = configureStore({
     
     // Agregar más slices en el futuro:
   },
-  // Configuración adicional para serializar/deserializar Dates
+  // (QUITAR WARNINGS) Configuración adicional para serializar/deserializar Dates 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

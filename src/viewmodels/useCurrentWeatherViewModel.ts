@@ -5,7 +5,7 @@
  */
 
 import { CurrentWeatherModel } from '@/src/models/CurrentWeatherModel';
-import { refreshCityData } from '@/src/services/WeatherPrefetchService';
+import { fetchCityData } from '@/src/services/WeatherPrefetchService';
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { updateBackground } from '@/src/store/slices/weatherBackgroundSlice';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
@@ -78,7 +78,7 @@ export const useCurrentWeatherViewModel = (initialCity: string = 'London') => {
    * Refrescar los datos de la ciudad
    */
   const refresh = async () => {
-    await refreshCityData(initialCity);
+    await fetchCityData(initialCity);
   };
 
   /**

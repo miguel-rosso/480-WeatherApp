@@ -116,6 +116,7 @@ export const HourlyForecastCard: React.FC<HourlyForecastCardProps> = ({ hourlyDa
         scrollEnabled={!isLoading}
       >
         {displayData.map((hour, index) => {
+          // hour es cada item del pronóstico por horas (HourlyForecast)
           const isFirst = index === 0;
           const isLast = index === displayData.length - 1;
           const showDaySeparator = !isLoading && shouldShowDaySeparator(index);

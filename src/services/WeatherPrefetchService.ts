@@ -28,7 +28,6 @@ const fetchCityWeather = async (city: string) => {
 
 /**
  * Obtiene el pronóstico diario y por hora de una ciudad y lo guarda en Redux
- * OPTIMIZADO: Hace una sola llamada al API en lugar de dos
  */
 const fetchCityForecasts = async (
   city: string,
@@ -58,48 +57,9 @@ const fetchCityForecasts = async (
 };
 
 /**
- * Hace prefetch de los datos de todas las ciudades
+ * Obtiene los datos de una ciudad específica y los guarda en Redux
  */
-export const prefetchAllCities = async (cities: string[]) => {
-  console.log('🚀 Prefetching weather data for all cities...');
-
-  // Hacer fetch de todas las ciudades en paralelo
-  await Promise.all(
-    cities.map(async (city) => {
-      // Primero obtener el clima actual para tener el timezone
-      await fetchCityWeather(city);
-
-      // Obtener timezone y datos del clima actual del store
-      const state = store.getState();
-      const cityWeather = state.weather.cities[city]?.weather;
-      const timezone = cityWeather?.timezone || 0;
-      
-      // Preparar datos del clima actual para el hourly forecast
-      const currentWeatherData = cityWeather ? {
-        temperature: cityWeather.temperature,
-        feelsLike: cityWeather.feelsLike,
-        description: cityWeather.description,
-        weatherId: cityWeather.weatherId,
-        icon: cityWeather.icon,
-        humidity: cityWeather.humidity,
-        windSpeed: cityWeather.windSpeed,
-        cloudiness: cityWeather.cloudiness,
-        visibility: cityWeather.visibility,
-      } : undefined;
-
-      // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
-      // OPTIMIZADO: Una sola llamada en lugar de dos
-      await fetchCityForecasts(city, timezone, cityWeather?.temperature, currentWeatherData);
-    })
-  );
-
-  console.log('✅ All cities data loaded!');
-};
-
-/**
- * Refresca los datos de una ciudad específica
- */
-export const refreshCityData = async (city: string) => {
+export const fetchCityData = async (city: string) => {
   // Primero obtener el clima actual para tener el timezone
   await fetchCityWeather(city);
 
@@ -122,6 +82,18 @@ export const refreshCityData = async (city: string) => {
   } : undefined;
 
   // Luego obtener pronósticos (pasar temperatura y clima actual para el primer día)
-  // OPTIMIZADO: Una sola llamada en lugar de dos
   await fetchCityForecasts(city, timezone, cityWeather?.temperature, currentWeatherData);
+};
+
+/**
+ * Hace prefetch de los datos de todas las ciudades
+ * Utiliza fetchCityData internamente para evitar duplicación de código
+ */
+export const prefetchAllCities = async (cities: string[]) => {
+  console.log('🚀 Prefetching weather data for all cities...');
+
+  // Hacer fetch de todas las ciudades en paralelo usando fetchCityData
+  await Promise.all(cities.map(city => fetchCityData(city)));
+
+  console.log('✅ All cities data loaded!');
 };

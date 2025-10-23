@@ -11,7 +11,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { Tabs } from 'expo-router';
 import { t } from 'i18next';
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 export default function TabLayout() {
   // 🎯 MVVM: ViewModel del header
@@ -41,15 +41,10 @@ export default function TabLayout() {
         />
       )}
 
-      {/* Header unificado - UI controlada por ViewModel */}
-      <AppHeader 
-        type={isContactScreen ? 'contact' : 'city'}
-        localTime={localTime}
-      />
-
       <Tabs
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
+          header: () => <AppHeader type={isContactScreen ? 'contact' : 'city'} localTime={localTime} />,
           tabBarButton: HapticTab,
           tabBarActiveTintColor: 'white',
           tabBarInactiveTintColor: Colors.whiteAlpha60,
@@ -90,7 +85,6 @@ export default function TabLayout() {
           name="contact"
           options={{
             title: t('contact.title'),
-            headerShown: false,
             tabBarIcon: ({ color }) => <Ionicons name="mail" size={24} color={color} />,
           }}
         />
