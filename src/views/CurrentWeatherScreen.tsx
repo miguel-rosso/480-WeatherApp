@@ -10,6 +10,7 @@ import { WeatherCard } from '@/src/components/cards/WeatherCard/WeatherCard';
 import { WeatherHeader } from '@/src/components/cards/WeatherHeader/WeatherHeader';
 import { useCurrentWeatherViewModel } from '@/src/viewmodels/useCurrentWeatherViewModel';
 import Feather from '@expo/vector-icons/Feather';
+import { Button } from '@react-navigation/elements';
 import { router, useFocusEffect } from 'expo-router';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -51,30 +52,15 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={'white'} />}
       >
         <View className="pb-8" style={{ backgroundColor: 'transparent' }}>
-          <View className="gap-6"  >
+          <View className="gap-6">
             {/* Header del clima */}
-            <WeatherHeader
-              city={city}
-              weather={weather}
-              forecast={forecast}
-              t={t}
-              isLoading={!weather}
-            />
+            <WeatherHeader city={city} weather={weather} forecast={forecast} t={t} isLoading={!weather} />
 
             {/* Pronóstico por Horas */}
-            <HourlyForecastCard 
-              hourlyData={hourlyForecast} 
-              city={city} 
-              forecast={forecast} 
-              isLoading={hourlyForecast.length === 0}
-            />
+            <HourlyForecastCard hourlyData={hourlyForecast} city={city} forecast={forecast} isLoading={hourlyForecast.length === 0} />
 
             {/* Pronóstico Diario */}
-            <DailyForecastCard 
-              forecast={forecast} 
-              city={city} 
-              isLoading={forecast.length === 0}
-            />
+            <DailyForecastCard forecast={forecast} city={city} isLoading={forecast.length === 0} />
           </View>
 
           {/* Cards de información detallada */}
@@ -87,7 +73,7 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
                 value={weather ? Math.round(weather.feelsLike).toString() : '0'}
                 unit="°C"
                 description={
-                  weather 
+                  weather
                     ? Math.abs(weather.feelsLike - weather.temperature) <= 2
                       ? t('weather.feelsLikeSimilar')
                       : weather.feelsLike > weather.temperature
@@ -171,6 +157,8 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
               onPress={navigateToDailyForecast}
               isLoading={!weather}
             />
+            {/* TEST componente nativo */}
+            <Button onPress={() => router.push(`/nativeModuleDemo`)}>Componente nativo test</Button>
           </View>
         </View>
       </ScrollView>

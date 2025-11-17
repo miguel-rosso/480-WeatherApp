@@ -52,5 +52,5 @@ app-example
 # Android
 *.apk
 
-# DESCOMENTAR SI QUIERES HACER BUILD APK
-package-lock.json
+# SI QUIERES HACER BUILD APK, git debe trackear este archivo
+# package-lock.json

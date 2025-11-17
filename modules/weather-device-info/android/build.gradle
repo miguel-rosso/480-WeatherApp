@@ -1,0 +1,54 @@
+// Top-level build file para el módulo nativo
+
+buildscript {
+  // Versiones que deben coincidir con tu app principal
+  ext {
+    buildToolsVersion = "34.0.0"
+    minSdkVersion = 23
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+  }
+  
+  repositories {
+    google()
+    mavenCentral()
+  }
+  
+  dependencies {
+    classpath("com.android.tools.build:gradle:8.1.1")
+  }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+  namespace "com.weatherdeviceinfo"
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
+  }
+  
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+  
+  lintOptions {
+    abortOnError false
+  }
+}
+
+repositories {
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  // React Native core
+  implementation 'com.facebook.react:react-native:+'
+}

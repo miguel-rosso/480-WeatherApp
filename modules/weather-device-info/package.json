@@ -1,0 +1,16 @@
+{
+  "name": "weather-device-info",
+  "version": "1.0.0",
+  "description": "Módulo nativo Android educativo para obtener info del dispositivo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": ["react-native", "android", "device-info"],
+  "author": "Miguel Rosso",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
+}
