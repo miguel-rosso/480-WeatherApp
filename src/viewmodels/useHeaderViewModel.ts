@@ -6,12 +6,13 @@
  * - Obtención del clima de la ciudad actual desde Redux
  * - Actualización del tiempo local cada minuto
  * - Formateo de la hora local
+ * - Navegación a la pantalla de componente nativo
  */
 
 import { CurrentWeatherModel } from '@/src/models/CurrentWeatherModel';
 import { useAppSelector } from '@/src/store/hooks';
 import { selectCityWeather } from '@/src/store/slices/weatherSlice';
-import { useSegments } from 'expo-router';
+import { router, useSegments } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 
 export const useHeaderViewModel = () => {
@@ -54,8 +55,14 @@ export const useHeaderViewModel = () => {
   // Obtener la hora local formateada
   const localTime = weather?.getFormattedLocalTime(currentTime);
 
+  // 🎯 Navegación a la pantalla de testing
+  const navigateToTestingScreen = () => {
+    router.push('/testing');
+  };
+
   return {
     isContactScreen,
     localTime,
+    navigateToTestingScreen,
   };
 };

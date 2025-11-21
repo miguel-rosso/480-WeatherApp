@@ -157,8 +157,6 @@ export const CurrentWeatherScreen: React.FC<CurrentWeatherScreenProps> = ({ city
               onPress={navigateToDailyForecast}
               isLoading={!weather}
             />
-            {/* TEST componente nativo */}
-            <Button onPress={() => router.push(`/nativeModuleDemo`)}>Componente nativo test</Button>
           </View>
         </View>
       </ScrollView>

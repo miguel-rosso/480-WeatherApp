@@ -10,6 +10,7 @@
  */
 
 import { LanguageSelector } from '@/src/components/common/LanguageSelector';
+import { SettingsButton } from '@/src/components/common/SettingsButton';
 import { Colors } from '@/src/constants/Colors';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,12 +28,34 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
 
   const backgroundColor = type === 'contact' ? Colors.background : 'transparent';
 
+  // Layout especial para Contact: botón a la izquierda, título centrado, selector de idioma a la derecha
+  if (type === 'contact') {
+    return (
+      <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor }}>
+        {/* Botón de navegación a la izquierda */}
+        <View style={{ zIndex: 10 }}>
+          <SettingsButton />
+        </View>
+
+        {/* Título centrado */}
+        <Text className="text-2xl font-bold pt-14" style={{ color: 'white', position: 'absolute', left: 0, right: 0, textAlign: 'center' }}>
+          {t('contact.title')}
+        </Text>
+
+        {/* Selector de idioma a la derecha */}
+        <View style={{ zIndex: 10 }}>
+          <LanguageSelector />
+        </View>
+      </View>
+    );
+  }
+
+  // Layout para ciudades: hora local a la izquierda, botón y selector de idioma a la derecha
   return (
     <View className="flex-row items-center justify-between px-6 pb-2 pt-14" style={{ backgroundColor }}>
-      {/* Contenido izquierdo */}
-      {type === 'city' ? (
-        // Para ciudades: mostrar hora local o skeleton
-        localTime ? (
+      {/* Hora local */}
+      <View>
+        {localTime ? (
           <Text className="text-lg font-semibold" style={{ color: 'white' }}>
             🕐 {localTime}
           </Text>
@@ -45,20 +68,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ type, localTime }) => {
               borderRadius: 6,
             }}
           />
-        )
-      ) : (
-        <View style={{ width: 60 }} />
-      )}
+        )}
+      </View>
 
-      {/* Título centrado solo en pantalla de contacto */}
-      {type === 'contact' && (
-        <Text className="text-2xl font-bold pt-14" style={{ color: 'white', position: 'absolute', left: 0, right: 0, textAlign: 'center' }}>
-          {t('contact.title')}
-        </Text>
-      )}
-
-      {/* Selector de idioma - siempre visible */}
-      <LanguageSelector />
+      {/* Botón y selector de idioma juntos */}
+      <View className="flex-row items-center gap-3">
+        {/* Selector de idioma */}
+        <LanguageSelector />
+        {/* Botón de navegación */}
+        <SettingsButton />
+      </View>
     </View>
   );
 };

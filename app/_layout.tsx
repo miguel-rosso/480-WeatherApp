@@ -18,6 +18,13 @@ export default function RootLayout() {
             headerRight: () => <LanguageSelector />
           }} 
         />
+        <Stack.Screen 
+          name="testing" 
+          options={{ 
+            title: 'Testing',
+            headerShown: true 
+          }} 
+        />
       </Stack>
       <StatusBar style="light" />
     </Provider>
